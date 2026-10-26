@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "product": "Product",
+    "specs": "Specifications",
+    "firmware": "Firmware",
+    "install": "Install",
+    "docs": "Docs",
+    "about": "About",
+    "github": "GitHub",
+    "menu": "Menu",
+    "close": "Close",
+    "language": "Language"
+  },
+  "lang": {
+    "en": "English",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "current": "Current language"
+  },
+  "hero": {
+    "brand": "ROTA",
+    "model": "R1",
+    "tagline": "Film Roller Processor",
+    "slogan": "Refine Our Timeless Analog.",
+    "lede": "Precision rotary processing for film. Controlled rotation, precise temperature, reproducible results — from development to final rinse.",
+    "download": "Download Firmware",
+    "viewGithub": "View on GitHub"
+  },
+  "intro": {
+    "eyebrow": "Product",
+    "title": "Consistent processing, run after run",
+    "body1": "ROTA R1 is a rotary film roller processor built around one principle: once a recipe is set, every step is executed the same way, every time. Rotation speed, direction changes, temperature and timing are handled by the machine — not by hand.",
+    "body2": "Recipes are managed on the device or synced from the ROTA Link companion app over Bluetooth LE and Wi-Fi. Firmware updates arrive over the air, so the machine improves without opening the case.",
+    "f1t": "Precise rotation",
+    "f1d": "Adjustable drum speed with smooth acceleration and reversal, so chemistry distributes evenly across the emulsion.",
+    "f2t": "Stable temperature",
+    "f2d": "A PT1000 RTD sensor and closed-loop control hold the bath within the range your chemistry expects.",
+    "f3t": "Recipe workflow",
+    "f3d": "Store multi-step recipes — developer, stop, fix, wash — with per-step time, temperature and agitation."
+  },
+  "specs": {
+    "eyebrow": "Specifications",
+    "title": "Technical specifications",
+    "note": "Specifications describe the current R1 hardware revision and may be updated as the product matures.",
+    "rows": {
+      "controller": "Main controller",
+      "controllerV": "STM32H7B0",
+      "wireless": "Wireless",
+      "wirelessV": "Bluetooth LE · Wi-Fi (Ai-WB2-01S)",
+      "display": "Display",
+      "displayV": "800 × 480 LCD, TouchGFX interface",
+      "rotation": "Rotation speed",
+      "rotationV": "1 – 150 rpm, reversible",
+      "temperature": "Temperature control",
+      "temperatureV": "15 – 50 °C, PT1000 RTD sensing",
+      "recipes": "Recipes",
+      "recipesV": "Multi-step, stored on device, synced with ROTA Link app",
+      "updates": "Firmware updates",
+      "updatesV": "OTA with staged verification and automatic rollback"
+    }
+  },
+  "firmware": {
+    "eyebrow": "Firmware",
+    "title": "Firmware releases",
+    "intro": "Official firmware for the ROTA R1. Download the release package and install it from the device menu or over the air. Version history is kept below.",
+    "latest": "Latest release",
+    "published": "Published",
+    "assets": "Downloads",
+    "download": "Download",
+    "releaseNotes": "Release notes",
+    "notesOriginal": "Release notes are shown in their original language",
+    "viewAll": "All releases on GitHub",
+    "history": "Release history",
+    "loading": "Checking for releases…",
+    "emptyTitle": "No releases published yet",
+    "emptyBody": "The first official firmware release will appear here. Watch the repository on GitHub to be notified.",
+    "errorTitle": "Could not load releases",
+    "errorBody": "GitHub could not be reached. Check your network connection and try again.",
+    "retry": "Retry",
+    "size": "Size",
+    "sourceCode": "Source code (zip)",
+    "prerelease": "Pre-release"
+  },
+  "install": {
+    "eyebrow": "Install",
+    "title": "Installing firmware",
+    "warn": "Do not power off the machine during an update. If an update is interrupted, the previous firmware is restored automatically.",
+    "s1t": "Download the release package",
+    "s1d": "Get the latest firmware package from the Firmware section above, or from the GitHub releases page.",
+    "s2t": "Transfer to the machine",
+    "s2d": "Install directly over the air when the machine is online, or use the ROTA Link app to start an update over Bluetooth.",
+    "s3t": "Let the update verify",
+    "s3d": "The bootloader verifies the staged image, writes the OTA metadata, and copies it on the next boot. Progress is shown on the device display.",
+    "s4t": "Confirm the version",
+    "s4d": "After the reboot, check the firmware version on the device under Settings — it should match the release you installed."
+  },
+  "docs": {
+    "eyebrow": "Docs",
+    "title": "Documentation",
+    "d1t": "Repository README",
+    "d1d": "Project overview and the quickest way to get started.",
+    "d2t": "Release notes",
+    "d2d": "What changed in each firmware release, with download links.",
+    "d3t": "ROTA Link app",
+    "d3d": "The companion Android app for recipes and device setup.",
+    "open": "Open"
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Built for the darkroom",
+    "body": "ROTA is an independent hardware project for analog photographers: a film roller processor designed to make consistent, repeatable development part of everyday practice. The ROTA Link app and this site are part of the same effort — everything around the machine should be as considered as the machine itself."
+  },
+  "footer": {
+    "rights": "ROTA Film Roller Processor. All rights reserved.",
+    "repo": "GitHub Repository",
+    "top": "Back to top",
+    "langNote": "This site is available in English, Simplified Chinese and Traditional Chinese."
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "product": "產品",
+    "specs": "規格",
+    "firmware": "韌體",
+    "install": "安裝",
+    "docs": "文件",
+    "about": "關於",
+    "github": "GitHub",
+    "menu": "選單",
+    "close": "關閉",
+    "language": "語言"
+  },
+  "lang": {
+    "en": "English",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "current": "目前語言"
+  },
+  "hero": {
+    "brand": "ROTA",
+    "model": "R1",
+    "tagline": "菲林滾沖機",
+    "slogan": "Refine Our Timeless Analog.",
+    "lede": "為菲林而設的精密滾沖工藝。受控旋轉、精準溫度、可重現的結果——由顯影到最後過水，每一步都同樣穩定。",
+    "download": "下載韌體",
+    "viewGithub": "到 GitHub 瀏覽"
+  },
+  "intro": {
+    "eyebrow": "產品",
+    "title": "每一次沖洗，都同樣可靠",
+    "body1": "ROTA R1 菲林滾沖機的設計原則十分簡單：配方一經設定，每個步驟都會以完全相同的方式執行。轉速、轉向切換、溫度與計時全部由機器負責，無須依賴人手經驗。",
+    "body2": "配方可以直接在機身上管理，亦可以透過藍牙及 Wi-Fi 與 ROTA Link 手機應用程式同步。韌體支援線上升級，機器會隨版本更新持續進步。",
+    "f1t": "精準旋轉",
+    "f1d": "滾筒轉速可調，加減速及換向平滑，令藥液均勻覆蓋每一處乳劑面。",
+    "f2t": "穩定控溫",
+    "f2d": "PT1000 鉑電阻感應器配合閉環控制，將水浴溫度維持在藥液要求的範圍之內。",
+    "f3t": "配方流程",
+    "f3d": "多步驟配方管理——顯影、停顯、定影、過水——每一步獨立設定時間、溫度與攪拌方式。"
+  },
+  "specs": {
+    "eyebrow": "規格",
+    "title": "技術規格",
+    "note": "以上規格對應現時 R1 硬件版本，或會隨產品更新而調整。",
+    "rows": {
+      "controller": "主控",
+      "controllerV": "STM32H7B0",
+      "wireless": "無線連接",
+      "wirelessV": "藍牙 · Wi-Fi（Ai-WB2-01S）",
+      "display": "顯示熒幕",
+      "displayV": "800 × 480 LCD，TouchGFX 介面",
+      "rotation": "旋轉速度",
+      "rotationV": "1 – 150 rpm，支援換向",
+      "temperature": "溫度控制",
+      "temperatureV": "15 – 50 °C，PT1000 鉑電阻測溫",
+      "recipes": "配方",
+      "recipesV": "多步驟配方，本機儲存，可與 ROTA Link 應用程式同步",
+      "updates": "韌體升級",
+      "updatesV": "OTA 線上升級，備有驗證及自動回復"
+    }
+  },
+  "firmware": {
+    "eyebrow": "韌體",
+    "title": "韌體發佈",
+    "intro": "ROTA R1 官方韌體。下載發佈檔案後，於裝置選單內安裝，或經線上方式升級。歷史版本請參閱下方版本紀錄。",
+    "latest": "最新版本",
+    "published": "發佈日期",
+    "assets": "下載檔案",
+    "download": "下載",
+    "releaseNotes": "更新說明",
+    "notesOriginal": "更新說明保留原文，未經翻譯",
+    "viewAll": "到 GitHub 查看所有版本",
+    "history": "版本紀錄",
+    "loading": "正在取得版本資料…",
+    "emptyTitle": "尚未有已發佈的版本",
+    "emptyBody": "首個正式韌體版本發佈後將於此處顯示。歡迎在 GitHub 追蹤本倉庫以取得通知。",
+    "errorTitle": "無法取得版本資料",
+    "errorBody": "未能連線至 GitHub，請檢查網絡後再試。",
+    "retry": "重試",
+    "size": "大小",
+    "sourceCode": "原始碼（zip）",
+    "prerelease": "預覽版"
+  },
+  "install": {
+    "eyebrow": "安裝",
+    "title": "韌體安裝",
+    "warn": "升級期間請切勿切斷電源。如升級中斷，裝置會自動回復至上一個可用版本。",
+    "s1t": "下載發佈檔案",
+    "s1d": "從上方韌體頁面或 GitHub Releases 頁面取得最新韌體檔。",
+    "s2t": "傳送至裝置",
+    "s2d": "裝置連線後可直接線上升級，亦可透過 ROTA Link 應用程式經藍牙啟動升級。",
+    "s3t": "等待驗證完成",
+    "s3d": "引導程式會為暫存的韌體映像進行驗證，寫入 OTA 元數據，並於下次開機時完成切換，進度會顯示於裝置熒幕上。",
+    "s4t": "確認版本",
+    "s4d": "重新啟動後，於裝置的設定選單查看韌體版本，確認與所安裝版本一致。"
+  },
+  "docs": {
+    "eyebrow": "文件",
+    "title": "相關文件",
+    "d1t": "倉庫說明",
+    "d1d": "項目概覽及最快捷的入門方法。",
+    "d2t": "版本說明",
+    "d2d": "每個韌體版本的變更內容及下載連結。",
+    "d3t": "ROTA Link 應用程式",
+    "d3d": "用於配方管理及裝置設定的 Android 伴侶應用程式。",
+    "open": "開啟"
+  },
+  "about": {
+    "eyebrow": "關於",
+    "title": "為黑房而設",
+    "body": "ROTA 是一個面向菲林攝影愛好者的獨立硬件項目：一部令穩定、可重現的沖洗成為日常的滾沖機。ROTA Link 應用程式與本網站屬同一努力——機器以外的每一件事，亦應與機器本身一樣一絲不苟。"
+  },
+  "footer": {
+    "rights": "ROTA 菲林滾沖機。保留一切權利。",
+    "repo": "GitHub 倉庫",
+    "top": "回到頂部",
+    "langNote": "本網站提供英文、簡體中文及繁體中文三種語言。"
+  }
+}

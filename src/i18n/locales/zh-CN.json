@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "product": "产品",
+    "specs": "规格",
+    "firmware": "固件",
+    "install": "安装",
+    "docs": "文档",
+    "about": "关于",
+    "github": "GitHub",
+    "menu": "菜单",
+    "close": "关闭",
+    "language": "语言"
+  },
+  "lang": {
+    "en": "English",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文",
+    "current": "当前语言"
+  },
+  "hero": {
+    "brand": "ROTA",
+    "model": "R1",
+    "tagline": "胶片滚冲机",
+    "slogan": "Refine Our Timeless Analog.",
+    "lede": "为胶片而生的精密滚冲工艺。受控旋转、精准温度、可复现的结果——从显影到最后水洗，每一步都稳定如一。",
+    "download": "下载固件",
+    "viewGithub": "在 GitHub 查看"
+  },
+  "intro": {
+    "eyebrow": "产品",
+    "title": "每一次冲洗，都同样可靠",
+    "body1": "ROTA R1 胶片滚冲机基于一个简单的设计原则：配方一旦设定，每一个步骤都以完全相同的方式执行。旋转速度、转向切换、温度与计时全部由机器完成，不依赖手工经验。",
+    "body2": "配方可以直接在机器上管理，也可以通过蓝牙和 Wi-Fi 与 ROTA Link 手机应用同步。固件支持在线升级，机器会随着版本迭代持续进步。",
+    "f1t": "精准旋转",
+    "f1d": "滚筒转速可调，加减速与换向平滑，让药液均匀覆盖每一处乳剂面。",
+    "f2t": "稳定控温",
+    "f2d": "PT1000 铂电阻传感器配合闭环控制，将水浴温度稳定在药液要求范围内。",
+    "f3t": "配方流程",
+    "f3d": "多步骤配方管理——显影、停显、定影、水洗——每一步独立设定时间、温度与搅拌方式。"
+  },
+  "specs": {
+    "eyebrow": "规格",
+    "title": "技术规格",
+    "note": "以上规格对应当前 R1 硬件版本，可能随产品迭代更新。",
+    "rows": {
+      "controller": "主控",
+      "controllerV": "STM32H7B0",
+      "wireless": "无线连接",
+      "wirelessV": "蓝牙 · Wi-Fi（Ai-WB2-01S）",
+      "display": "显示屏",
+      "displayV": "800 × 480 LCD，TouchGFX 界面",
+      "rotation": "旋转速度",
+      "rotationV": "1 – 150 rpm，支持换向",
+      "temperature": "温度控制",
+      "temperatureV": "15 – 50 °C，PT1000 铂电阻测温",
+      "recipes": "配方",
+      "recipesV": "多步骤配方，本机存储，可与 ROTA Link 应用同步",
+      "updates": "固件升级",
+      "updatesV": "OTA 在线升级，含校验与自动回滚"
+    }
+  },
+  "firmware": {
+    "eyebrow": "固件",
+    "title": "固件发布",
+    "intro": "ROTA R1 官方固件。下载发布包后，在设备菜单中安装，或通过在线方式升级。历史版本请见下方版本记录。",
+    "latest": "最新版本",
+    "published": "发布日期",
+    "assets": "下载文件",
+    "download": "下载",
+    "releaseNotes": "更新说明",
+    "notesOriginal": "更新说明保留原文，未做翻译",
+    "viewAll": "在 GitHub 查看全部版本",
+    "history": "版本记录",
+    "loading": "正在获取版本信息…",
+    "emptyTitle": "暂无已发布的版本",
+    "emptyBody": "首个正式固件版本发布后将在此处展示。欢迎在 GitHub 关注本仓库以获取通知。",
+    "errorTitle": "无法获取版本信息",
+    "errorBody": "无法连接到 GitHub，请检查网络后重试。",
+    "retry": "重试",
+    "size": "大小",
+    "sourceCode": "源代码（zip）",
+    "prerelease": "预发布"
+  },
+  "install": {
+    "eyebrow": "安装",
+    "title": "固件安装",
+    "warn": "升级过程中请勿断开电源。若升级中断，设备会自动恢复到上一个可用版本。",
+    "s1t": "下载发布包",
+    "s1d": "从上方固件页面或 GitHub Releases 页面获取最新固件包。",
+    "s2t": "传输到设备",
+    "s2d": "设备联网后可直接在线升级，也可通过 ROTA Link 应用经蓝牙发起升级。",
+    "s3t": "等待校验完成",
+    "s3d": "引导程序会对暂存的固件镜像进行校验，写入 OTA 元数据，并在下次启动时完成切换，进度显示在设备屏幕上。",
+    "s4t": "确认版本",
+    "s4d": "重启后，在设备的设置菜单中查看固件版本，确认与所安装版本一致。"
+  },
+  "docs": {
+    "eyebrow": "文档",
+    "title": "相关文档",
+    "d1t": "仓库说明",
+    "d1d": "项目概览与最快速的上手方式。",
+    "d2t": "版本说明",
+    "d2d": "每个固件版本的变更内容与下载链接。",
+    "d3t": "ROTA Link 应用",
+    "d3d": "用于配方管理与设备设置的 Android 伴侣应用。",
+    "open": "打开"
+  },
+  "about": {
+    "eyebrow": "关于",
+    "title": "为暗房而生",
+    "body": "ROTA 是一个面向胶片摄影爱好者的独立硬件项目：一台让稳定、可复现的冲洗成为日常的滚冲机。ROTA Link 应用与本网站同属这一努力——机器之外的每一件事，也应与机器本身一样被认真对待。"
+  },
+  "footer": {
+    "rights": "ROTA 胶片滚冲机。保留所有权利。",
+    "repo": "GitHub 仓库",
+    "top": "回到顶部",
+    "langNote": "本网站提供英文、简体中文与繁体中文三种语言。"
+  }
+}
