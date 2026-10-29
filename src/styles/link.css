@@ -2379,3 +2379,12 @@ html[lang='zh-TW'] .lk .plate {
     transform: none !important;
   }
 }
+
+/* ---------- CJK ---------- */
+/* `ch` is the width of "0" — roughly half a Chinese glyph — so the latin
+   measures above leave a Chinese tagline or lede breaking one or two
+   characters short, with an orphan on the second line. */
+:lang(zh) .lk-hero-tag,
+:lang(zh) .lk-hero-lede {
+  max-width: 100%;
+}
