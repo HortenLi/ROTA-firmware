@@ -26,6 +26,8 @@ export const HOME_PATH = '/'
 export const LINK_PATH = '/link'
 /** Technical page: specs, firmware releases, install steps, docs. */
 export const R1_PATH = '/r1'
+/** "The Person Behind ROTA" — the personal page. */
+export const ABOUT_PATH = '/about'
 
 export type Route = { path: string; hash: string }
 

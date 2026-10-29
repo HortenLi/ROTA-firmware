@@ -124,7 +124,8 @@
         "r1": "ROTA R1",
         "app": "ROTA Link",
         "firmware": "Firmware",
-        "docs": "Documentation"
+        "docs": "Documentation",
+        "about": "About"
       },
       "footer": {
         "tagline": "Refine our timeless analog.",
@@ -143,6 +144,59 @@
         "langNote": "English · 简体中文 · 繁體中文"
       }
     },
+  "person": {
+    "meta": {
+      "title": "The Person Behind ROTA — A practice of making",
+      "description": "Photography, engineering, and the process of bringing ideas to life. A personal introduction to the person who makes ROTA.",
+      "ogTitle": "The Person Behind ROTA",
+      "ogDescription": "Photography, engineering, and the process of bringing ideas to life."
+    },
+    "intro": {
+      "kicker": "ROTA / The person behind the project",
+      "title": "A practice of making.",
+      "lede": "Photography, engineering, and the process of bringing ideas to life.",
+      "byline": "Founder & Independent Developer",
+      "alt": "Night portrait: a film camera on a tripod, held at chest height",
+      "cap": "Out shooting, after dark"
+    },
+    "think": {
+      "kicker": "01 — Approach",
+      "title": "Understanding the whole. Building the details.",
+      "p1": "With a background in electronics and a strong interest in how things work, I tend to approach projects as complete systems rather than isolated parts.",
+      "p2": "I enjoy breaking down complex problems, understanding how different elements connect, and working through the process of turning an idea into something tangible.",
+      "p3": "For me, the most rewarding part is not simply solving one technical problem, but understanding how everything comes together in the final product."
+    },
+    "film": {
+      "kicker": "02 — Seen through film",
+      "title": "Seen through film.",
+      "lede": "A personal collection of photographs made on film.",
+      "a1": "A film camera held up, its viewfinder framing a figure in pink",
+      "a2": "A construction crane and a sliver of building against a clouded sky",
+      "a3": "A circle of light on a bare wall, a small shape caught at its edge",
+      "a4": "A person in a red jacket, hair thrown across the frame by wind",
+      "a5": "A station concourse where passing people blur into streaks",
+      "a6": "The underside of a ferris wheel, spokes crossing the sky",
+      "a7": "A night street in teal and neon, motion blurred across the frame",
+      "a8": "Two trams waiting under the warm strip lights of a night platform",
+      "a9": "Rows of orange prayer ribbons hanging in a street shrine",
+      "note": "All frames shot on film. Each caption names the stock it was exposed on."
+    },
+    "why": {
+      "kicker": "03 — Why ROTA",
+      "title": "Refine our timeless analog.",
+      "p1": "ROTA began with a simple interest in analog photography and the tools behind the process.",
+      "p2": "Rather than reinventing a traditional craft, I wanted to explore how thoughtful design and modern technology could make its tools more precise, intuitive, and enjoyable to use.",
+      "p3": "ROTA is an ongoing personal project built around that idea — bringing together engineering, product thinking, and a lasting appreciation for analog photography."
+    },
+    "close": {
+      "kicker": "04 — Signature",
+      "title": "Refine our timeless analog.",
+      "lede": "A personal project, shaped by curiosity and the process of making.",
+      "back": "Back to the brand",
+      "product": "ROTA R1",
+      "app": "ROTA Link"
+    }
+  },
   "hero": {
     "brand": "R O T A",
     "model": "R1",

@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BrandPage from './brand/BrandPage'
 import LinkPage from './link/LinkPage'
+import PersonPage from './person/PersonPage'
 import R1Page from './sections/R1Page'
-import { LINK_PATH, R1_PATH, useRoute } from './router'
+import { ABOUT_PATH, LINK_PATH, R1_PATH, useRoute } from './router'
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -16,5 +17,6 @@ export default function App() {
 
   if (route.path === LINK_PATH) return <LinkPage />
   if (route.path === R1_PATH) return <R1Page />
+  if (route.path === ABOUT_PATH) return <PersonPage />
   return <BrandPage />
 }

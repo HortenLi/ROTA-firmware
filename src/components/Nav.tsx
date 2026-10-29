@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { changeLang, LANG_LABELS, type Lang, SUPPORTED } from '../i18n'
 import { REPO_URL } from '../content'
-import { LINK_PATH, Link, R1_PATH, useRoute } from '../router'
+import { ABOUT_PATH, LINK_PATH, Link, R1_PATH, useRoute } from '../router'
 
 function LanguageSwitcher() {
   const { i18n, t } = useTranslation()
@@ -36,6 +36,7 @@ export default function Nav() {
   const home = route.path === '/'
   const onR1 = route.path === R1_PATH
   const onApp = route.path === LINK_PATH
+  const onAbout = route.path === ABOUT_PATH
 
   useEffect(() => {
     if (!home) {
@@ -78,6 +79,7 @@ export default function Nav() {
     { to: R1_PATH, label: t('brand.nav.r1'), on: onR1 },
     { to: LINK_PATH, label: t('brand.nav.app'), on: onApp },
     { to: `${R1_PATH}#firmware`, label: t('brand.nav.firmware'), on: false },
+    { to: ABOUT_PATH, label: t('brand.nav.about'), on: onAbout },
   ]
 
   return (

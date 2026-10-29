@@ -40,6 +40,12 @@ const ROUTE_META: Record<string, RouteMeta> = {
       'A more considered way to process film. A precise, intuitive companion for your film processing workflow.',
     image: `${ORIGIN}/brand/og.png`,
   },
+  about: {
+    title: 'The Person Behind ROTA — A practice of making',
+    description:
+      'Photography, engineering, and the process of bringing ideas to life. Who makes ROTA, and why.',
+    image: `${ORIGIN}/brand/og.png`,
+  },
 }
 
 /**
