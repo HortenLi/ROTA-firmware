@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -6,10 +6,16 @@ import react from '@vitejs/plugin-react'
 let outDir = 'dist'
 
 /**
- * GitHub Pages has no SPA rewrite. Emitting `404.html` as an exact copy of
- * `index.html` makes deep links (and refreshes) on /ROTA-firmware/link work:
- * Pages serves that copy with the original URL, and the client router renders
- * the right page. No redirect round-trip, no hash URLs.
+ * GitHub Pages has no SPA rewrite, so both routes need a real HTML file:
+ *
+ *  - `link/index.html` — same shell, so /ROTA-firmware/link/ answers **200**
+ *    (a 404.html fallback would render fine but would answer 404, which search
+ *    engines read as "this page does not exist").
+ *  - `404.html` — a byte copy of the shell, so any other deep link or a stray
+ *    refresh still boots the app instead of showing GitHub's 404 page.
+ *
+ * The client router reads `location.pathname`, so both files render the right
+ * page with the URL left exactly as the visitor typed it.
  */
 function spaFallback(): Plugin {
   return {
@@ -21,7 +27,11 @@ function spaFallback(): Plugin {
     closeBundle() {
       const dir = resolve(process.cwd(), outDir)
       const index = resolve(dir, 'index.html')
-      if (existsSync(index)) copyFileSync(index, resolve(dir, '404.html'))
+      if (!existsSync(index)) return
+      copyFileSync(index, resolve(dir, '404.html'))
+      const linkDir = resolve(dir, 'link')
+      mkdirSync(linkDir, { recursive: true })
+      copyFileSync(index, resolve(linkDir, 'index.html'))
     },
   }
 }

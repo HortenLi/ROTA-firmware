@@ -21,7 +21,9 @@ export default function LinkPage() {
 
   const meta = useMemo(() => {
     const origin = window.location.origin
-    const canonical = `${origin}${href('/link')}`
+    // Pages serves this route from `link/index.html`, i.e. with a trailing
+    // slash — point the canonical at the URL that actually answers 200.
+    const canonical = `${origin}${href('/link')}/`
     const lang = i18n.language
     return {
       title: t('link.meta.title'),
