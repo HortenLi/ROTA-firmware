@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { REPO_URL } from '../../content'
-import { Link } from '../../router'
+import { Link, R1_PATH } from '../../router'
 
 export default function LinkFooter() {
   const { t } = useTranslation()
@@ -14,8 +14,9 @@ export default function LinkFooter() {
           </div>
           <nav className="lk-foot-nav" aria-label={t('nav.menu')}>
             <Link to="/link">{t('link.footer.app')}</Link>
-            <Link to="/">{t('link.footer.hw')}</Link>
-            <Link to="/#firmware">{t('link.footer.firmware')}</Link>
+            <Link to={R1_PATH}>{t('link.footer.hw')}</Link>
+            {/* firmware now lives on the technical page, not the brand home */}
+            <Link to={`${R1_PATH}#firmware`}>{t('link.footer.firmware')}</Link>
             <a href={REPO_URL} target="_blank" rel="noreferrer">
               {t('link.footer.repo')} ↗
             </a>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import { RouterProvider } from './router'
 import './styles/global.css'
+import './styles/brand.css'
 import './styles/link.css'
 // Self-hosted Latin fonts (latin subset only, small woff2). CJK relies on
 // system font stacks — see global.css.

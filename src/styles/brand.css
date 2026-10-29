@@ -1,0 +1,1562 @@
+/* ============================================================
+   ROTA — brand homepage
+   ------------------------------------------------------------------
+   One continuous narrative: ring → origin → philosophy → process →
+   product → signature. Everything is on a 1240 grid with hairline
+   rules; the only graphic device is a graduated circle, and the only
+   "effects" are slow reveals and a very slow rotation.
+   ============================================================ */
+
+/* Tokens live on :root because the nav and footer are rendered outside .bd
+   on the ROTA Link page — an undefined custom property there would silently
+   drop a colour and leave white text on white. */
+:root {
+  --bd-ink: #1b1b1b;
+  --bd-ink-deep: #141412;
+  --bd-paper: #f8f8f5;
+  --bd-warm: #efeade;
+  --bd-sand: #e8e0ce;
+  --bd-metal: #8d7959;
+  --bd-metal-lit: #cbb489;
+  --bd-max: 1240px;
+
+  /* light ground (default) */
+  --bd-text: var(--bd-ink);
+  --bd-muted: #6c6d66;
+  --bd-hair: rgba(27, 27, 27, 0.14);
+  --bd-hair-soft: rgba(27, 27, 27, 0.08);
+}
+
+.bd {
+  background: var(--bd-paper);
+  color: var(--bd-text);
+}
+
+.bd-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* The site has no other focus treatment, so give keyboard users a quiet
+   brass ring that reads on both the ink and the paper grounds. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 1px solid var(--bd-metal-lit);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.bd-shell {
+  /* explicit width: as a flex/grid item, `margin: 0 auto` absorbs the free
+     space instead of stretching, which silently collapsed the hero rail. */
+  width: 100%;
+  max-width: var(--bd-max);
+  margin: 0 auto;
+  padding-inline: clamp(20px, 4vw, 44px);
+}
+
+/* ---------- type ---------- */
+.bd-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(38px, 6.4vw, 86px);
+  line-height: 1.02;
+  letter-spacing: -0.018em;
+  max-width: 15ch;
+  margin-top: clamp(18px, 2.4vw, 30px);
+}
+
+.bd-h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(27px, 3.4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  max-width: 20ch;
+}
+
+.bd-lede {
+  font-size: clamp(15.5px, 1.15vw, 18px);
+  line-height: 1.66;
+  color: var(--bd-muted);
+  max-width: 46ch;
+}
+
+.bd-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bd-muted);
+}
+
+.bd-kicker::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  flex: none;
+}
+
+.bd-idx {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--bd-muted);
+}
+
+/* ---------- links ---------- */
+.bd-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--bd-hair);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.bd-link span {
+  transition: transform 0.25s ease;
+}
+
+.bd-link:hover {
+  border-bottom-color: currentColor;
+}
+
+.bd-link:hover span {
+  transform: translateX(4px);
+}
+
+/* ---------- nav ---------- */
+.bd-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.bd-nav.is-solid {
+  background: rgba(20, 20, 19, 0.9);
+  backdrop-filter: blur(14px);
+  border-bottom-color: rgba(242, 240, 233, 0.1);
+}
+
+.bd-nav-in {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 46px);
+  height: var(--nav-h);
+}
+
+/* Wordmark standard: Jost Light, and the letter gaps ARE the spaces in the
+   string ("R O T A") — no tracking on top of them. The old global rule went
+   away with the old nav, so it is restated here for both nav and footer. */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  flex: none;
+}
+
+.bd-nav .wordmark {
+  color: var(--bd-paper);
+  font-size: 18px;
+}
+
+.bd-nav-links {
+  display: flex;
+  gap: clamp(14px, 2vw, 30px);
+  flex: 1;
+}
+
+.bd-nav-links a {
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  color: rgba(242, 240, 233, 0.6);
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.bd-nav-links a:hover,
+.bd-nav-links a.is-on {
+  color: var(--bd-paper);
+  border-bottom-color: var(--bd-metal-lit);
+}
+
+.bd-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.bd-nav-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(242, 240, 233, 0.6);
+  white-space: nowrap;
+}
+
+.bd-nav-gh:hover {
+  color: var(--bd-paper);
+}
+
+.lang-switch {
+  display: flex;
+  border: 1px solid rgba(242, 240, 233, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  flex: none;
+}
+
+.lang-switch button {
+  font-size: 11.5px;
+  padding: 6px 9px;
+  color: rgba(242, 240, 233, 0.6);
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lang-switch button.on {
+  background: var(--bd-paper);
+  color: var(--bd-ink);
+  font-weight: 600;
+}
+
+.bd-nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  margin-left: auto;
+}
+
+.bd-nav-burger span {
+  display: block;
+  height: 1px;
+  width: 20px;
+  margin: 0 auto;
+  background: var(--bd-paper);
+}
+
+.bd-drawer {
+  display: none;
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  z-index: 55;
+  background: var(--bd-ink-deep);
+  padding: 6px 24px 24px;
+  max-height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+}
+
+.bd-drawer.is-open {
+  display: block;
+}
+
+.bd-drawer > a {
+  display: block;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(242, 240, 233, 0.12);
+  color: #e9e7de;
+  font-size: 15px;
+}
+
+.bd-drawer .lang-switch {
+  margin-top: 18px;
+  width: 100%;
+}
+
+.bd-drawer .lang-switch button {
+  flex: 1;
+  text-align: center;
+  padding: 9px 0;
+}
+
+/* ---------- hero ---------- */
+.bd-hero {
+  position: relative;
+  background: var(--bd-ink);
+  color: var(--bd-paper);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--nav-h) + clamp(36px, 7vh, 96px));
+  padding-bottom: 8px;
+  overflow: hidden;
+  --bd-text: var(--bd-paper);
+  --bd-muted: #a5a49b;
+  --bd-hair: rgba(242, 240, 233, 0.16);
+}
+
+.bd-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    62% 58% at 72% 44%,
+    rgba(141, 121, 89, 0.14) 0%,
+    rgba(20, 20, 19, 0) 68%
+  );
+  pointer-events: none;
+}
+
+.bd-hero-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  grid-template-areas:
+    'lead figure'
+    'tail figure';
+  align-content: center;
+  align-items: start;
+  column-gap: clamp(24px, 4vw, 64px);
+  row-gap: clamp(26px, 4vh, 52px);
+  flex: 1;
+  position: relative;
+}
+
+.bd-hero-lead {
+  grid-area: lead;
+  align-self: end;
+}
+
+.bd-hero-tail {
+  grid-area: tail;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 3vh, 34px);
+}
+
+.bd-hero-figure {
+  grid-area: figure;
+  align-self: center;
+  justify-self: end;
+}
+
+.bd-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 44px);
+}
+
+.bd-ring {
+  position: relative;
+  width: clamp(240px, 30vw, 430px);
+  aspect-ratio: 1;
+}
+
+.bd-ring img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  /* the graded frame fades to black at its edge — this keeps the circle legible */
+  box-shadow: inset 0 0 0 1px rgba(242, 240, 233, 0.1);
+}
+
+.bd-ring::after {
+  content: '';
+  position: absolute;
+  inset: -6.5%;
+  border: 1px solid rgba(242, 240, 233, 0.22);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bd-ring-dial {
+  position: absolute;
+  inset: -13%;
+  color: rgba(242, 240, 233, 0.42);
+}
+
+.bd-dial-rot {
+  transform-box: view-box;
+  transform-origin: 100px 100px;
+}
+
+.bd-tick {
+  stroke: currentColor;
+}
+
+.bd-tick--major {
+  opacity: 0.85;
+}
+
+.bd-dial-edge {
+  fill: none;
+  stroke: rgba(242, 240, 233, 0.18);
+  stroke-width: 0.4;
+}
+
+.bd-dial-hair {
+  fill: none;
+  stroke: rgba(242, 240, 233, 0.1);
+  stroke-width: 0.35;
+}
+
+.bd-ring-mark {
+  position: absolute;
+  top: -6.5%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--bd-metal-lit);
+  transform: translate(-50%, -50%);
+}
+
+.bd-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px clamp(16px, 3vw, 48px);
+  margin-top: clamp(30px, 6vh, 68px);
+  padding-top: 16px;
+  padding-bottom: clamp(18px, 3vh, 30px);
+  position: relative;
+}
+
+/* the rule sits on the content column, not on the padded box edge */
+.bd-rail::before {
+  content: '';
+  position: absolute;
+  left: clamp(20px, 4vw, 44px);
+  right: clamp(20px, 4vw, 44px);
+  top: 0;
+  height: 1px;
+  background: var(--bd-hair);
+}
+
+.bd-rail > div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bd-rail dt {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bd-muted);
+}
+
+.bd-rail dd {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  letter-spacing: 0.04em;
+  color: var(--bd-paper);
+}
+
+/* ---------- section frame ---------- */
+.bd-sec {
+  padding-block: clamp(72px, 9vw, 136px);
+}
+
+.bd-sec--paper {
+  background: var(--bd-paper);
+}
+
+.bd-sec--warm {
+  background: var(--bd-warm);
+}
+
+.bd-sec--ink,
+.bd-close {
+  background: var(--bd-ink);
+  --bd-text: var(--bd-paper);
+  --bd-muted: #a5a49b;
+  --bd-hair: rgba(242, 240, 233, 0.16);
+  --bd-hair-soft: rgba(242, 240, 233, 0.08);
+  color: var(--bd-paper);
+}
+
+.bd-head {
+  margin-bottom: clamp(38px, 5.5vw, 74px);
+}
+
+.bd-head-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(18px, 4vw, 70px);
+  align-items: end;
+  margin-top: clamp(16px, 2vw, 26px);
+}
+
+/* ---------- 02 origin ---------- */
+.bd-origin {
+  /* the horizon rule deliberately runs past the shell; clip it here instead of
+     letting it widen the document */
+  overflow: clip;
+  --orbit: clamp(180px, 25vw, 330px);
+  --orbit-gap: clamp(18px, 3.6vw, 54px);
+}
+
+.bd-orbit {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--orbit-gap);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bd-orbit::before {
+  content: '';
+  position: absolute;
+  left: -100vw;
+  right: -100vw;
+  top: calc(var(--orbit) / 2);
+  height: 1px;
+  background: var(--bd-hair);
+}
+
+.bd-orbit li:nth-child(2) {
+  margin-top: 30px;
+}
+
+.bd-orbit li:nth-child(3) {
+  margin-top: -12px;
+}
+
+.bd-orbit figure {
+  margin: 0;
+  position: relative;
+}
+
+.bd-orbit-img {
+  width: var(--orbit);
+  height: var(--orbit);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bd-sand);
+}
+
+.bd-orbit-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bd-orbit figcaption {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  row-gap: 6px;
+  align-items: baseline;
+}
+
+.bd-orbit figcaption strong {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.bd-orbit-text {
+  grid-column: 1 / -1;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--bd-muted);
+  max-width: 26ch;
+}
+
+.bd-note {
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+  gap: clamp(22px, 4.5vw, 76px);
+  align-items: start;
+  margin-top: clamp(44px, 6.5vw, 92px);
+  border-top: 1px solid var(--bd-hair);
+  padding-top: clamp(24px, 3vw, 40px);
+}
+
+.bd-note p:first-child {
+  font-size: clamp(15.5px, 1.5vw, 19.5px);
+  line-height: 1.62;
+  max-width: 54ch;
+}
+
+.bd-note-mark {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.15vw, 17px);
+  line-height: 1.5;
+  color: var(--bd-muted);
+  border-left: 1px solid var(--bd-hair);
+  padding-left: 20px;
+}
+
+/* ---------- 03 refine ---------- */
+.bd-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 64px);
+  align-items: start;
+}
+
+.bd-pair-col figure {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--bd-sand);
+}
+
+.bd-pair-col figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bd-cap {
+  margin-top: 13px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--bd-muted);
+}
+
+.bd-pair-text {
+  margin-top: clamp(16px, 2vw, 26px);
+  border-top: 1px solid var(--bd-hair);
+  padding-top: 16px;
+  max-width: 42ch;
+}
+
+.bd-pair-text h3 {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.bd-pair-text p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--bd-muted);
+}
+
+.bd-plate {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--bd-hair);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+}
+
+.bd-plate-canvas {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 6%;
+  min-height: 0;
+  position: relative;
+}
+
+/* Registration marks: the plate reads as a drawing, not as an empty panel. */
+.bd-plate-canvas::before,
+.bd-plate-canvas::after {
+  content: '';
+  position: absolute;
+  background: var(--bd-hair);
+}
+
+.bd-plate-canvas::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.bd-plate-canvas::after {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+.bd-plate-canvas svg {
+  position: relative;
+}
+
+.bd-plate-canvas svg {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+}
+
+.bd-plate-hair {
+  fill: none;
+  stroke: var(--bd-hair);
+  stroke-width: 0.6;
+}
+
+.bd-plate-axis {
+  stroke: var(--bd-hair-soft);
+  stroke-width: 0.6;
+  stroke-dasharray: 2 4;
+}
+
+.bd-plate-ticks {
+  color: var(--bd-muted);
+}
+
+.bd-plate-ticks .bd-tick {
+  opacity: 0.55;
+}
+
+.bd-plate-arc {
+  fill: none;
+  stroke: var(--bd-metal);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.bd-plate-dot {
+  fill: var(--bd-metal);
+}
+
+.bd-plate-legend > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--bd-hair);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bd-muted);
+}
+
+.bd-plate-legend > div span:last-child {
+  color: var(--bd-text);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-family: var(--font-display);
+  font-size: 13px;
+}
+
+.bd-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3.6vw, 54px);
+  margin-top: clamp(44px, 6.5vw, 90px);
+  border-top: 1px solid var(--bd-hair);
+  padding-top: clamp(22px, 3vw, 34px);
+}
+
+.bd-pillars dt {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(16px, 1.4vw, 20px);
+  margin-bottom: 9px;
+}
+
+.bd-pillars dd {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--bd-muted);
+  max-width: 34ch;
+}
+
+/* ---------- 04 process ---------- */
+.bd-process {
+  padding-top: 0;
+}
+
+.bd-band {
+  position: relative;
+  margin: 0;
+  height: clamp(340px, 58vh, 600px);
+  overflow: hidden;
+}
+
+.bd-band img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bd-band-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 19, 0.6) 0%,
+    rgba(20, 20, 19, 0.05) 34%,
+    rgba(20, 20, 19, 0.55) 76%,
+    rgba(20, 20, 19, 0.88) 100%
+  );
+}
+
+.bd-band-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(24px, 4.5vh, 58px);
+}
+
+.bd-band-cap .bd-h2 {
+  margin-top: 14px;
+  max-width: 18ch;
+}
+
+.bd-process-body {
+  padding-top: clamp(38px, 5vw, 70px);
+}
+
+.bd-steps {
+  list-style: none;
+  padding: 0;
+  margin: clamp(32px, 4vw, 54px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--bd-hair);
+  border-top: 1px solid var(--bd-hair);
+  border-bottom: 1px solid var(--bd-hair);
+}
+
+.bd-steps li {
+  background: var(--bd-ink);
+  padding: clamp(18px, 2.2vw, 30px) clamp(14px, 1.6vw, 24px);
+}
+
+.bd-steps h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(15px, 1.2vw, 18px);
+  margin: 12px 0 7px;
+}
+
+.bd-steps p {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--bd-muted);
+}
+
+.bd-proc-figs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(14px, 2.4vw, 30px);
+  margin-top: clamp(38px, 5vw, 68px);
+}
+
+.bd-proc-figs figure {
+  margin: 0;
+  /* aspect-ratio belongs on the box: <img> keeps its intrinsic ratio otherwise */
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.bd-proc-figs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bd-proc-figs figcaption {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--bd-muted);
+  max-width: 34ch;
+}
+
+/* ---------- 05 practice ---------- */
+.bd-practice-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(26px, 4.5vw, 76px);
+  align-items: start;
+}
+
+.bd-practice-fig {
+  margin: 0;
+}
+
+.bd-practice-fig img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bd-practice-fig figcaption {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--bd-muted);
+}
+
+.bd-product {
+  display: block;
+  padding-block: clamp(20px, 2.2vw, 28px);
+  border-top: 1px solid var(--bd-hair);
+}
+
+.bd-product-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+}
+
+.bd-product-head h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(20px, 1.9vw, 26px);
+  letter-spacing: 0.01em;
+}
+
+.bd-product-head span {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bd-muted);
+}
+
+.bd-product-desc {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--bd-muted);
+  max-width: 48ch;
+}
+
+.bd-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px clamp(16px, 3vw, 40px);
+  margin-top: clamp(16px, 2vw, 24px);
+}
+
+.bd-facts div {
+  border-top: 1px solid var(--bd-hair-soft);
+  padding-top: 9px;
+}
+
+.bd-facts dt {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bd-muted);
+}
+
+.bd-facts dd {
+  margin-top: 5px;
+  font-size: 13.5px;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.bd-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--bd-hair);
+  transition: border-color 0.25s ease;
+}
+
+.bd-go span {
+  transition: transform 0.25s ease;
+}
+
+.bd-product:hover .bd-go {
+  border-bottom-color: currentColor;
+}
+
+.bd-product:hover .bd-go span {
+  transform: translateX(4px);
+}
+
+.bd-fineprint {
+  margin-top: 18px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--bd-muted);
+  max-width: 52ch;
+}
+
+/* ---------- 06 closing ---------- */
+.bd-close {
+  position: relative;
+  padding-block: clamp(96px, 15vh, 190px);
+  overflow: hidden;
+}
+
+.bd-close-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* the rings are far taller than the band; fading them out lets them read as
+     a circle continuing beyond the frame instead of arcs cut by a seam */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 13%,
+    #000 87%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+}
+
+.bd-close-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(242, 240, 233, 0.19);
+  aspect-ratio: 1;
+}
+
+.bd-close-ring--outer {
+  width: min(1180px, 128vw);
+}
+
+.bd-close-ring--inner {
+  width: min(720px, 74vw);
+  border-style: dashed;
+  border-color: rgba(242, 240, 233, 0.14);
+  animation: bd-spin 420s linear infinite;
+}
+
+.bd-close-dot {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - min(360px, 37vw));
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--bd-metal-lit);
+  transform: translate(-50%, -50%);
+}
+
+.bd-close-in {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bd-close-in .bd-kicker {
+  justify-content: center;
+}
+
+.bd-close-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(26px, 4vw, 54px);
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  max-width: 22ch;
+  margin-top: clamp(16px, 2vw, 26px);
+}
+
+.bd-close-slogan {
+  margin-top: clamp(26px, 4vh, 46px);
+  font-family: var(--font-display);
+  font-size: clamp(13px, 1.15vw, 16px);
+  letter-spacing: 0.16em;
+  color: var(--bd-metal-lit);
+}
+
+/* ---------- footer ---------- */
+.site-foot.bd-foot {
+  background: var(--bd-ink-deep);
+  color: #d9d7ce;
+  border-top: 1px solid rgba(242, 240, 233, 0.12);
+  padding-block: clamp(44px, 5.5vw, 78px) 28px;
+}
+
+.bd-foot-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: clamp(26px, 5vw, 80px);
+  padding-bottom: clamp(28px, 4vw, 52px);
+}
+
+.bd-foot-brand .wordmark {
+  color: var(--bd-paper);
+  font-size: 17px;
+}
+
+.bd-foot-brand p {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #8d8c84;
+}
+
+.bd-foot-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.bd-foot-cols h2 {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #83827a;
+  margin-bottom: 12px;
+}
+
+.bd-foot-cols a {
+  display: block;
+  padding: 5px 0;
+  font-size: 13px;
+  color: #d9d7ce;
+  transition: color 0.2s ease;
+}
+
+.bd-foot-cols a:hover {
+  color: #fff;
+}
+
+.bd-foot-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid rgba(242, 240, 233, 0.12);
+  padding-top: 18px;
+  font-size: 11.5px;
+  color: #83827a;
+}
+
+.bd-foot-top-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d9d7ce;
+}
+
+/* ---------- /r1 technical page ---------- */
+.r1-head {
+  background: var(--bd-ink);
+  color: var(--bd-paper);
+  padding-top: calc(var(--nav-h) + clamp(52px, 8vh, 96px));
+  padding-bottom: clamp(36px, 5vh, 64px);
+  --bd-text: var(--bd-paper);
+  --bd-muted: #a5a49b;
+  --bd-hair: rgba(242, 240, 233, 0.16);
+}
+
+.r1-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 16px 0 20px;
+  max-width: 18ch;
+}
+
+.r1-head .bd-hero-cta {
+  margin-top: clamp(24px, 3.4vh, 38px);
+}
+
+.r1-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin-top: clamp(30px, 4.5vh, 52px);
+  border-top: 1px solid rgba(242, 240, 233, 0.16);
+  padding-top: 18px;
+}
+
+.r1-index a {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a5a49b;
+}
+
+.r1-index a:hover {
+  color: var(--bd-paper);
+}
+
+/* ---------- technical page skin ----------
+   The R1 page keeps its original components and logic; only the surface is
+   brought onto the brand language (hairlines, Jost Light, no boxed chips). */
+.r1 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 20px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  color: var(--muted-light);
+}
+
+.r1 .eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  flex: none;
+}
+
+.r1 section.block {
+  padding-block: clamp(56px, 7vw, 96px);
+  border-top: 1px solid var(--line-light);
+}
+
+.r1 h2.sec-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  margin-bottom: 24px;
+  max-width: 22ch;
+}
+
+.r1 .feat h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+
+.r1 .spec-table {
+  border: none;
+  border-top: 1px solid var(--line-light);
+}
+
+.r1 .spec-table th {
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+
+.r1 .spec-table th,
+.r1 .spec-table td {
+  padding: 13px 0;
+}
+
+.r1 .spec-table td {
+  padding-left: 24px;
+}
+
+.r1 .rel-card,
+.r1 .doc-card {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.r1 .doc-card {
+  padding: 20px 0;
+  border: none;
+  border-top: 1px solid var(--line-light);
+}
+
+.r1 .doc-card:hover {
+  border-color: var(--line-light);
+}
+
+.r1 .doc-card:hover h3 {
+  color: var(--bd-metal);
+}
+
+.r1 .step {
+  background: transparent;
+}
+
+.r1 .step h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16.5px;
+}
+
+.r1 .install-warn {
+  border: none;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line-light);
+  border-radius: 0;
+  padding: 16px 0;
+}
+
+/* ---------- motion ---------- */
+@keyframes bd-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes bd-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bd-dial-rot {
+  animation: bd-rotate 320s linear infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-reveal].in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .bd-orbit li:nth-child(2)[data-reveal] {
+    transition-delay: 0.07s;
+  }
+
+  .bd-orbit li:nth-child(3)[data-reveal] {
+    transition-delay: 0.14s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .bd-dial-rot,
+  .bd-close-ring--inner {
+    animation: none !important;
+  }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1024px) {
+  .bd-hero-in {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  }
+
+  .bd-head-row,
+  .bd-note {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 3vw, 26px);
+  }
+
+  .bd-head-row .bd-lede {
+    max-width: 56ch;
+  }
+
+  .bd-note-mark {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--bd-hair);
+    padding-top: 16px;
+  }
+
+  .bd-practice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bd-practice-fig {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 900px) {
+  .bd-nav-links,
+  .bd-nav-right {
+    display: none;
+  }
+
+  .bd-nav-burger {
+    display: flex;
+  }
+
+  .bd-hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-h) + clamp(44px, 8vh, 72px));
+    padding-bottom: clamp(28px, 5vh, 44px);
+  }
+
+  .bd-hero-in {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'lead'
+      'figure'
+      'tail';
+    row-gap: clamp(30px, 5vh, 46px);
+  }
+
+  .bd-hero-figure {
+    /* centred: the dial ring is 128% of the image and must not be clipped */
+    justify-self: center;
+    align-self: center;
+    width: 100%;
+    display: grid;
+    place-items: center;
+  }
+
+  .bd-ring {
+    width: clamp(230px, 60vw, 380px);
+  }
+
+  .bd-display {
+    max-width: 18ch;
+  }
+
+  /* the pair stays a diptych down to 620px — tradition beside refined is the
+     whole argument of that section, so it must not stack on a tablet */
+  .bd-pair {
+    gap: clamp(20px, 3vw, 40px);
+  }
+
+  .bd-pair-text {
+    max-width: none;
+  }
+
+  .bd-pillars {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .bd-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bd-foot-top {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .bd-hero::before {
+    background: radial-gradient(
+      90% 54% at 60% 30%,
+      rgba(141, 121, 89, 0.14) 0%,
+      rgba(20, 20, 19, 0) 70%
+    );
+  }
+
+  .bd-rail {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bd-rail > div {
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bd-hair-soft);
+    padding-bottom: 8px;
+  }
+
+  .bd-origin {
+    --orbit: 30vw;
+  }
+
+  .bd-orbit {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .bd-orbit::before {
+    display: none;
+  }
+
+  .bd-orbit li:nth-child(1),
+  .bd-orbit li:nth-child(2),
+  .bd-orbit li:nth-child(3) {
+    margin-top: 0;
+  }
+
+  .bd-orbit li figure {
+    display: grid;
+    grid-template-columns: var(--orbit) minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+  }
+
+  .bd-orbit figcaption {
+    margin-top: 0;
+  }
+
+  .bd-band {
+    height: clamp(300px, 46vh, 420px);
+  }
+
+  .bd-proc-figs {
+    grid-template-columns: 1fr;
+  }
+
+  /* four steps in two 174px columns is a squeeze at phone width — stack them */
+  .bd-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .bd-steps li {
+    padding: 18px 4px 20px;
+  }
+
+  .bd-pair {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .bd-pair-col {
+    max-width: 520px;
+  }
+
+  .bd-facts {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bd-foot-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}

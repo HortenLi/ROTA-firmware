@@ -24,6 +24,8 @@ const BASE = import.meta.env.BASE_URL // '/ROTA-firmware/'
 
 export const HOME_PATH = '/'
 export const LINK_PATH = '/link'
+/** Technical page: specs, firmware releases, install steps, docs. */
+export const R1_PATH = '/r1'
 
 export type Route = { path: string; hash: string }
 
