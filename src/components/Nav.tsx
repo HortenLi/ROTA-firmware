@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { changeLang, LANG_LABELS, type Lang, SUPPORTED } from '../i18n'
 import { NAV_SECTIONS, REPO_URL } from '../content'
+import { href, LINK_PATH, Link, useRoute } from '../router'
 
 function LanguageSwitcher() {
   const { i18n, t } = useTranslation()
@@ -29,8 +30,13 @@ function LanguageSwitcher() {
 
 export default function Nav() {
   const { t } = useTranslation()
+  const route = useRoute()
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  // On the product page the section anchors belong to the home page.
+  const onProduct = route.path === LINK_PATH
+  const sectionHref = (id: string) => (onProduct ? href('/', `#${id}`) : `#${id}`)
 
   // Close the mobile menu when clicking outside or resizing up.
   useEffect(() => {
@@ -49,16 +55,21 @@ export default function Nav() {
     }
   }, [])
 
-  const sectionHref = (id: string) => `#${id}`
-
   return (
     <>
       <header className="nav">
         <div className="wrap nav-inner">
-          <a className="wordmark" href="#top" aria-label="ROTA">
-            ROTA
-          </a>
+          <Link className="wordmark" to="/" aria-label="ROTA">
+            R O T A
+          </Link>
           <nav className="nav-links" aria-label={t('nav.menu')}>
+            <Link
+              to={LINK_PATH}
+              className={`nav-link-app${onProduct ? ' on' : ''}`}
+              aria-current={onProduct ? 'page' : undefined}
+            >
+              {t('link.nav.app')}
+            </Link>
             {NAV_SECTIONS.map((s) => (
               <a key={s} href={sectionHref(s)}>
                 {t(`nav.${s}`)}
@@ -94,6 +105,9 @@ export default function Nav() {
         ref={menuRef}
         className={`mobile-menu${open ? ' open' : ''}`}
       >
+        <Link className="mlink" to={LINK_PATH} onClick={() => setOpen(false)}>
+          {t('link.nav.app')}
+        </Link>
         {NAV_SECTIONS.map((s) => (
           <a
             key={s}

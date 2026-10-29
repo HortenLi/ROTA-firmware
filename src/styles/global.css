@@ -205,7 +205,9 @@ header.nav {
   font-family: var(--font-display);
   font-weight: 300; /* Jost Light — matches ROTA Link app wordmark */
   font-size: 20px;
-  letter-spacing: 0.27em; /* app: 7sp @ 26sp */
+  /* Wordmark standard: the letter gaps ARE spaces in the string ("R O T A").
+     No extra tracking — a space's own advance is the rhythm. */
+  letter-spacing: normal;
   color: var(--paper);
   text-transform: uppercase;
   flex: none;
@@ -229,6 +231,19 @@ header.nav {
 
 .nav-links a:hover {
   color: var(--paper);
+}
+
+/* Entry to the ROTA Link product page: brighter than section anchors, with a
+   brass underline when that page is active. */
+.nav-links a.nav-link-app {
+  color: var(--paper);
+}
+.nav-links a.nav-link-app.on {
+  color: var(--warm, #e8e0ce);
+  border-bottom-color: #b69a58;
+}
+.nav-links a.nav-link-app:hover {
+  border-bottom-color: #b69a58;
 }
 
 .lang-switch {
@@ -301,6 +316,17 @@ header.nav {
   }
   .mobile-menu.open {
     display: block;
+    /* The header is fixed, so an in-flow menu sits underneath it and its first
+       row (the ROTA Link entry) would be covered. Anchor the panel below the
+       header instead and let it scroll on short screens. */
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    z-index: 49;
+    max-height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -320,7 +346,8 @@ header.nav {
   font-family: var(--font-display);
   font-weight: 300; /* Jost Light — matches ROTA Link app wordmark */
   font-size: clamp(64px, 14vw, 150px);
-  letter-spacing: 0.22em;
+  /* Same standard as the nav lockup: the letter gaps are spaces ("R O T A"). */
+  letter-spacing: normal;
   line-height: 1;
   text-transform: uppercase;
 }
