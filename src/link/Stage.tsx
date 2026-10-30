@@ -66,11 +66,12 @@ export function Stage({
  * way the app's TimerEngine does (one clock, stages derived from it).
  * Honours prefers-reduced-motion by staying on a still frame.
  */
-export function useProcessClock(steps: { sec: number }[], offsetSec: number) {
+export function useProcessClock(steps: { sec: number }[], offsetSec: number, running = true) {
   const total = steps.reduce((a, s) => a + s.sec, 0)
   const [elapsed, setElapsed] = useState(offsetSec % total)
 
   useEffect(() => {
+    if (!running) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let acc = offsetSec % total
     const id = window.setInterval(() => {
@@ -80,7 +81,7 @@ export function useProcessClock(steps: { sec: number }[], offsetSec: number) {
       setElapsed(acc % total)
     }, 1000)
     return () => window.clearInterval(id)
-  }, [offsetSec, total])
+  }, [offsetSec, total, running])
 
   let acc = 0
   let stage = 0

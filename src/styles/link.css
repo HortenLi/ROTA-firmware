@@ -345,6 +345,239 @@ html[lang='zh-TW'] .lk {
 }
 
 /* ============================================================
+   the start sequence — the launch screen, live
+   ============================================================ */
+.lk-flow-demo {
+  margin: 0;
+}
+.lk-flow-demo .lk-screen {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #141410;
+}
+.lk-flow-live {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* the loop: portrait phone → turn → recipes → two swipes → swipe to the
+   timer → tap START. Every state change is a class, every transition CSS. */
+.lk .fl-stage {
+  position: relative;
+  aspect-ratio: 844 / 390;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+.lk-flow-live[data-phase='9'] .fl-stage {
+  opacity: 0;
+}
+.lk .fl-phone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200px;
+  height: 452px;
+  transform: translate(-50%, -50%);
+  border: 3px solid #33332d;
+  border-radius: 20px;
+  background: #141410;
+  box-shadow:
+    0 40px 70px -34px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(248, 248, 242, 0.05);
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  opacity: 1;
+  transition:
+    transform 0.95s cubic-bezier(0.45, 0.05, 0.25, 1),
+    opacity 0.55s ease 0.22s;
+}
+.lk-flow-live:not([data-phase='0']) .fl-phone {
+  transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+  opacity: 0;
+}
+.lk .fl-land {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(1.035);
+  transition:
+    opacity 0.75s ease,
+    transform 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.lk-flow-live:not([data-phase='0']) .fl-land {
+  opacity: 1;
+  transform: none;
+}
+
+/* the up/down mark in front of "swipe to change recipe" */
+.lk .lr-ud {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 5px;
+  vertical-align: -4px;
+  color: #b8b8ad;
+}
+.lk .lr-ud svg {
+  display: block;
+  margin: -2px 0;
+}
+.lk .lr-tap,
+.lk .ls-tap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: lkTapRing 1s ease-out infinite;
+}
+.lk .lr-tap {
+  background: rgba(27, 27, 27, 0.3);
+}
+.lk .ls-tap {
+  background: rgba(27, 27, 27, 0.34);
+}
+@keyframes lkTapRing {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.8;
+  }
+  55% {
+    transform: scale(1.02);
+    opacity: 0.62;
+  }
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+.lk-flow-steps {
+  list-style: none;
+  margin: clamp(52px, 5.6vw, 88px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 46px);
+}
+.lk-flow-steps li {
+  padding-top: 20px;
+  border-top: 1px solid var(--lk-line);
+}
+.lk-flow-n {
+  display: block;
+  font-family: var(--ui-display);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--lk-brass);
+}
+.lk-flow-k {
+  display: block;
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-flow-t {
+  margin: 9px 0 10px;
+  font-family: var(--ui-display);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+.lk-flow-d {
+  font-size: 14px;
+  line-height: 1.72;
+  color: var(--lk-muted);
+  max-width: 36ch;
+}
+
+.lk-flow-p {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(24px, 3vw, 48px);
+  margin-top: clamp(44px, 4.8vw, 72px);
+  padding: clamp(24px, 3vw, 38px);
+  background: var(--lk-warm);
+  border-radius: 6px;
+}
+.lk-flow-pcopy .lk-kicker {
+  margin-bottom: 14px;
+}
+.lk-flow-pt {
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: clamp(20px, 2.2vw, 27px);
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+}
+.lk-flow-pd {
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--lk-muted);
+  max-width: 54ch;
+}
+.lk-flow-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+.lk-flow-chips li {
+  border: 1px solid rgba(27, 27, 27, 0.16);
+  border-radius: 100px;
+  padding: 8px 15px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  /* keep the portrait phone legible: the pane grows, the landscape screen
+     centres inside it rather than being stretched to the same box */
+  .lk .fl-stage {
+    aspect-ratio: auto;
+    height: 302px;
+  }
+  .lk .fl-phone {
+    width: 130px;
+    height: 281px;
+    border-width: 2px;
+    border-radius: 14px;
+  }
+  .lk-flow-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .lk-flow-steps li {
+    padding-top: 22px;
+    margin-bottom: 26px;
+  }
+  .lk-flow-p {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .lk-flow-chips {
+    justify-content: flex-start;
+  }
+}
+
+/* ============================================================
    02 — Timer
    ============================================================ */
 .lk-figure {
@@ -1586,6 +1819,18 @@ html[lang='zh-TW'] .lk .plate {
   display: flex;
   color: rgba(248, 248, 242, 0.45);
 }
+.lk .ls-collapse.is-btn {
+  width: 30px;
+  height: 30px;
+  margin-right: -6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(248, 248, 242, 0.45);
+}
 
 .lk .ls-mid {
   flex: 1;
@@ -1812,18 +2057,22 @@ html[lang='zh-TW'] .lk .plate {
   gap: 9px;
 }
 .lk .ls-pause {
+  position: relative;
   flex: none;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   height: 46px;
   padding: 0 20px;
+  border: 0;
   border-radius: 5px;
   background: #d7bc7d;
   color: #1b1b1b;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
+  font-family: inherit;
 }
 .lk .ls-skip {
   flex: none;
@@ -1905,6 +2154,264 @@ html[lang='zh-TW'] .lk .plate {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.7px;
+}
+
+/* ---------- recipes, held sideways — the launch screen ---------- */
+.lk .ui-lrec {
+  padding: 12px 26px 24px;
+}
+.lk .lr-top {
+  height: 38px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lk .ls-exit {
+  width: 44px;
+  height: 44px;
+  margin-right: -13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(248, 248, 242, 0.45);
+  cursor: pointer;
+}
+.lk .lr-body {
+  height: 316px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/* left — VerticalPager: one page per recipe, 14 dp of page spacing */
+.lk .lr-pager {
+  --ph: 316px;
+  width: 250px;
+  flex: none;
+  height: var(--ph);
+  overflow: hidden;
+}
+.lk .lr-pager-track {
+  transform: translateY(calc(-1 * var(--i, 0) * (var(--ph) + 14px)));
+  transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.lk .lr-page {
+  position: relative;
+  height: var(--ph);
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.22;
+  transition: opacity 0.42s ease;
+}
+.lk .lr-page.on {
+  opacity: 1;
+}
+.lk .lr-k {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #d7bc7d;
+}
+.lk .lr-k.is-strong {
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  color: #f8f8f2;
+}
+.lk .lr-name {
+  margin-top: 4px;
+  font-family: var(--ui-display);
+  font-size: 34px;
+  line-height: 40px;
+  color: #f8f8f2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .lr-note {
+  margin-top: 4px;
+  height: 30px;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 15px;
+  color: #b8b8ad;
+}
+.lk .lr-rule {
+  display: block;
+  width: 150px;
+  height: 1px;
+  margin: 12px 0;
+  background: #3a3b36;
+}
+.lk .lr-reads {
+  display: flex;
+  gap: 8px;
+}
+.lk .lr-reads > div {
+  flex: 1;
+  min-width: 0;
+}
+.lk .lr-reads > div.is-wide {
+  flex: 1.2;
+}
+.lk .lr-reads > div.is-narrow {
+  flex: 0.8;
+}
+.lk .lr-reads span {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+  color: #b8b8ad;
+  white-space: nowrap;
+}
+.lk .lr-reads b {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--ui-display);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 26px;
+  color: #f8f8f2;
+  font-variant-numeric: tabular-nums;
+}
+.lk .lr-acts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lk .lr-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #4a4b45;
+  border-radius: 4px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  color: #f8f8f2;
+  white-space: nowrap;
+}
+.lk .lr-btn.is-play {
+  position: relative;
+  gap: 6px;
+  padding: 10px 22px;
+  border: 0;
+  background: #d7bc7d;
+  color: #1b1b1b;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lk .lr-tip {
+  margin-top: 10px;
+  font-size: 9px;
+  letter-spacing: 0.6px;
+  color: #b8b8ad;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* right — the card list; the focused card is the one on the left */
+.lk .lr-col {
+  flex: 1;
+  min-width: 0;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+}
+.lk .lr-col .lr-k {
+  flex: none;
+  margin-bottom: 10px;
+}
+.lk .lr-cards {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+.lk .lr-cards-in {
+  transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.lk .lr-card {
+  width: 100%;
+  height: 57px;
+  margin-bottom: 9px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #f8f8f2;
+  box-shadow: inset 0 0 0 2px transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.lk .lr-card.on {
+  box-shadow: inset 0 0 0 2px #b69a58;
+}
+.lk .lr-no {
+  flex: none;
+  width: 34px;
+  font-family: var(--ui-display);
+  font-size: 15px;
+  color: #b69a58;
+  font-variant-numeric: tabular-nums;
+}
+.lk .lr-cardtxt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lk .lr-cardtxt b {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1b1b1b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .lr-cardtxt em {
+  margin-top: 2px;
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: #777970;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lk .lr-dur {
+  flex: none;
+  padding-right: 10px;
+  font-family: var(--ui-display);
+  font-size: 13px;
+  color: #1b1b1b;
+  font-variant-numeric: tabular-nums;
+}
+.lk .lr-chev {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6a6b64;
+}
+
+/* both screens ride one rail: swipe left (or press START) to reach the timer */
+.lk .fl-rail {
+  width: 1688px;
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.lk .fl-pane {
+  width: 844px;
+  height: 390px;
+  flex: none;
 }
 
 /* ---------- sheets (recipes / editor) ---------- */

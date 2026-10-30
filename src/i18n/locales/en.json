@@ -323,10 +323,40 @@
       "spec4k": "Rotation",
       "spec4v": "1 – 150 rpm"
     },
+    "flow": {
+      "eyebrow": "01 — How it starts",
+      "title": "Turn it sideways. That is the start.",
+      "body": "There is no home screen to get past. Open ROTA Link, turn the phone, and the recipes are already in front of you — five rows, one thumb, one PLAY. Everything that needs setting up lives in portrait; everything that needs doing lives on its side.",
+      "s1k": "Landscape",
+      "s1t": "Recipes on arrival",
+      "s1d": "The phone is already sideways when you pick it up, so the five built-in processes are the first thing you see. No menu, no tab to hunt for.",
+      "s2k": "Up · Down",
+      "s2t": "Swipe to choose",
+      "s2d": "One process per row. The selected row lights up with its temperature, rotation and total time; the rest stay quiet.",
+      "s3k": "Swipe left · START",
+      "s3t": "One swipe, then start",
+      "s3d": "A leftward swipe carries the recipe across into the timer. Press START there — or press it on the recipe page and skip the swipe entirely.",
+      "pk": "Portrait",
+      "pt": "Portrait is for changing things, not for running them.",
+      "pd": "Recipe editor, device and sync, film log. None of it sits between opening the app and starting a development.",
+      "p1": "Recipe editor",
+      "p2": "Device & sync",
+      "p3": "Film Log",
+      "stageCap": "The launch screen, played back",
+      "stageNote": "Portrait → turn → two swipes → swipe left → START.",
+      "tip1": "SWIPE UP / DOWN TO CHANGE RECIPE",
+      "tip2": "EDIT TO MODIFY STEPS · SWIPE FOR TIMER",
+      "exitA": "Back to the recipe list",
+      "note1": "Let Color Come to Life.",
+      "note2": "Stories in Light and Shadow.",
+      "note3": "Every Frame Tells a Story.",
+      "note4": "Color, Revealed in Light.",
+      "note5": "See Black and White in a New Light."
+    },
     "timer": {
-      "eyebrow": "01 — The Timer",
+      "eyebrow": "02 — The Timer",
       "title": "Everything you need. Nothing in the way.",
-      "body": "The app opens on the timer because the timer is the point: the step you are in, the time left, the recipe behind it, and what comes next — legible at arm's length, with wet hands. Turn the phone and the same run becomes an instrument: one number that fills the screen, a bar that closes behind you, and the next three steps laid out where a thumb can reach them.",
+      "body": "Once the run starts, the timer is the point: the step you are in, the time left, the recipe behind it, and what comes next — legible at arm's length, with wet hands. Turn the phone and the same run becomes an instrument: one number that fills the screen, a bar that closes behind you, and the next three steps laid out where a thumb can reach them.",
       "f1t": "One screen, no scrolling",
       "f1d": "Step, countdown, whole-process progress and next stage share the first view. The controls never leave the bottom of the screen.",
       "f2t": "Recipes, not timers",
@@ -342,7 +372,7 @@
       "holdNote": "SKIP is a two-second hold — the wait is the undo."
     },
     "remind": {
-      "eyebrow": "02 — Reminders",
+      "eyebrow": "03 — Reminders",
       "title": "Three degrees of warning, none of them an alarm.",
       "body": "The processor has always counted down in three steps — a warm light when a step is nearly done, a quicker flash for the last five seconds, then a steady red once the time is spent. The app keeps that language instead of borrowing a phone alarm: the same three degrees, the same brass, the same beeps.",
       "l1k": "Warm gold",
@@ -373,7 +403,7 @@
       "soundFoot": "Silent while a step is paused, and off in one tap from the landscape view — darkrooms have neighbours. Volume follows the media channel, not notifications."
     },
     "notif": {
-      "eyebrow": "03 — Out of the app",
+      "eyebrow": "04 — Out of the app",
       "title": "The run continues after you put the phone down.",
       "body": "A foreground service holds the timer while you are doing something else, and posts one quiet card. It never rings: the beeps are the app's own voice, and a notification with a sound of its own would say everything twice. Collapsed it carries four readings; expanded it adds the next three steps, and three actions that work without opening the app.",
       "app": "ROTA Link",
@@ -398,7 +428,7 @@
       "f4d": "The card paints no background: the shade owns the material and the rounding. All the app adds is ink that follows the system theme — #1B1B1B on light, #F2F2EC on dark — one brass progress line, and three semantic colours for ending soon, overtime and complete."
     },
     "recipes": {
-      "eyebrow": "04 — Recipes",
+      "eyebrow": "05 — Recipes",
       "title": "Your process. Your precision.",
       "body": "Five processes ship with the machine — C-41, ECN-2, E-6, black-and-white negative and black-and-white reversal — and five slots are yours to define. A recipe is a sequence of steps with a duration each, plus one temperature and one rotation speed for the whole run.",
       "aside": "Built-in slots keep the machine's names. Custom slots are yours, and can be edited, reordered and deleted on the phone.",
@@ -420,7 +450,7 @@
       "editorNote": "Recipes can be read from and written to the machine over Bluetooth — one slot at a time, whichever slot you choose."
     },
     "workflow": {
-      "eyebrow": "05 — Workflow",
+      "eyebrow": "06 — Workflow",
       "title": "A clearer view of every step.",
       "body": "You should always know three things: what is running, what comes next, and how much is left. The running step is brass, finished steps are ticked, everything else stays out of the way.",
       "total": "Total process",
@@ -432,7 +462,7 @@
       "statusLater": "Upcoming"
     },
     "film": {
-      "eyebrow": "06 — Film Log",
+      "eyebrow": "07 — Film Log",
       "title": "A roll, written down while you still remember it.",
       "body": "Film Log is a card you fill in as you go: the stock, the frames, the process that made them, the sentence you will want in six months. It exports as a single PNG at 1080 px, drawn from the same measurements as the card on screen — so the file is the card, not a screenshot of it.",
       "archive": "ANALOG ARCHIVE",
@@ -479,7 +509,7 @@
       "g3d": "Written to Pictures/ROTA through MediaStore on Android 10 and later — no storage permission — then handed to the system share sheet."
     },
     "connected": {
-      "eyebrow": "07 — Connected",
+      "eyebrow": "08 — Connected",
       "title": "Connected when you need it. Independent when you don't.",
       "body": "Connecting the machine changes what the app can show, never what it can do. The timer behaves identically on both sides of this page.",
       "leftKicker": "Standalone",
@@ -497,13 +527,13 @@
       "honest": "Live telemetry is not reported by the current device-link protocol, so bath temperature, actual rotation speed and direction stay blank rather than showing a made-up value. What you see above is the app's real connected state."
     },
     "analog": {
-      "eyebrow": "08 — For film",
+      "eyebrow": "09 — For film",
       "title": "Film is not a thing of the past.",
       "body": "Digital tools did not replace the darkroom. They made it easier to repeat. ROTA Link takes over the part of the process a person is worst at — counting — and leaves the part that matters, judgement, to you.",
       "caption": "Silver, gelatin, and a clock that behaves."
     },
     "download": {
-      "eyebrow": "09 — Download",
+      "eyebrow": "10 — Download",
       "title": "Bring ROTA Link into your workflow.",
       "body": "ROTA Link is written for the ROTA Film Roller Processor, and works on its own as a darkroom timer.",
       "version": "Version",
@@ -569,6 +599,11 @@
       "local": "LOCAL",
       "inUse": "IN USE",
       "edit": "EDIT",
+      "recipeLabel": "RECIPE",
+      "temperature": "TEMPERATURE",
+      "rotationSpeed": "ROTATION SPEED",
+      "metaLine": "{{n}} STEPS · {{t}}°C · {{r}} RPM",
+      "start": "START",
       "minWord": "MIN",
       "emptySlot": "+ EMPTY SLOT",
       "tapToCreate": "TAP TO CREATE · STEPS, TEMP, ROTATION",

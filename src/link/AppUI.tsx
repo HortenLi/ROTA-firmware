@@ -12,6 +12,7 @@ import {
   GripIcon,
   MenuIcon,
   PauseIcon,
+  PlayFillIcon,
   SkipIcon,
   SpeakerIcon,
   TimerNavIcon,
@@ -294,16 +295,27 @@ export function TimerHome({ linked, offset = 219 }: { linked: boolean; offset?: 
  * Geometry from `TimerFullscreen.kt`: 844 × 390 dp, 26/12 dp page padding,
  * 38 dp top bar, clock column 3.2 against the instrument column 1, 66 dp bar.
  */
-export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offset?: number }) {
+export function LandscapeTimer({ linked, offset = 219, recipe = C41, onCollapse, running = true, onStart, tapHint }: {
+  linked: boolean
+  offset?: number
+  /** the run on screen — a different recipe resets every read on the page */
+  recipe?: AppRecipe
+  onCollapse?: () => void
+  /** false = the run has not been started yet (the clock holds on the first step) */
+  running?: boolean
+  onStart?: () => void
+  /** drew a tap ring on the primary control, for the launch-sequence demo */
+  tapHint?: boolean
+}) {
   const { t } = useTranslation()
-  const clock = useProcessClock(C41.steps, offset)
-  const total = totalSec(C41)
+  const clock = useProcessClock(recipe.steps, offset, running)
+  const total = totalSec(recipe)
   const played = 100 * clock.totalFraction
-  const done = 100 * (C41.steps.slice(0, clock.stage).reduce((a, s) => a + s.sec, 0) / total)
-  const next = [1, 2, 3].map((i) => C41.steps[clock.stage + i]).filter(Boolean)
+  const done = 100 * (recipe.steps.slice(0, clock.stage).reduce((a, s) => a + s.sec, 0) / total)
+  const next = [1, 2, 3].map((i) => recipe.steps[clock.stage + i]).filter(Boolean)
   // cumulative stage boundaries as a percentage of the whole process
-  const stageSeams = C41.steps.slice(0, -1).map((_, i) => {
-    const acc = C41.steps.slice(0, i + 1).reduce((a, s) => a + s.sec, 0)
+  const stageSeams = recipe.steps.slice(0, -1).map((_, i) => {
+    const acc = recipe.steps.slice(0, i + 1).reduce((a, s) => a + s.sec, 0)
     return (100 * acc) / total
   })
 
@@ -315,10 +327,10 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
           <span className="ls-brand-b">LINK</span>
         </div>
         <div className="ls-topright">
-          <span className="ls-recipe">{C41.name}</span>
+          <span className="ls-recipe">{recipe.name}</span>
           <i className="ls-vrule" aria-hidden="true" />
           <span className="ls-meta">
-            {C41.temperatureC.toFixed(1)}°C&nbsp;&nbsp;·&nbsp;&nbsp;{C41.rpm} RPM
+            {recipe.temperatureC.toFixed(1)}°C&nbsp;&nbsp;·&nbsp;&nbsp;{recipe.rpm} RPM
           </span>
           <span className="ls-mute">
             <SpeakerIcon size={16} on />
@@ -327,20 +339,26 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
             <i className={linked ? 'on' : ''} />
             {linked ? t('link.app.connected') : t('link.app.timerOnly')}
           </span>
-          <span className="ls-collapse">
-            <CollapseIcon size={18} />
-          </span>
+          {onCollapse ? (
+            <button type="button" className="ls-collapse is-btn" onClick={onCollapse} tabIndex={-1}>
+              <CollapseIcon size={18} />
+            </button>
+          ) : (
+            <span className="ls-collapse">
+              <CollapseIcon size={18} />
+            </span>
+          )}
         </div>
       </div>
 
       <div className="ls-mid">
         <div className="ls-clock">
           <div className="ls-cur">
-            <span className="ls-cur-name">{C41.steps[clock.stage].title}</span>
+            <span className="ls-cur-name">{recipe.steps[clock.stage].title}</span>
             <span className="ls-stepcount">
               {t('link.app.stepOf', {
                 a: String(clock.stage + 1).padStart(2, '0'),
-                b: String(C41.steps.length).padStart(2, '0'),
+                b: String(recipe.steps.length).padStart(2, '0'),
               })}
             </span>
           </div>
@@ -389,13 +407,13 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
           <div className="ls-side-value">
             <b>—</b>
             <em>/</em>
-            <span>{C41.temperatureC.toFixed(1)}°C</span>
+            <span>{recipe.temperatureC.toFixed(1)}°C</span>
           </div>
           <span className="ls-side-rule" aria-hidden="true" />
 
           <div className="ls-side-eyebrow">{t('link.app.rotation')}</div>
           <div className="ls-side-value">
-            <b>{C41.rpm}</b>
+            <b>{recipe.rpm}</b>
             <span className="ls-unit">RPM</span>
           </div>
         </div>
@@ -404,10 +422,16 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
       <span className="ls-footrule" aria-hidden="true" />
 
       <div className="ls-bottom">
-        <span className="ls-pause">
-          <PauseIcon size={14} />
-          {t('link.app.pause')}
-        </span>
+        <button
+          type="button"
+          className={`ls-pause${running ? '' : ' is-start'}`}
+          onClick={onStart}
+          tabIndex={onStart ? 0 : -1}
+        >
+          {running ? <PauseIcon size={14} /> : <PlayFillIcon size={11} />}
+          {running ? t('link.app.pause') : t('link.app.start')}
+          {tapHint && <span className="ls-tap" aria-hidden="true" />}
+        </button>
         <span className="ls-skip">
           <SkipIcon size={14} />
           {t('link.app.skip')}
@@ -432,6 +456,146 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
         <span className="ls-vline" aria-hidden="true" />
 
         <span className="ls-abort">{t('link.app.abort')}</span>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * RecipesFullscreenScreen — the screen the app opens on when the phone is held
+ * sideways. Geometry is a literal transcription of the Compose source (26/12
+ * page padding, 44 dp exit target, 250 dp VerticalPager, 30 dp gutter, then the
+ * card list), and the state is lifted so the demo can actually be swiped: the
+ * settled page *is* the loaded run, exactly as `snapshotFlow { settledPage }`
+ * drives `vm.timer.load()` in the app.
+ */
+export function LandscapeRecipes({
+  recipes = BUILTIN_RECIPES,
+  index,
+  onPick,
+  onStart,
+  onExit,
+  swipeHint,
+}: {
+  recipes?: AppRecipe[]
+  index: number
+  onPick?: (i: number) => void
+  onStart?: () => void
+  onExit?: () => void
+  /** drew the gesture the screen is asking for, for the launch-sequence demo */
+  swipeHint?: 'up' | 'tap' | null
+}) {
+  const { t } = useTranslation()
+  // LazyColumn: the focused card is scrolled into view, four rows fill the pane
+  const start = Math.max(0, Math.min(index, recipes.length - 4))
+  const pageStyle = { '--i': index } as React.CSSProperties
+
+  return (
+    <div className="ui ui-landscape ui-lrec">
+      <div className="lr-top">
+        <div className="ls-brand">
+          <span className="ls-brand-a">ROTA</span>
+          <span className="ls-brand-b">LINK</span>
+        </div>
+        <button
+          type="button"
+          className="ls-exit"
+          onClick={onExit}
+          aria-label={t('link.flow.exitA')}
+          tabIndex={-1}
+        >
+          <CollapseIcon size={18} />
+        </button>
+      </div>
+
+      <div className="lr-body">
+        {/* left column — the VerticalPager: drag up or down to change recipe */}
+        <div className="lr-pager">
+          <div className="lr-pager-track" style={pageStyle}>
+            {recipes.map((r, i) => (
+              <div className={`lr-page${i === index ? ' on' : ''}`} key={r.slot}>
+                <span className="lr-k">{t('link.app.recipeLabel')}</span>
+                <span className="lr-name">{r.name}</span>
+                <span className="lr-note">{t(`link.flow.note${r.slot}`)}</span>
+                <i className="lr-rule" aria-hidden="true" />
+                <div className="lr-reads">
+                  <div>
+                    <span>{t('link.app.temperature')}</span>
+                    <b>{r.temperatureC.toFixed(0)}°C</b>
+                  </div>
+                  <div className="is-wide">
+                    <span>{t('link.app.rotationSpeed')}</span>
+                    <b>{r.rpm} RPM</b>
+                  </div>
+                  <div className="is-narrow">
+                    <span>{t('link.app.stepsWord')}</span>
+                    <b>{String(r.steps.length).padStart(2, '0')}</b>
+                  </div>
+                </div>
+                <i className="lr-rule" aria-hidden="true" />
+                <div className="lr-acts">
+                  <span className="lr-btn">{t('link.app.edit')}</span>
+                  <button
+                    type="button"
+                    className="lr-btn is-play"
+                    onClick={onStart}
+                    tabIndex={i === index ? 0 : -1}
+                  >
+                    <PlayFillIcon size={9} />
+                    {t('link.app.start')}
+                    {swipeHint === 'tap' && i === index && (
+                      <span className="lr-tap" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
+                <span className="lr-tip">
+                  <span className="lr-ud" aria-hidden="true">
+                    <ChevronIcon size={10} up />
+                    <ChevronIcon size={10} />
+                  </span>
+                  {t('link.flow.tip1')}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* right column — the card list; tapping a card moves the pager */}
+        <div className="lr-col">
+          <span className="lr-k is-strong">{t('link.app.tabRECIPES')}</span>
+          <div className="lr-cards">
+            <div
+              className="lr-cards-in"
+              style={{ transform: `translateY(${-start * 66}px)` }}
+            >
+              {recipes.map((r, i) => (
+                <button
+                  type="button"
+                  key={r.slot}
+                  className={`lr-card${i === index ? ' on' : ''}`}
+                  onClick={() => onPick?.(i)}
+                >
+                  <span className="lr-no">{String(r.slot).padStart(2, '0')}</span>
+                  <span className="lr-cardtxt">
+                    <b>{r.name}</b>
+                    <em>
+                      {t('link.app.metaLine', {
+                        n: r.steps.length,
+                        t: r.temperatureC.toFixed(0),
+                        r: r.rpm,
+                      })}
+                    </em>
+                  </span>
+                  <span className="lr-dur">{fmtClock(totalSec(r))}</span>
+                  <span className="lr-chev">
+                    <ChevronIcon size={17} />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <span className="lr-tip">{t('link.flow.tip2')}</span>
+        </div>
       </div>
     </div>
   )

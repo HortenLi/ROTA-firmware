@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import { href } from '../router'
 import { useDocumentMeta, useReveal } from './Stage'
 import Hero from './sections/Hero'
+import FlowSection from './sections/FlowSection'
 import TimerSection from './sections/TimerSection'
 import RemindersSection from './sections/RemindersSection'
 import NotificationSection from './sections/NotificationSection'
@@ -17,8 +18,8 @@ import LinkFooter from './sections/LinkFooter'
 
 /**
  * ROTA Link product page. One vertical narrative:
- * brand → timer → reminders → notification → recipes → workflow → film log →
- * connection → material → download.
+ * brand → how it starts → timer → reminders → notification → recipes →
+ * workflow → film log → connection → material → download.
  */
 export default function LinkPage() {
   const { t, i18n } = useTranslation()
@@ -47,6 +48,7 @@ export default function LinkPage() {
       <Nav />
       <main>
         <Hero />
+        <FlowSection />
         <TimerSection />
         <RemindersSection />
         <NotificationSection />

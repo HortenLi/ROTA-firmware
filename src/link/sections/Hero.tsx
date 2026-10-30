@@ -22,7 +22,7 @@ export default function Hero() {
           <p className="lk-hero-tag">{t('link.hero.tagline')}</p>
           <p className="lk-hero-lede">{t('link.hero.lede')}</p>
           <div className="lk-cta">
-            <a className="lk-btn lk-btn-paper" href="#app">
+            <a className="lk-btn lk-btn-paper" href="#start">
               {t('link.hero.ctaApp')}
             </a>
             <a className="lk-btn lk-btn-ghost" href="#connected">

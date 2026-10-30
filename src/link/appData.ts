@@ -34,7 +34,7 @@ export const BUILTIN_RECIPES: AppRecipe[] = [
     name: 'B&W Negative',
     process: 'BW',
     temperatureC: 20,
-    rpm: 60,
+    rpm: 70,
     steps: [
       { title: 'Pre-soak', sec: 60 },
       { title: 'Developer', sec: 480 },
@@ -49,7 +49,7 @@ export const BUILTIN_RECIPES: AppRecipe[] = [
     name: 'C-41',
     process: 'C41',
     temperatureC: 38,
-    rpm: 60,
+    rpm: 70,
     steps: [
       { title: 'Developer', sec: 195 },
       { title: 'Bleach', sec: 390 },
@@ -64,7 +64,7 @@ export const BUILTIN_RECIPES: AppRecipe[] = [
     name: 'ECN-2',
     process: 'ECN2',
     temperatureC: 41,
-    rpm: 60,
+    rpm: 70,
     steps: [
       { title: 'Pre-soak', sec: 60 },
       { title: 'Rem-jet removal', sec: 120 },
@@ -81,7 +81,7 @@ export const BUILTIN_RECIPES: AppRecipe[] = [
     name: 'E-6',
     process: 'E6',
     temperatureC: 38,
-    rpm: 60,
+    rpm: 70,
     steps: [
       { title: 'First developer', sec: 420 },
       { title: 'Wash', sec: 120 },
@@ -99,7 +99,7 @@ export const BUILTIN_RECIPES: AppRecipe[] = [
     name: 'B&W Reversal',
     process: 'BWR',
     temperatureC: 20,
-    rpm: 60,
+    rpm: 70,
     steps: [
       { title: 'First developer', sec: 600 },
       { title: 'Wash', sec: 120 },
