@@ -584,6 +584,7 @@
       "tabRECIPES": "配方",
       "tabDEVICE": "设备",
       "timerSub": "胶片冲洗计时",
+      "recipesSub": "点击任意冲洗流程，即可载入计时器",
       "recipeMeta": "{{process}} · {{n}} 个阶段 · 全程 {{total}}",
       "connected": "已连接",
       "timerOnly": "仅计时",

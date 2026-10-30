@@ -378,7 +378,8 @@ html[lang='zh-TW'] .lk {
   left: 50%;
   top: 50%;
   width: 200px;
-  height: 452px;
+  /* 390:844 plus the 3px frame — the screen fills the glass exactly */
+  height: 426px;
   transform: translate(-50%, -50%);
   border: 3px solid #33332d;
   border-radius: 20px;
@@ -556,7 +557,7 @@ html[lang='zh-TW'] .lk {
   }
   .lk .fl-phone {
     width: 130px;
-    height: 281px;
+    height: 277px;
     border-width: 2px;
     border-radius: 14px;
   }
@@ -1263,6 +1264,17 @@ html[lang='zh-TW'] .lk .plate {
   height: 844px;
   display: flex;
   flex-direction: column;
+}
+/* portrait home = a whole phone screen, so it brings its own paper; the sheet
+   alone is drawn on the plate frame in the recipes section, but here there is
+   no plate behind it */
+.lk .ui-rechome {
+  background: #f8f8f2;
+}
+.lk .ui-rechome-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* status bar */
@@ -2194,6 +2206,8 @@ html[lang='zh-TW'] .lk .plate {
   flex: none;
   height: var(--ph);
   overflow: hidden;
+  /* no edge mask here: a mask wide enough to hide the neighbouring page would
+     also eat this page's own top and bottom lines */
 }
 .lk .lr-pager-track {
   transform: translateY(calc(-1 * var(--i, 0) * (var(--ph) + 14px)));
@@ -2206,8 +2220,9 @@ html[lang='zh-TW'] .lk .plate {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  opacity: 0.22;
-  transition: opacity 0.42s ease;
+  /* only the settled page is drawn; the neighbour slides in from fully transparent */
+  opacity: 0;
+  transition: opacity 0.34s ease;
 }
 .lk .lr-page.on {
   opacity: 1;

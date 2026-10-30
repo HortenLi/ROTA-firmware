@@ -584,6 +584,7 @@
       "tabRECIPES": "配方",
       "tabDEVICE": "裝置",
       "timerSub": "菲林沖洗計時",
+      "recipesSub": "點選任何沖洗流程，即可載入計時器",
       "recipeMeta": "{{process}} · {{n}} 個階段 · 全程 {{total}}",
       "connected": "已連接",
       "timerOnly": "僅計時",

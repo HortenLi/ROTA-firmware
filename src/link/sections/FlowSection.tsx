@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LandscapeRecipes, LandscapeTimer, RecipeListPanel } from '../AppUI'
+import { LandscapeRecipes, LandscapeTimer, RecipeHome } from '../AppUI'
 import { BUILTIN_RECIPES } from '../appData'
 import { Stage } from '../Stage'
 
@@ -118,8 +118,8 @@ export default function FlowSection() {
             <div className="fl-stage">
               {/* portrait: the app, already open */}
               <div className="fl-phone" aria-hidden={phase > 1}>
-                <Stage width={390}>
-                  <RecipeListPanel inUseSlot={2} />
+                <Stage width={390} height={844}>
+                  <RecipeHome inUseSlot={2} />
                 </Stage>
               </div>
 

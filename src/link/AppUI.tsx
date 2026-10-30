@@ -55,7 +55,7 @@ function StatusBar({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
 }
 
 /** RotaApp header (v0.13.1): brand ─ title stack ─ 40dp button, one 40dp row. */
-function AppHeader({ title, sub }: { title: string; sub: string }) {
+export function AppHeader({ title, sub }: { title: string; sub: string }) {
   return (
     <div className="ui-head">
       <div className="ui-brand">
@@ -659,6 +659,25 @@ export function RecipeListPanel({ inUseSlot = 2 }: { inUseSlot?: number }) {
           <span className="ui-row-meta dim">{t('link.app.tapToCreate')}</span>
         </span>
       </div>
+    </div>
+  )
+}
+
+/**
+ * Portrait home — what you see when the app opens (RotaApp / RecipesScreen):
+ * status bar, the persistent header, the scrolling recipe sheet, the tab bar.
+ * The sheet alone is a plate; inside this shell it reads as the phone.
+ */
+export function RecipeHome({ inUseSlot = 2 }: { inUseSlot?: number }) {
+  const { t } = useTranslation()
+  return (
+    <div className="ui ui-home ui-rechome">
+      <StatusBar />
+      <AppHeader title={t('link.app.tabRECIPES')} sub={t('link.app.recipesSub')} />
+      <div className="ui-rechome-body">
+        <RecipeListPanel inUseSlot={inUseSlot} />
+      </div>
+      <TabBar active="RECIPES" />
     </div>
   )
 }

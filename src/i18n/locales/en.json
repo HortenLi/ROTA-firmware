@@ -584,6 +584,7 @@
       "tabRECIPES": "RECIPES",
       "tabDEVICE": "DEVICE",
       "timerSub": "FILM PROCESSING TIMER",
+      "recipesSub": "TAP A PROCESS TO LOAD IT INTO THE TIMER",
       "recipeMeta": "{{process}} · {{n}} STAGES · TOTAL {{total}}",
       "connected": "CONNECTED",
       "timerOnly": "TIMER ONLY",
