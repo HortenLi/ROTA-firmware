@@ -106,6 +106,7 @@ html[lang='zh-TW'] .lk {
 
 .lk-figcap {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-top: 16px;
@@ -121,6 +122,23 @@ html[lang='zh-TW'] .lk {
   background: currentColor;
   opacity: 0.6;
   flex: none;
+}
+/* second, quieter line in the caption: a design note, not a label */
+.lk-figcap-note {
+  margin-left: auto;
+  padding-left: 18px;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--lk-muted);
+}
+@media (max-width: 720px) {
+  .lk-figcap-note {
+    margin-left: 0;
+    padding-left: 0;
+    flex-basis: 100%;
+  }
 }
 
 /* ---------- buttons ---------- */
@@ -388,6 +406,12 @@ html[lang='zh-TW'] .lk {
   margin-top: clamp(40px, 5vw, 72px);
   background: var(--lk-line);
   border: 1px solid var(--lk-line);
+}
+/* four facts read better 2 × 2 than three-across plus one orphan */
+@media (min-width: 1025px) {
+  .lk-facts.is-2x2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .lk-fact {
   background: var(--lk-paper);
@@ -1471,74 +1495,77 @@ html[lang='zh-TW'] .lk .plate {
   background: #d7bc7d;
 }
 
-/* ---------- landscape ---------- */
+/* ---------- landscape (v0.16 — the number is the instrument) ---------- */
 .lk .ui-landscape {
   width: 844px;
   height: 390px;
+  box-sizing: border-box;
+  padding: 12px 26px;
   background: #171714;
   color: #f8f8f2;
   display: flex;
   flex-direction: column;
 }
 .lk .ls-top {
+  height: 38px;
+  flex: none;
   display: flex;
   align-items: center;
-  padding: 12px 26px;
-  position: relative;
-  flex: none;
+  justify-content: space-between;
+  gap: 16px;
 }
 .lk .ls-brand {
   display: flex;
-  align-items: flex-end;
+  align-items: baseline;
   gap: 6px;
+  flex: none;
 }
 .lk .ls-brand-a {
   font-family: var(--ui-display);
   font-size: 15px;
   letter-spacing: 2.4px;
-  color: #f8f8f2;
 }
 .lk .ls-brand-b {
   font-family: var(--ui-display);
   font-size: 9px;
   letter-spacing: 1.5px;
   color: #b8b8ad;
-  padding-bottom: 1px;
 }
-.lk .ls-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.lk .ls-topright {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
 }
-.lk .ls-title > span:first-child {
+.lk .ls-recipe {
   font-family: var(--ui-display);
-  font-size: 15px;
-  letter-spacing: 1px;
+  font-size: 14px;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
 }
-.lk .ls-title i {
+.lk .ls-vrule {
   width: 1px;
   height: 13px;
-  background: #4a4b45;
+  background: #3a3b36;
 }
-.lk .ls-title-meta {
+.lk .ls-meta {
   font-size: 10px;
   letter-spacing: 0.6px;
   color: #b8b8ad;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-.lk .ls-right {
-  margin-left: auto;
+.lk .ls-mute {
   display: flex;
   align-items: center;
+  padding: 0 2px;
+  color: rgba(248, 248, 242, 0.72);
 }
 .lk .ls-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid #4a4b45;
+  border: 1px solid #3a3b36;
   border-radius: 20px;
   padding: 5px 10px;
   font-size: 9px;
@@ -1556,209 +1583,328 @@ html[lang='zh-TW'] .lk .plate {
   background: #829774;
 }
 .lk .ls-collapse {
-  width: 44px;
-  height: 44px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  color: rgba(248, 248, 242, 0.45);
 }
 
 .lk .ls-mid {
   flex: 1;
   min-height: 0;
   display: flex;
-  align-items: center;
-  padding: 0 26px;
+  align-items: stretch;
+  padding-top: 4px;
 }
-.lk .ls-left {
-  width: 150px;
-  flex: none;
-}
-.lk .ls-center {
-  flex: 1;
+.lk .ls-clock {
+  flex: 3.2;
+  min-width: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  padding-right: 20px;
 }
-.lk .ls-rightcol {
-  width: 170px;
-  flex: none;
+.lk .ls-cur {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
 }
-.lk .ls-label {
-  font-size: 9px;
-  letter-spacing: 1.2px;
-  color: #b8b8ad;
+.lk .ls-cur-name {
+  font-size: 21px;
+  line-height: 1.1;
+  letter-spacing: 0.6px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.lk .ls-value {
-  margin-top: 6px;
-  font-family: var(--ui-display);
-  font-size: 19px;
-  color: #f8f8f2;
+.lk .ls-stepcount {
+  flex: none;
+  padding-bottom: 2px;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+  color: #b8b8ad;
   font-variant-numeric: tabular-nums;
 }
-.lk .ls-sub {
-  margin-top: 4px;
-  font-size: 8px;
-  letter-spacing: 0.8px;
+.lk .ls-digits {
+  /* DigitDisplay: size = min(boxH / 0.72, boxW * 0.99 / k). In this 844×390
+     canvas the pane is 571 × 188, so the width term wins at ≈ 245 px and the
+     glyphs fill the pane the way the real clock does. */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 245px;
+}
+.lk .ls-num {
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+  color: #f8f8f2;
+}
+/* the colon is drawn, not typed — see DigitDisplay: two 0.05 em dots at ±0.13 em */
+.lk .ls-colon {
+  position: relative;
+  width: 0.22em;
+  height: 1em;
+  flex: none;
+  color: #f8f8f2;
+}
+.lk .ls-colon i {
+  position: absolute;
+  left: 50%;
+  width: 0.1em;
+  height: 0.1em;
+  margin-left: -0.05em;
+  border-radius: 50%;
+  background: currentColor;
+}
+.lk .ls-colon i:first-child {
+  top: calc(50% - 0.18em);
+}
+.lk .ls-colon i:last-child {
+  top: calc(50% + 0.08em);
+}
+.lk .ls-reads {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lk .ls-reads i {
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 1.1px;
   color: #b8b8ad;
+  margin-right: 7px;
+  text-transform: uppercase;
+}
+.lk .ls-reads b {
+  font-family: var(--ui-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: #d8d8d1;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ls-pct {
+  font-family: var(--ui-display);
+  font-size: 11px;
+  color: #b8b8ad;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ls-bar {
+  position: relative;
+  display: flex;
+  height: 4px;
+  margin-top: 5px;
+  border-radius: 2px;
+  background: #3a3b36;
+  overflow: hidden;
+}
+.lk .ls-bar-tick {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(23, 23, 20, 0.55);
+}
+.lk .ls-bar-done {
+  height: 100%;
+  background: #829774;
+}
+.lk .ls-bar-play {
+  height: 100%;
+  background: #d7bc7d;
+}
+.lk .ls-divider {
+  width: 1px;
+  flex: none;
+  margin: 10px 0;
+  background: #3a3b36;
+}
+.lk .ls-side {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+.lk .ls-side-eyebrow {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: #b8b8ad;
+  text-transform: uppercase;
   white-space: nowrap;
 }
-.lk .ls-rule {
+.lk .ls-side-rule {
+  display: block;
   height: 1px;
-  background: #33342f;
   margin: 13px 0;
+  background: #33342f;
 }
 .lk .ls-devstatus {
-  margin-top: 7px;
   display: flex;
   align-items: center;
   gap: 7px;
+  margin-top: 7px;
   font-size: 12px;
   color: #f8f8f2;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .lk .ls-devstatus i {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #b8b8ad;
   flex: none;
+  background: #b8b8ad;
 }
 .lk .ls-devstatus i.on {
   background: #829774;
 }
-
-.lk .ls-ring {
-  position: relative;
-  width: 212px;
-  height: 212px;
-  flex: none;
-}
-.lk .ls-ring svg {
-  position: absolute;
-  inset: 0;
-}
-.lk .ls-ring-inner {
-  position: absolute;
-  inset: 0;
-  padding: 0 30px;
+.lk .ls-side-value {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.lk .ls-cur-label {
-  font-size: 9px;
-  letter-spacing: 1.4px;
-  color: #b8b8ad;
-}
-.lk .ls-cur-name {
+  align-items: baseline;
+  gap: 6px;
   margin-top: 4px;
-  font-size: 17px;
-  line-height: 22px;
-  color: #f8f8f2;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-.lk .ls-ring-inner .ui-clock {
-  line-height: 1.13;
-}
-.lk .ls-ring-rule {
-  width: 46px;
-  height: 1px;
-  background: #4a4b45;
-}
-.lk .ls-count {
-  margin-top: 6px;
+.lk .ls-side-value b {
   font-family: var(--ui-display);
-  font-size: 15px;
-  color: #f8f8f2;
-  font-variant-numeric: tabular-nums;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.1;
 }
-.lk .ls-count-label {
-  font-size: 8px;
-  letter-spacing: 1.2px;
-  color: #b8b8ad;
-}
-
-.lk .ls-bottom {
-  display: flex;
-  align-items: center;
-  margin: 0 26px 16px;
-  padding: 10px 18px;
-  background: #20211f;
-  border-radius: 6px;
-  flex: none;
-}
-.lk .ls-next-row {
-  display: flex;
-  align-items: center;
-  margin-top: 7px;
-}
-.lk .ls-next-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.lk .ls-next-no {
-  font-family: var(--ui-display);
-  font-size: 19px;
-  color: #f8f8f2;
-  font-variant-numeric: tabular-nums;
-}
-.lk .ls-next-item b {
-  display: block;
-  font-size: 13px;
-  font-weight: 400;
-  color: #f8f8f2;
-  white-space: nowrap;
-}
-.lk .ls-next-item em {
-  display: block;
-  margin-top: 2px;
+.lk .ls-side-value em {
   font-style: normal;
-  font-size: 11px;
+  font-family: var(--ui-display);
+  font-size: 12px;
+  color: #5f5f59;
+}
+.lk .ls-side-value span {
+  font-family: var(--ui-display);
+  font-size: 12px;
   color: #b8b8ad;
   font-variant-numeric: tabular-nums;
 }
-.lk .ls-next-sep {
-  width: 1px;
-  height: 26px;
-  background: #3a3b36;
-  margin: 0 18px;
-  flex: none;
+.lk .ls-side-value .ls-unit {
+  font-size: 9px;
+  letter-spacing: 1px;
 }
-.lk .ls-actions {
-  margin-left: auto;
+.lk .ls-footrule {
+  display: block;
+  flex: none;
+  height: 1px;
+  margin-top: 10px;
+  background: #3a3b36;
+}
+.lk .ls-bottom {
+  flex: none;
+  height: 66px;
+  box-sizing: border-box;
+  padding-top: 10px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 9px;
 }
 .lk .ls-pause {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 5px;
   background: #d7bc7d;
   color: #1b1b1b;
-  border-radius: 4px;
-  padding: 13px 22px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 .lk .ls-skip {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 46px;
+  padding: 0 17px;
   border: 1px solid #b9b9af;
-  border-radius: 4px;
-  padding: 13px 22px;
+  border-radius: 5px;
+  color: #f8f8f2;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
+}
+.lk .ls-vline {
+  flex: none;
+  display: block;
+  width: 1px;
+  height: 26px;
+  margin: 0 7px;
+  background: #3a3b36;
+}
+.lk .ls-cards {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 9px;
+  height: 56px;
+}
+.lk .ls-card {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px 13px;
+  border-radius: 6px;
+  background: #20211f;
+}
+.lk .ls-card-top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 8px;
+  line-height: 1.2;
+  letter-spacing: 1.1px;
+  color: #b8b8ad;
+  white-space: nowrap;
+}
+.lk .ls-card-dur {
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ls-card-name {
+  flex: none;
+  font-size: 13px;
+  line-height: 1.15;
+  letter-spacing: 0.4px;
   color: #f8f8f2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .ls-abort {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 15px;
+  border: 1px solid rgba(192, 128, 120, 0.6);
+  border-radius: 5px;
+  color: #c08078;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
 }
 
 /* ---------- sheets (recipes / editor) ---------- */
@@ -2388,3 +2534,1077 @@ html[lang='zh-TW'] .lk .plate {
 :lang(zh) .lk-hero-lede {
   max-width: 100%;
 }
+
+/* ============================================================
+   02 — Reminders
+   The three degrees, on the clock face's own terms.
+   ============================================================ */
+.lk-levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 26px);
+}
+.lk-level {
+  margin: 0;
+  min-width: 0;
+}
+.lk-level-plate {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(27, 27, 27, 0.14);
+  box-shadow: 0 30px 56px -38px rgba(27, 27, 27, 0.65);
+}
+.lk-level figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 15px;
+}
+.lk-level-k {
+  font-family: var(--ui-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lk-ink);
+}
+.lk-level-v {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--lk-muted);
+}
+
+/* ---------- the clock face plate (390 dp) ---------- */
+.lk .ui-alert {
+  width: 390px;
+  height: 262px;
+  box-sizing: border-box;
+  padding: 24px 26px 22px;
+  background: #171714;
+  display: flex;
+  flex-direction: column;
+}
+.lk .ui-alert-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lk .ui-alert-step {
+  flex: 1;
+  min-width: 0;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+  color: #f8f8f2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .ui-alert-pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px 3px;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  font-family: var(--ui-display);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lk .ui-alert-pill i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.lk .ui-alert-digits {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 6px 0 4px;
+}
+.lk .ui-alert-num,
+.lk .ui-alert-glow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 132px;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ui-alert-num {
+  color: currentColor;
+}
+/* the glow sits under the glyphs: the digits themselves never go transparent */
+.lk .ui-alert-glow {
+  color: currentColor;
+  text-shadow:
+    0 0 0.012em currentColor,
+    0 0 0.03em currentColor,
+    0 0 0.07em currentColor,
+    0 0 0.13em currentColor,
+    0 0 0.21em currentColor;
+}
+.lk .ui-alert-bar {
+  height: 3px;
+  background: #3a3b36;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.lk .ui-alert-bar i {
+  display: block;
+  height: 100%;
+  background: currentColor;
+  border-radius: 2px;
+}
+.lk .ui-alert-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  font-family: var(--ui-display);
+  font-size: 9px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #b8b8ad;
+  font-variant-numeric: tabular-nums;
+}
+
+/* level colours — brass, paper, vermilion; nothing else changes */
+.lk .lv-warm {
+  color: #d7bc7d;
+}
+.lk .lv-approach {
+  color: #f8f8f2;
+}
+.lk .lv-overtime {
+  color: #c08078;
+}
+/* resting opacity = the lit state, so reduced-motion still looks lit */
+.lk .lv-warm .ui-alert-glow,
+.lk .lv-warm .ui-alert-pill {
+  opacity: 0.82;
+}
+.lk .lv-approach .ui-alert-glow,
+.lk .lv-approach .ui-alert-pill {
+  opacity: 0.92;
+}
+.lk .lv-overtime .ui-alert-glow {
+  opacity: 0.62;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lk .lv-warm .ui-alert-glow,
+  .lk .lv-warm .ui-alert-pill {
+    animation: lk-breathe 1.5s ease-in-out infinite alternate;
+  }
+  .lk .lv-approach .ui-alert-glow,
+  .lk .lv-approach .ui-alert-pill {
+    animation: lk-alert-flash 0.65s ease-in-out infinite;
+  }
+  /* the glyphs dim too, but never to nothing — DigitDisplay: 0.62 + 0.38 * pulse */
+  .lk .lv-approach .ui-alert-num {
+    animation: lk-alert-dim 0.65s ease-in-out infinite;
+  }
+}
+@keyframes lk-breathe {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes lk-alert-flash {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  40%,
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.15;
+  }
+}
+@keyframes lk-alert-dim {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+  40%,
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.62;
+  }
+}
+
+/* ---------- the sound table ---------- */
+.lk-sound {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(24px, 4vw, 68px);
+  margin-top: clamp(46px, 5.5vw, 82px);
+  padding-top: clamp(26px, 3vw, 40px);
+  border-top: 1px solid rgba(27, 27, 27, 0.16);
+}
+.lk-sound-head .lk-h3 {
+  margin-bottom: 10px;
+}
+.lk-sound-note {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--lk-muted);
+  max-width: 34ch;
+}
+.lk-sound-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid rgba(27, 27, 27, 0.1);
+}
+.lk-sound-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.lk-sound-m {
+  font-size: 13px;
+  line-height: 1.3;
+}
+.lk-sound-track {
+  position: relative;
+  height: 24px;
+  border-bottom: 1px solid rgba(27, 27, 27, 0.22);
+}
+.lk-sound-track i {
+  position: absolute;
+  bottom: 0;
+  background: var(--lk-brass-l);
+  border-radius: 1px 1px 0 0;
+}
+.lk-sound-v {
+  font-family: var(--ui-display);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--lk-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.lk-sound-foot {
+  grid-column: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--lk-muted);
+}
+.lk-sound-mute {
+  flex: none;
+  display: flex;
+  margin-top: 1px;
+  color: var(--lk-muted);
+}
+
+/* ============================================================
+   03 — Out of the app (the notification card)
+
+   Reproduced from a real Android 12 shade, not imagined: the icon and the
+   chevron are the system's, the surface belongs to the shade, and all the app
+   draws is one brass bar plus its own ink. Light and dark are the same layout
+   with a different colour set (res/values{,-night}/colors.xml).
+   ============================================================ */
+.lk-shade {
+  position: relative;
+  border-radius: 18px;
+  padding: clamp(18px, 2.6vw, 32px) clamp(16px, 2.6vw, 34px) clamp(22px, 3vw, 38px);
+  border: 1px solid rgba(27, 27, 27, 0.08);
+  /* one ground, two systems: light on the left, dark on the right */
+  background:
+    radial-gradient(120% 150% at 6% 0%, #f3f0e7 0%, rgba(243, 240, 231, 0) 58%),
+    linear-gradient(
+      104deg,
+      #e9e6db 0%,
+      #e5e1d5 26%,
+      #d8d4c6 42%,
+      #9a988b 52%,
+      #45473e 62%,
+      #262722 76%,
+      #1b1c18 100%
+    );
+}
+.lk-shade-grip {
+  display: block;
+  width: 72px;
+  height: 4px;
+  border-radius: 2px;
+  margin: 0 auto clamp(16px, 2.2vw, 26px);
+  background: rgba(27, 27, 27, 0.16);
+}
+.lk-shade-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.6vw, 34px);
+  align-items: start;
+}
+.lk-notif {
+  margin: 0;
+  min-width: 0;
+}
+.lk-notif-plate {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.lk-notif figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 13px;
+}
+/* the right-hand column sits on the dark half of the ground */
+.lk-notif:last-child figcaption .lk-detail-k {
+  color: #efeade;
+}
+.lk-notif:last-child figcaption .lk-detail-v {
+  color: rgba(242, 242, 236, 0.66);
+}
+
+/* ---------- the card itself (390 dp) ---------- */
+.lk .ui-notif {
+  width: 390px;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  font-family: var(--font-sans);
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.lk .ui-notif.is-light {
+  background: rgba(250, 249, 244, 0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow:
+    0 10px 24px -18px rgba(27, 27, 27, 0.55),
+    0 0 0 1px rgba(27, 27, 27, 0.05);
+  color: #1b1b1b;
+}
+.lk .ui-notif.is-dark {
+  background: rgba(38, 40, 36, 0.66);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  box-shadow:
+    0 10px 24px -18px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.11);
+  color: #f2f2ec;
+}
+
+/* the system's app-name line, expanded only — it lives in the text column,
+   the icon spans it and the recipe name both */
+.lk .ui-notif-app {
+  font-size: 12px;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  opacity: 0.6;
+  padding-bottom: 5px;
+}
+
+.lk .ui-notif-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.lk .ui-notif-icon {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: block;
+}
+.lk .ui-notif-col {
+  flex: 1;
+  min-width: 0;
+}
+.lk .ui-notif-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+}
+.lk .ui-notif-titles {
+  flex: 1;
+  min-width: 0;
+}
+.lk .ui-notif-name {
+  /* 14 sp bold collapsed / 18 sp bold expanded */
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .ui-notif-step {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.2;
+  opacity: 0.72;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .ui-notif-time {
+  flex: none;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  /* 26 sp collapsed / 34 sp expanded, sans-serif-light + tnum in the app */
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ui-notif-chev {
+  flex: none;
+  display: flex;
+  opacity: 0.55;
+}
+.lk .ui-notif-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.lk .ui-notif.is-light .ui-notif-bar {
+  background: rgba(0, 0, 0, 0.15);
+}
+.lk .ui-notif.is-dark .ui-notif-bar {
+  background: rgba(255, 255, 255, 0.15);
+}
+.lk .ui-notif-bar i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: #d7bc7d;
+  border-radius: 2px;
+}
+
+/* ---------- expanded ---------- */
+.lk .ui-notif.is-expanded {
+  position: relative;
+  padding: 12px 14px 0;
+}
+.lk .ui-notif.is-expanded > .ui-notif-chev {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+}
+.lk .ui-notif.is-expanded .ui-notif-top {
+  min-height: 0;
+  align-items: flex-start;
+}
+.lk .ui-notif.is-expanded .ui-notif-name {
+  font-size: 18px;
+}
+.lk .ui-notif.is-expanded .ui-notif-step {
+  margin-top: 3px;
+  font-size: 13px;
+}
+.lk .ui-notif.is-expanded .ui-notif-time {
+  font-size: 34px;
+  letter-spacing: -0.015em;
+}
+.lk .ui-notif.is-expanded .ui-notif-bar {
+  height: 6px;
+  border-radius: 3px;
+  margin-top: 11px;
+}
+.lk .ui-notif.is-expanded .ui-notif-bar i {
+  border-radius: 3px;
+}
+/* everything below the bar hangs off the text column, not the icon */
+.lk .ui-notif.is-expanded .ui-notif-body {
+  padding-left: 58px;
+}
+.lk .ui-notif-reads {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ui-notif-rule {
+  height: 1px;
+  margin: 11px 0;
+}
+.lk .ui-notif.is-light .ui-notif-rule {
+  background: rgba(0, 0, 0, 0.12);
+}
+.lk .ui-notif.is-dark .ui-notif-rule {
+  background: rgba(255, 255, 255, 0.12);
+}
+.lk .ui-notif-uphead {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
+.lk .ui-notif-up {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 0;
+  min-width: 0;
+}
+.lk .ui-notif-upidx {
+  flex: none;
+  width: 26px;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.lk .ui-notif.is-light .ui-notif-upidx {
+  color: #8a6e28;
+}
+.lk .ui-notif.is-dark .ui-notif-upidx {
+  color: #d7bc7d;
+}
+.lk .ui-notif-uptitle {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .ui-notif-updur {
+  flex: none;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+.lk .ui-notif-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  padding-bottom: 2px;
+}
+.lk .ui-notif-state {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lk .ui-notif-duration {
+  flex: none;
+  opacity: 0.65;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* system actions: three equal text cells, hairline dividers, no icons */
+.lk .ui-notif-acts {
+  display: flex;
+  margin: 11px -14px 0;
+  border-top: 1px solid;
+}
+.lk .ui-notif.is-light .ui-notif-acts {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+.lk .ui-notif.is-dark .ui-notif-acts {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.lk .ui-notif-act {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+.lk .ui-notif-act + .ui-notif-act::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 18px;
+  transform: translateY(-50%);
+}
+.lk .ui-notif.is-light .ui-notif-act + .ui-notif-act::before {
+  background: rgba(0, 0, 0, 0.12);
+}
+.lk .ui-notif.is-dark .ui-notif-act + .ui-notif-act::before {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================================
+   06 — Film Log (the exported card)
+   ============================================================ */
+.lk-film-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  gap: clamp(30px, 5vw, 84px);
+  /* the card is portrait and long; the copy column stretches with it and puts
+     the three notes at the foot, so the white space reads as a column, not a gap */
+  align-items: stretch;
+}
+.lk-film-copy {
+  min-width: 0;
+}
+/* The card is three times taller than the copy beside it, so the copy pins
+   instead of stretching into a column of white space: it stays level with the
+   reader while the card scrolls past. */
+.lk-film-copy-in {
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(34px, 4vw, 56px);
+}
+.lk-film-figure {
+  margin: 0;
+}
+.lk-film-frame {
+  position: relative;
+}
+.lk-film-print {
+  box-shadow: 0 44px 80px -52px rgba(27, 27, 27, 0.9);
+}
+/* The card grows and shrinks with its frame count, so a swap that only faded
+   would jump the page. Stage writes an inline height; the transition catches
+   it, and the card fades in underneath at the same time. */
+.lk-film-stage {
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ufc {
+  animation: ufc-in 0.42s ease both;
+}
+@keyframes ufc-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Arrows sit outside the card on wide screens: the card is an artefact with
+   its own margins, the controls are page chrome and should not be mistaken
+   for a part of it. */
+.lk-film-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  padding: 0;
+  border: 1px solid var(--lk-line);
+  border-radius: 50%;
+  background: var(--lk-paper);
+  color: var(--lk-ink);
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+.lk-film-arrow:hover {
+  border-color: var(--lk-ink);
+  background: var(--lk-ink);
+  color: var(--lk-paper);
+}
+.lk-film-arrow:focus-visible {
+  outline: 2px solid var(--lk-brass-l);
+  outline-offset: 3px;
+}
+.lk-film-arrow.is-side.is-prev {
+  right: calc(100% + 18px);
+}
+.lk-film-arrow.is-side.is-next {
+  left: calc(100% + 18px);
+}
+/* the chevron points down by default */
+.lk-film-chev {
+  transform: rotate(-90deg);
+}
+.lk-film-arrow.is-prev .lk-film-chev {
+  transform: rotate(90deg);
+}
+.lk-film-arrow.is-inline {
+  display: none;
+  position: static;
+  margin-top: 0;
+  width: 40px;
+  height: 40px;
+}
+.lk-film-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--lk-line);
+  font-family: var(--ui-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.lk-film-count {
+  flex: none;
+  color: var(--lk-ink);
+}
+.lk-film-count em {
+  font-style: normal;
+  color: var(--lk-muted-d);
+}
+.lk-film-stock {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  color: var(--lk-muted);
+  letter-spacing: 0.12em;
+}
+.lk-film-figure figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+.lk-film-fields .lk-h3 {
+  margin-bottom: 4px;
+}
+.lk-film-fields dl {
+  margin-top: 16px;
+  border-top: 1px solid var(--lk-line);
+}
+.lk-film-fields dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 118px) minmax(0, 1fr);
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--lk-line);
+}
+.lk-film-fields dt {
+  font-family: var(--ui-display);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+.lk-film-fields dd {
+  font-size: 13px;
+  line-height: 1.62;
+  color: var(--lk-muted);
+}
+.lk-film-facts {
+  display: grid;
+  gap: 20px;
+}
+.lk-film-facts h4 {
+  font-family: var(--ui-display);
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.lk-film-facts p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--lk-muted);
+}
+
+/* ---------- the card, at its real 1080 px, scaled by <Stage> ---------- */
+.ufc {
+  --ufc-bg: #1b1b1b;
+  width: var(--w);
+  box-sizing: border-box;
+  padding: calc(var(--w) * 0.055);
+  background: var(--ufc-bg);
+  color: #f8f8f5;
+  font-family: var(--font-sans);
+}
+.ufc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: calc(var(--w) * 0.02);
+}
+.ufc-logo {
+  font-family: var(--ui-display);
+  font-size: calc(var(--w) * 0.072);
+  letter-spacing: 0.125em;
+  line-height: 1.04;
+}
+.ufc-tag {
+  margin-top: calc(var(--w) * 0.006);
+  font-size: calc(var(--w) * 0.026);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a7a7a0;
+}
+.ufc-meta {
+  flex: none;
+  font-size: calc(var(--w) * 0.026);
+  letter-spacing: 0.1em;
+  color: #a7a7a0;
+  white-space: nowrap;
+}
+.ufc-rule {
+  height: calc(var(--w) * 0.0029);
+  margin-top: calc(var(--w) * 0.044);
+  background: #454540;
+}
+.ufc-title {
+  margin: calc(var(--w) * 0.038) 0 0;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: calc(var(--w) * 0.084);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.ufc-film {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--w) * 0.011);
+  margin-top: calc(var(--w) * 0.01);
+  font-size: calc(var(--w) * 0.029);
+  letter-spacing: 0.0586em;
+  color: #a7a7a0;
+}
+/* the camera line belongs to the same block as the film line, so it sits close
+   (RGapCamera 0.008 vs RGapFilm 0.010) and reads at the same size */
+.ufc-camera {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--w) * 0.011);
+  margin-top: calc(var(--w) * 0.008);
+  font-size: calc(var(--w) * 0.029);
+  letter-spacing: 0.0586em;
+  color: #a7a7a0;
+}
+.ufc-glyph {
+  flex: none;
+  width: calc(var(--w) * 0.032);
+  height: calc(var(--w) * 0.032);
+}
+.ufc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--w) * 0.014);
+  margin-top: calc(var(--w) * 0.047);
+}
+.ufc-row {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--w) * 0.014);
+}
+.ufc-row img {
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ufc-eyebrow {
+  margin-top: calc(var(--w) * 0.0429);
+  padding-top: calc(var(--w) * 0.031);
+  border-top: calc(var(--w) * 0.0029) solid #454540;
+  font-size: calc(var(--w) * 0.026);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #898981;
+}
+.ufc-recipe {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: calc(var(--w) * 0.02);
+  margin-top: calc(var(--w) * 0.012);
+}
+.ufc-recipe-name {
+  font-family: var(--ui-display);
+  font-size: calc(var(--w) * 0.061);
+  line-height: 1.15;
+}
+.ufc-temp {
+  flex: none;
+  font-size: calc(var(--w) * 0.026);
+  letter-spacing: 0.1em;
+  color: #a7a7a0;
+}
+.ufc-steps {
+  margin: calc(var(--w) * 0.028) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ufc-steps li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--w) * 0.012);
+  padding: calc(var(--w) * 0.016) 0;
+  font-size: calc(var(--w) * 0.029);
+  line-height: 1.35;
+}
+.ufc-steps li + li {
+  border-top: calc(var(--w) * 0.0015) solid #343430;
+}
+.ufc-stepno {
+  flex: none;
+  width: calc(var(--w) * 0.056 - var(--w) * 0.012);
+  color: #898981;
+  letter-spacing: 0.069em;
+}
+.ufc-stepname {
+  flex: 1;
+  min-width: 0;
+}
+.ufc-stepdur {
+  flex: none;
+  color: #a7a7a0;
+  font-size: 0.92em;
+}
+.ufc-note {
+  margin: calc(var(--w) * 0.023) 0 0;
+  font-size: calc(var(--w) * 0.029);
+  line-height: 1.5;
+  color: #a7a7a0;
+}
+.ufc-rule-foot {
+  margin-top: calc(var(--w) * 0.046);
+}
+.ufc-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: calc(var(--w) * 0.03);
+}
+.ufc-roll,
+.ufc-slogan {
+  font-size: calc(var(--w) * 0.023);
+  letter-spacing: 0.087em;
+  line-height: calc(var(--w) * 0.0432);
+}
+.ufc-slogan {
+  color: #a7a7a0;
+}
+.ufc-sign {
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: calc(var(--w) * 0.072);
+  letter-spacing: 0.125em;
+  line-height: 1;
+  opacity: 0.72;
+}
+
+/* ============================================================
+   new sections — narrower screens
+   ============================================================ */
+@media (max-width: 1024px) {
+  .lk-sound {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lk-sound-foot {
+    grid-column: 1;
+  }
+  .lk-film-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lk-film-print {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .lk-film-figure figcaption {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* No room beside the card any more — the controls move into the rule
+     underneath it, which is also where the counter already lives. */
+  .lk-film-arrow.is-side {
+    display: none;
+  }
+  .lk-film-arrow.is-inline {
+    display: inline-flex;
+  }
+  .lk-film-nav {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 14px;
+  }
+  .lk-film-stock {
+    text-align: center;
+  }
+  .lk-film-copy-in {
+    position: static;
+  }
+}
+
+@media (max-width: 860px) {
+  .lk-levels {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+  .lk-level-plate {
+    max-width: 520px;
+  }
+  .lk-level figcaption {
+    max-width: 520px;
+  }
+  .lk-shade-cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .lk-notif-plate {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 620px) {
+  .lk-level-plate,
+  .lk-level figcaption,
+  .lk-notif-plate {
+    max-width: none;
+  }
+  .lk-sound-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: 8px;
+  }
+  .lk-sound-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .lk-sound-v {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .lk-film-fields dl > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+

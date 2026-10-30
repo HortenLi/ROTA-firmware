@@ -27,7 +27,8 @@ export default function TimerSection() {
           </div>
           <figcaption className="lk-figcap lk-figcap-wide">
             <span className="lk-figcap-rule" aria-hidden="true" />
-            {t('link.hero.figureCaption')}
+            <span>{t('link.hero.figureCaption')}</span>
+            <span className="lk-figcap-note">{t('link.timer.holdNote')}</span>
           </figcaption>
         </figure>
 

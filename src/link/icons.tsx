@@ -66,6 +66,12 @@ export const SkipIcon = (p: P) => (
   </Svg>
 )
 
+export const StopIcon = (p: P) => (
+  <Svg size={16} {...p}>
+    <rect x="6" y="6" width="12" height="12" rx="1.4" stroke="currentColor" strokeWidth="1.6" />
+  </Svg>
+)
+
 export const ChevronIcon = ({ size = 17, className, up }: P & { up?: boolean }) => (
   <Svg size={size} className={className}>
     <g transform={up ? 'rotate(180 12 12)' : undefined}>
@@ -132,6 +138,47 @@ export const DeviceNavIcon = (p: P) => (
       strokeLinejoin="round"
     />
   </Svg>
+)
+
+/**
+ * Film Log tab (added in v0.16): a document with a folded corner and a photo
+ * frame inside — the app draws the same path, sun included.
+ */
+export const FilmLogNavIcon = (p: P) => (
+  <Svg size={22} {...p}>
+    <path
+      d="M5.5 3.5h8.1l5 5v12h-13.1ZM13.6 3.5v5h5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <rect x="8.2" y="11.6" width="7.8" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M8.9 16.8 10.9 14.2 12.6 16.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="14.25" cy="13.1" r="1.05" fill="currentColor" />
+  </Svg>
+)
+
+/** Speaker — solid body, two arcs when audible, one cross when muted. */export const SpeakerIcon = ({ size = 16, className, on = true }: P & { on?: boolean }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M3.6 9.2h3l3.8-3.6v12.8l-3.8-3.6h-3Z" fill="currentColor" />
+    {on ? (
+      <>
+        <path d="M13.4 9.4q1.5 2.6 0 5.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M16.2 7.2q2.6 4.8 0 9.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </>
+    ) : (
+      <path d="M13.6 9.2 19.4 14.8M19.4 9.2 13.6 14.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    )}
+  </svg>
 )
 
 /** Status-bar glyphs — deliberately tiny and low-contrast. */

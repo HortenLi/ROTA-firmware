@@ -8,13 +8,16 @@ import {
   CollapseIcon,
   DeviceNavIcon,
   ExpandIcon,
+  FilmLogNavIcon,
   GripIcon,
   MenuIcon,
   PauseIcon,
   SkipIcon,
+  SpeakerIcon,
   TimerNavIcon,
   WifiGlyph,
 } from './icons'
+import { href } from '../router'
 
 /**
  * Faithful DOM recreations of the ROTA Link screens, built from the Compose
@@ -22,7 +25,11 @@ import {
  * the app's real layout constants — see the comment above each screen.
  */
 
-const TABS = ['TIMER', 'RECIPES', 'DEVICE'] as const
+/**
+ * Four tabs since v0.16 — Film Log sits between the timer and the device panel.
+ * Order is copied from `MainActivity.TABS`: RECIPES · TIMER · FILM_LOG · DEVICE.
+ */
+const TABS = ['RECIPES', 'TIMER', 'FILM_LOG', 'DEVICE'] as const
 
 function Clock({ sec, size }: { sec: number; size: number }) {
   return (
@@ -209,7 +216,12 @@ function ProcessOverview({ recipe, stage }: { recipe: AppRecipe; stage: number }
 
 function TabBar({ active = 'TIMER' }: { active?: string }) {
   const { t } = useTranslation()
-  const icons = { TIMER: TimerNavIcon, RECIPES: BeakerNavIcon, DEVICE: DeviceNavIcon }
+  const icons = {
+    RECIPES: BeakerNavIcon,
+    TIMER: TimerNavIcon,
+    FILM_LOG: FilmLogNavIcon,
+    DEVICE: DeviceNavIcon,
+  }
   return (
     <div className="ui-tabbar">
       {TABS.map((tab) => {
@@ -272,13 +284,29 @@ export function TimerHome({ linked, offset = 219 }: { linked: boolean; offset?: 
  * Landscape full-screen timer (TimerFullscreenScreen): 150 dp settings column,
  * 212 dp ring, 170 dp device column, next-steps bar with PAUSE / SKIP.
  */
+/**
+ * Landscape full-screen timer (v0.16). The ring is gone: the countdown *is* the
+ * instrument — one enormous number, the step above it, duration and percentage
+ * below, and a full-process bar that turns green behind you and vermilion once
+ * the time is spent. The bottom bar carries the primary control, a long-press
+ * SKIP, the next three steps as cards, and ABORT on the far edge.
+ *
+ * Geometry from `TimerFullscreen.kt`: 844 × 390 dp, 26/12 dp page padding,
+ * 38 dp top bar, clock column 3.2 against the instrument column 1, 66 dp bar.
+ */
 export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offset?: number }) {
   const { t } = useTranslation()
   const clock = useProcessClock(C41.steps, offset)
-  const R = 104.5
-  const C = 2 * Math.PI * R
-  const next1 = C41.steps[clock.stage + 1]
-  const next2 = C41.steps[clock.stage + 2]
+  const total = totalSec(C41)
+  const played = 100 * clock.totalFraction
+  const done = 100 * (C41.steps.slice(0, clock.stage).reduce((a, s) => a + s.sec, 0) / total)
+  const next = [1, 2, 3].map((i) => C41.steps[clock.stage + i]).filter(Boolean)
+  // cumulative stage boundaries as a percentage of the whole process
+  const stageSeams = C41.steps.slice(0, -1).map((_, i) => {
+    const acc = C41.steps.slice(0, i + 1).reduce((a, s) => a + s.sec, 0)
+    return (100 * acc) / total
+  })
+
   return (
     <div className="ui ui-landscape">
       <div className="ls-top">
@@ -286,18 +314,19 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
           <span className="ls-brand-a">ROTA</span>
           <span className="ls-brand-b">LINK</span>
         </div>
-        <div className="ls-title">
-          <span>{C41.name}</span>
-          <i />
-          <span className="ls-title-meta">
+        <div className="ls-topright">
+          <span className="ls-recipe">{C41.name}</span>
+          <i className="ls-vrule" aria-hidden="true" />
+          <span className="ls-meta">
             {C41.temperatureC.toFixed(1)}°C&nbsp;&nbsp;·&nbsp;&nbsp;{C41.rpm} RPM
           </span>
-        </div>
-        <div className="ls-right">
-          <div className="ls-badge">
+          <span className="ls-mute">
+            <SpeakerIcon size={16} on />
+          </span>
+          <span className="ls-badge">
             <i className={linked ? 'on' : ''} />
             {linked ? t('link.app.connected') : t('link.app.timerOnly')}
-          </div>
+          </span>
           <span className="ls-collapse">
             <CollapseIcon size={18} />
           </span>
@@ -305,119 +334,104 @@ export function LandscapeTimer({ linked, offset = 219 }: { linked: boolean; offs
       </div>
 
       <div className="ls-mid">
-        <div className="ls-left">
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.targetTemp')}</div>
-            <div className="ls-value">{C41.temperatureC.toFixed(1)}°C</div>
+        <div className="ls-clock">
+          <div className="ls-cur">
+            <span className="ls-cur-name">{C41.steps[clock.stage].title}</span>
+            <span className="ls-stepcount">
+              {t('link.app.stepOf', {
+                a: String(clock.stage + 1).padStart(2, '0'),
+                b: String(C41.steps.length).padStart(2, '0'),
+              })}
+            </span>
           </div>
-          <div className="ls-rule" />
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.rotationSpeed')}</div>
-            <div className="ls-value">{C41.rpm} RPM</div>
+          {/* The app draws the clock as two text runs plus a hand-placed colon:
+              Jost's own colon sits on the baseline and at 240 px it drops below
+              the optical centre of the glyphs. Two dots at ±0.13 em reproduce
+              DigitDisplay exactly. */}
+          <div className="ls-digits">
+            <span className="ls-num">{fmtClock(clock.remaining).slice(0, 2)}</span>
+            <span className="ls-colon" aria-hidden="true">
+              <i />
+              <i />
+            </span>
+            <span className="ls-num">{fmtClock(clock.remaining).slice(3)}</span>
           </div>
-          <div className="ls-rule" />
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.rotationDir')}</div>
-            <div className="ls-value">—</div>
+          <div className="ls-reads">
+            <span>
+              <i>{t('link.notif.duration')}</i>
+              <b>{fmtClock(total)}</b>
+            </span>
+            <span className="ls-pct">{Math.round(played)}%</span>
           </div>
-        </div>
-
-        <div className="ls-center">
-          <div className="ls-ring">
-            <svg viewBox="0 0 212 212" width="212" height="212" aria-hidden="true">
-              <circle cx="106" cy="106" r={R} stroke="#3A3B36" strokeWidth="3" fill="none" />
-              <circle
-                cx="106"
-                cy="106"
-                r={R}
-                stroke="#D7BC7D"
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                strokeDasharray={`${(C * clock.stageFraction).toFixed(2)} ${C.toFixed(2)}`}
-                transform="rotate(-90 106 106)"
-              />
-              <circle
-                cx={106 + R * Math.cos((clock.stageFraction * 360 - 90) * (Math.PI / 180))}
-                cy={106 + R * Math.sin((clock.stageFraction * 360 - 90) * (Math.PI / 180))}
-                r="4"
-                fill="#D7BC7D"
-              />
-            </svg>
-            <div className="ls-ring-inner">
-              <div className="ls-cur-label">{t('link.app.currentStep')}</div>
-              <div className="ls-cur-name">{C41.steps[clock.stage].title}</div>
-              <Clock sec={clock.remaining} size={62} />
-              <div className="ls-ring-rule" />
-              <div className="ls-count">
-                {clock.stage + 1} / {C41.steps.length}
-              </div>
-              <div className="ls-count-label">{t('link.app.stepsWord')}</div>
-            </div>
+          <div className="ls-bar">
+            <span className="ls-bar-done" style={{ width: `${done.toFixed(2)}%` }} />
+            <span className="ls-bar-play" style={{ width: `${(played - done).toFixed(2)}%` }} />
+            {/* stage seams — only ahead of the playhead, like the app's clipped draw */}
+            {stageSeams.map((p) =>
+              p > played + 0.4 ? (
+                <i className="ls-bar-tick" key={p} style={{ left: `${p.toFixed(2)}%` }} />
+              ) : null,
+            )}
           </div>
         </div>
 
-        <div className="ls-rightcol">
-          <div className="ls-label">{t('link.app.deviceStatus')}</div>
+        <span className="ls-divider" aria-hidden="true" />
+
+        <div className="ls-side">
+          <div className="ls-side-eyebrow">{t('link.app.deviceStatus')}</div>
           <div className="ls-devstatus">
             <i className={linked ? 'on' : ''} />
             {linked ? 'ROTA Controller' : t('link.app.timerOnly')}
           </div>
-          <div className="ls-rule" />
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.bathTemp')}</div>
-            <div className="ls-value">—</div>
-            <div className="ls-sub">{t('link.app.target', { v: C41.temperatureC.toFixed(1) })}</div>
+          <span className="ls-side-rule" aria-hidden="true" />
+
+          <div className="ls-side-eyebrow">{t('link.app.bathTemp')}</div>
+          <div className="ls-side-value">
+            <b>—</b>
+            <em>/</em>
+            <span>{C41.temperatureC.toFixed(1)}°C</span>
           </div>
-          <div className="ls-rule" />
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.rotationSpeed')}</div>
-            <div className="ls-value">—</div>
-            <div className="ls-sub">{t('link.app.actual')}</div>
-          </div>
-          <div className="ls-rule" />
-          <div className="ls-info">
-            <div className="ls-label">{t('link.app.rotationDir')}</div>
-            <div className="ls-value">—</div>
+          <span className="ls-side-rule" aria-hidden="true" />
+
+          <div className="ls-side-eyebrow">{t('link.app.rotation')}</div>
+          <div className="ls-side-value">
+            <b>{C41.rpm}</b>
+            <span className="ls-unit">RPM</span>
           </div>
         </div>
       </div>
 
+      <span className="ls-footrule" aria-hidden="true" />
+
       <div className="ls-bottom">
-        <div className="ls-next">
-          <div className="ls-label">{t('link.app.nextSteps')}</div>
-          <div className="ls-next-row">
-            <div className="ls-next-item">
-              <span className="ls-next-no">{String(clock.stage + 2).padStart(2, '0')}</span>
-              <span>
-                <b>{next1 ? next1.title : t('link.app.endOfProcess')}</b>
-                <em>{next1 ? fmtClock(next1.sec) : '—'}</em>
-              </span>
+        <span className="ls-pause">
+          <PauseIcon size={14} />
+          {t('link.app.pause')}
+        </span>
+        <span className="ls-skip">
+          <SkipIcon size={14} />
+          {t('link.app.skip')}
+        </span>
+
+        <span className="ls-vline" aria-hidden="true" />
+
+        <div className="ls-cards">
+          {next.map((s, i) => (
+            <div className="ls-card" key={s.title}>
+              <div className="ls-card-top">
+                <span>
+                  {String(clock.stage + 2 + i).padStart(2, '0')} / {t('link.app.next')}
+                </span>
+                <span className="ls-card-dur">{fmtClock(s.sec)}</span>
+              </div>
+              <div className="ls-card-name">{s.title}</div>
             </div>
-            {next2 && (
-              <>
-                <span className="ls-next-sep" />
-                <div className="ls-next-item">
-                  <span className="ls-next-no">{String(clock.stage + 3).padStart(2, '0')}</span>
-                  <span>
-                    <b>{next2.title}</b>
-                    <em>{fmtClock(next2.sec)}</em>
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
+          ))}
         </div>
-        <div className="ls-actions">
-          <div className="ls-pause">
-            <PauseIcon size={15} />
-            <span>{t('link.app.pause')}</span>
-          </div>
-          <div className="ls-skip">
-            <SkipIcon size={15} />
-            <span>{t('link.app.skip')}</span>
-          </div>
-        </div>
+
+        <span className="ls-vline" aria-hidden="true" />
+
+        <span className="ls-abort">{t('link.app.abort')}</span>
       </div>
     </div>
   )
@@ -636,5 +650,186 @@ export function OverviewPlate() {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Reminders — the three degrees, drawn the way the clock face draws them
+// ---------------------------------------------------------------------------
+
+/**
+ * One reminder degree, on the same terms as the landscape clock face
+ * (`TimerFullscreen.kt`, v0.16): the step name, the pill that *replaces* the
+ * step counter while a reminder is live, the digits and their glow.
+ *
+ *   warm     Brass · breathing 1.5 s, never fully dark (0.55 → 1)
+ *   approach Paper · flash 650 ms, one click per flash
+ *   overtime RedSoft · steady, the digits settle at 0.62 and stay there
+ *
+ * The glow and the digits are two stacked layers with the same text, exactly
+ * as in the app: the glow carries the animation, the glyphs stay opaque.
+ */
+export type AlertLevel = 'warm' | 'approach' | 'overtime'
+
+export function AlertPlate({
+  level,
+  sec,
+  pct,
+  step = 1,
+}: {
+  level: AlertLevel
+  sec: number
+  pct: number
+  step?: number
+}) {
+  const { t } = useTranslation()
+  const label =
+    level === 'overtime'
+      ? t('link.remind.overtime')
+      : `${t('link.remind.endingIn')} ${sec}s`
+  const shown = fmtClock(sec)
+  return (
+    <div className={`ui-alert lv-${level}`}>
+      <div className="ui-alert-top">
+        <span className="ui-alert-step">{C41.steps[step].title}</span>
+        <span className="ui-alert-pill">
+          <i />
+          {label}
+        </span>
+      </div>
+      <div className="ui-alert-digits">
+        <span className="ui-alert-glow" aria-hidden="true">
+          {shown}
+        </span>
+        <span className="ui-alert-num">{shown}</span>
+      </div>
+      <div className="ui-alert-bar">
+        <i style={{ width: `${Math.max(0, Math.min(100, pct)).toFixed(1)}%` }} />
+      </div>
+      <div className="ui-alert-foot">
+        <span>{t('link.remind.duration')}</span>
+        <span>{fmtClock(totalSec(C41))}</span>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// The notification card (TimerNotifier, v0.16)
+// ---------------------------------------------------------------------------
+
+/**
+ * The persistent notification, reproduced from the RemoteViews layouts:
+ *
+ *   name (18 bold) · step line · giant countdown
+ *   6 dp stage bar (brass; the overtime layer turns the whole bar vermilion)
+ *   expanded adds: elapsed / stage length, COMING UP (1–3 rows), status line
+ *
+ * No card background and no brand colours beyond the bar — that was a
+ * deliberate v0.16.16 decision: the shade owns the surface, we only draw the
+ * one brass line and the three semantic words (overtime / ending / complete).
+ */
+export function NotificationCard({
+  expanded = false,
+  theme = 'light',
+}: {
+  expanded?: boolean
+  theme?: 'light' | 'dark'
+}) {
+  const { t } = useTranslation()
+  const stageIdx = 1
+  const stage = C41.steps[stageIdx]
+  const remaining = 252
+  const elapsed = stage.sec - remaining
+  const pct = (elapsed / stage.sec) * 100
+  const up = C41.steps.slice(stageIdx + 1, stageIdx + 4)
+
+  return (
+    <div className={`ui-notif is-${theme}${expanded ? ' is-expanded' : ''}`}>
+      {expanded && (
+        <span className="ui-notif-chev">
+          <ChevronIcon size={15} up />
+        </span>
+      )}
+
+      <div className="ui-notif-main">
+        <img
+          className="ui-notif-icon"
+          src={href('/link/app-icon.png')}
+          alt=""
+          width={46}
+          height={46}
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="ui-notif-col">
+          {expanded && <div className="ui-notif-app">{t('link.notif.app')}</div>}
+          <div className="ui-notif-top">
+            <div className="ui-notif-titles">
+              <div className="ui-notif-name">{C41.name}</div>
+              <div className="ui-notif-step">
+                {stage.title} · {t('link.notif.step', { a: '02', b: '05' })}
+              </div>
+            </div>
+            <div className="ui-notif-time">{fmtClock(remaining)}</div>
+            {!expanded && (
+              <span className="ui-notif-chev">
+                <ChevronIcon size={15} />
+              </span>
+            )}
+          </div>
+
+          <div className="ui-notif-bar">
+            <i style={{ width: `${pct.toFixed(1)}%` }} />
+          </div>
+        </div>
+      </div>
+
+      {expanded && (
+        <>
+          {/* the reads row sits under the bar, aligned with the text column */}
+          <div className="ui-notif-body">
+            <div className="ui-notif-reads">
+              <span>{fmtClock(elapsed)}</span>
+              <span>{fmtClock(stage.sec)}</span>
+            </div>
+
+            <div className="ui-notif-rule" />
+            <div className="ui-notif-uphead">{t('link.notif.comingUp')}</div>
+            {up.map((s, i) => (
+              <div className="ui-notif-up" key={s.title}>
+                <span className="ui-notif-upidx">{String(stageIdx + 2 + i).padStart(2, '0')}</span>
+                <span className="ui-notif-uptitle">{s.title}</span>
+                <span className="ui-notif-updur">{fmtClock(s.sec)}</span>
+              </div>
+            ))}
+
+            <div className="ui-notif-rule" />
+            <div className="ui-notif-status">
+              <span className="ui-notif-state">{t('link.notif.running')}</span>
+              <span className="ui-notif-duration">
+                {t('link.notif.duration')} {fmtClock(totalSec(C41))}
+              </span>
+            </div>
+          </div>
+
+          <div className="ui-notif-acts">
+            <span className="ui-notif-act">{t('link.notif.pause')}</span>
+            <span className="ui-notif-act">{t('link.notif.skip')}</span>
+            <span className="ui-notif-act">{t('link.notif.end')}</span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+/** Muted speaker, as it appears in the landscape view while alerts are off. */
+export function MutedSpeaker() {
+  return (
+    <span className="ui-mute">
+      <SpeakerIcon size={16} on={false} />
+    </span>
+  )
+}
+
 export { C41, totalSec }
+
 

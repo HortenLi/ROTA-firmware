@@ -11,17 +11,17 @@ export const LINK_PATH = '/link'
 /**
  * ROTA Link app facts — copied from the app project, not invented.
  * Source: RotaLink/app/build.gradle.kts (versionName / versionCode / minSdk)
- *         and the signed build ROTA-Link-v0.14.8.apk (size, build date).
+ *         and the signed build ROTA-Link-v0.16.18.apk (size, build date).
  * When the app version changes, update only this block.
  */
 export const APP = {
   name: 'ROTA Link',
   packageId: 'com.rota.link',
-  version: '0.14.8',
-  build: 39,
+  version: '0.16.18',
+  build: 58,
   minAndroid: '8.0',
-  apkBytes: 36_140_719,
-  builtOn: '2026-10-29',
+  apkBytes: 36_645_963,
+  builtOn: '2026-10-31',
   /**
    * 'preview' = signed test builds handed out directly, not on any store.
    * While this is 'preview' the Download section shows status instead of a
@@ -32,7 +32,7 @@ export const APP = {
   downloadUrl: null as string | null,
 }
 
-/** 36 140 719 B → "36.1 MB" (decimal, what a download manager shows). */
+/** 36 645 963 B → "36.6 MB" (decimal, what a download manager shows). */
 export function apkSizeLabel(bytes: number): string {
   return `${(bytes / 1_000_000).toFixed(1)} MB`
 }

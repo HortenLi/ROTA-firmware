@@ -5,8 +5,11 @@ import { href } from '../router'
 import { useDocumentMeta, useReveal } from './Stage'
 import Hero from './sections/Hero'
 import TimerSection from './sections/TimerSection'
+import RemindersSection from './sections/RemindersSection'
+import NotificationSection from './sections/NotificationSection'
 import RecipesSection from './sections/RecipesSection'
 import WorkflowSection from './sections/WorkflowSection'
+import FilmLogSection from './sections/FilmLogSection'
 import ConnectedSection from './sections/ConnectedSection'
 import AnalogSection from './sections/AnalogSection'
 import DownloadSection from './sections/DownloadSection'
@@ -14,7 +17,8 @@ import LinkFooter from './sections/LinkFooter'
 
 /**
  * ROTA Link product page. One vertical narrative:
- * brand → timer → recipes → workflow → connection → material → download.
+ * brand → timer → reminders → notification → recipes → workflow → film log →
+ * connection → material → download.
  */
 export default function LinkPage() {
   const { t, i18n } = useTranslation()
@@ -44,8 +48,11 @@ export default function LinkPage() {
       <main>
         <Hero />
         <TimerSection />
+        <RemindersSection />
+        <NotificationSection />
         <RecipesSection />
         <WorkflowSection />
+        <FilmLogSection />
         <ConnectedSection />
         <AnalogSection />
         <DownloadSection />
