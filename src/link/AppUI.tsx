@@ -41,7 +41,7 @@ function Clock({ sec, size }: { sec: number; size: number }) {
 }
 
 /** Status bar + punch hole: the app runs edge-to-edge, so shots include it. */
-function StatusBar({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
+export function StatusBar({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   return (
     <div className={`ui-status ui-status-${tone}`}>
       <span className="ui-status-time">09:41</span>

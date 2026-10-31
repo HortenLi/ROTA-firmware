@@ -370,7 +370,7 @@ html[lang='zh-TW'] .lk {
   opacity: 1;
   transition: opacity 0.6s ease;
 }
-.lk-flow-live[data-phase='9'] .fl-stage {
+.lk-flow-live[data-fade='true'] .fl-stage {
   opacity: 0;
 }
 .lk .fl-phone {
@@ -390,11 +390,13 @@ html[lang='zh-TW'] .lk {
   overflow: hidden;
   transform-origin: 50% 50%;
   opacity: 1;
+  /* the bright portrait screen has to be gone before the dark landscape
+     arrives, otherwise the two screens show through each other mid-turn */
   transition:
-    transform 0.95s cubic-bezier(0.45, 0.05, 0.25, 1),
-    opacity 0.55s ease 0.22s;
+    transform 0.9s cubic-bezier(0.45, 0.05, 0.25, 1),
+    opacity 0.32s ease;
 }
-.lk-flow-live:not([data-phase='0']) .fl-phone {
+.lk-flow-live[data-stage='land'] .fl-phone {
   transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
   opacity: 0;
 }
@@ -407,12 +409,195 @@ html[lang='zh-TW'] .lk {
   opacity: 0;
   transform: scale(1.035);
   transition:
-    opacity 0.75s ease,
+    opacity 0.62s ease 0.16s,
     transform 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.lk-flow-live:not([data-phase='0']) .fl-land {
+.lk-flow-live[data-stage='land'] .fl-land {
   opacity: 1;
   transform: none;
+}
+
+/* ---- inside the phone: home screen, then the app opens out of its icon ---- */
+.lk .fl-screen {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  overflow: hidden;
+  background: #12120e;
+}
+.lk .fl-homelayer {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 0.34s ease,
+    transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.lk .fl-homelayer[data-open='true'] {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+/* the app window grows out of the icon's position on the wallpaper */
+.lk .fl-appwin {
+  position: absolute;
+  inset: 0;
+  transform: scale(0.26);
+  transform-origin: 14% 37%;
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1),
+    opacity 0.3s ease;
+}
+.lk .fl-appwin[data-open='true'] {
+  transform: none;
+  opacity: 1;
+}
+
+.lk .fl-home {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 72% at 18% 2%, #26261e 0%, #16160f 46%, #0c0c09 100%);
+  color: #f4f4ec;
+}
+.lk .fl-home .ui-status {
+  color: #e9e9e1;
+}
+.lk .fl-home .ui-punch {
+  background: rgba(248, 248, 242, 0.16);
+}
+.lk .fl-hclock {
+  position: absolute;
+  left: 26px;
+  top: 66px;
+  font-family: var(--ui-display);
+  font-size: 78px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #f4f4ec;
+  font-variant-numeric: tabular-nums;
+}
+.lk .fl-hicons {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  top: 258px;
+  display: flex;
+  gap: 26px;
+}
+.lk .fl-hico {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex: none;
+  border-radius: 15px;
+  background: #24251f;
+  box-shadow: inset 0 0 0 1px rgba(248, 248, 242, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lk .fl-hico.is-app {
+  background: #111210;
+  box-shadow: 0 8px 18px -10px rgba(0, 0, 0, 0.9);
+  transition: transform 0.22s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+/* the icon's own artwork, cropped the way a launcher crops the 108dp canvas */
+.lk .fl-hface {
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #111210;
+}
+.lk .fl-himg {
+  position: absolute;
+  left: -25%;
+  top: -25%;
+  width: 150%;
+  height: 150%;
+  /* the site's global `img { max-width: 100% }` would squash the crop */
+  max-width: none;
+}
+/* the icon gives under the finger for as long as the tap is landing */
+.lk .fl-hico.is-app.is-press {
+  transform: scale(0.93);
+}
+.lk .fl-hname {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 60px;
+  transform: translateX(-50%);
+  font-size: 8px;
+  letter-spacing: 1.1px;
+  white-space: nowrap;
+  color: rgba(248, 248, 242, 0.82);
+}
+.lk .fl-hglyph {
+  display: block;
+  opacity: 0.34;
+}
+.lk .fl-hglyph.is-ring {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #f8f8f2;
+  border-radius: 50%;
+}
+.lk .fl-hglyph.is-tri {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 17px solid #f8f8f2;
+}
+.lk .fl-hglyph.is-bars {
+  width: 20px;
+  height: 14px;
+  background: linear-gradient(
+    to bottom,
+    #f8f8f2 0 3px,
+    transparent 3px 5.5px,
+    #f8f8f2 5.5px 8.5px,
+    transparent 8.5px 11px,
+    #f8f8f2 11px 14px
+  );
+}
+.lk .fl-hdots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+.lk .fl-hdots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(248, 248, 242, 0.22);
+}
+.lk .fl-hdots i.on {
+  background: rgba(248, 248, 242, 0.72);
+}
+/* the tap lands on the icon and keeps landing until the app opens */
+.lk .fl-tap {
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(215, 188, 125, 0.85);
+  animation: lkIconTap 0.95s ease-out infinite;
+}
+@keyframes lkIconTap {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 /* the up/down mark in front of "swipe to change recipe" */
