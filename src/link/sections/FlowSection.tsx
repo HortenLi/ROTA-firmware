@@ -18,7 +18,13 @@ function PhoneHome({ tap }: { tap: boolean }) {
       <div className="fl-hicons">
         <div className={`fl-hico is-app${tap ? ' is-press' : ''}`}>
           <span className="fl-hface">
-            <img className="fl-himg" src={href('/link/app-icon.png')} alt="" />
+            <img
+              className="fl-himg"
+              src={href('/link/app-icon.png')}
+              alt=""
+              decoding="sync"
+              fetchPriority="high"
+            />
           </span>
           <span className="fl-hname">ROTA LINK</span>
           {tap && <span className="fl-tap" aria-hidden="true" />}
@@ -130,11 +136,26 @@ export default function FlowSection() {
       at(14100, play) // and again
     }
 
+    // The first frame is the launcher, and its icon is the one raster image in
+    // this section: if it has not been painted yet, the tap lands on an empty
+    // tile. Wait for it before the loop starts.
+    const start = async () => {
+      const icon = el.querySelector<HTMLImageElement>('.fl-himg')
+      if (icon && !icon.complete) {
+        try {
+          await icon.decode()
+        } catch {
+          /* a missing icon is not worth blocking the loop for */
+        }
+      }
+      if (!dead) play()
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           io.disconnect()
-          play()
+          void start()
         }
       },
       { threshold: 0.3 },
