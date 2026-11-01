@@ -1,0 +1,1090 @@
+/* ============================================================
+   04 — Out of the app  ·  home-screen widgets + notification
+
+   The widget cards are transcribed from the app's RemoteViews
+   layouts, so almost every number below is a dp value read
+   straight out of widget_4x2.xml / widget_4x1.xml / widget_2x2.xml
+   and WidgetArt.kt. Two colour sets, exactly as
+   res/values{,-night}/colors.xml define them.
+   ============================================================ */
+
+/* ---------- section furniture ---------- */
+.lk-out-sub {
+  margin-top: clamp(46px, 6vw, 86px);
+}
+.lk-sub-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: clamp(26px, 3.4vw, 42px);
+}
+.lk-sub-head .lk-kicker {
+  margin-bottom: 16px;
+}
+.lk-sub-h {
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: clamp(25px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.008em;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.lk-sub-head .lk-lede {
+  margin-top: 18px;
+  max-width: 60ch;
+}
+
+/* ---------- the launcher mock ---------- */
+.lk-wcar {
+  position: relative;
+}
+.lk-wcar-track {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(22px, 4vw, 58px);
+  animation: lkCarIn 0.44s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes lkCarIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.lk-homefig {
+  margin: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 336px;
+}
+.lk-home-frame {
+  padding: 7px;
+  border-radius: 27px;
+  background: #16170f;
+  box-shadow:
+    0 40px 70px -44px rgba(27, 27, 27, 0.6),
+    0 0 0 1px rgba(27, 27, 27, 0.1);
+}
+.lk-home-frame .lk-hs {
+  border-radius: 20px;
+}
+.lk-homefig figcaption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-homefig figcaption::before {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.lk-cap-k {
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-cap-d {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--lk-muted);
+}
+
+.lk-hs {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  overflow: hidden;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  background: #e9dfd6;
+  isolation: isolate;
+}
+.lk-hs-wall {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 58%;
+}
+.lk-hs-wall.is-drawn {
+  display: block;
+}
+/* a hair of grain so the drawn wall reads as a photograph of nothing */
+.lk-hs-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.55) 0.5px, transparent 0.6px);
+  background-size: 3px 3px;
+}
+.lk-hs.is-dark .lk-hs-grain {
+  opacity: 0.11;
+}
+.lk-hs-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(26, 20, 24, 0.06) 0%, rgba(26, 20, 24, 0.04) 40%, rgba(26, 20, 24, 0.2) 100%);
+}
+.lk-hs.is-dark .lk-hs-veil {
+  background: linear-gradient(180deg, rgba(10, 9, 14, 0.46) 0%, rgba(10, 9, 14, 0.42) 40%, rgba(10, 9, 14, 0.58) 100%);
+}
+.lk-hs-status {
+  position: absolute;
+  left: 26px;
+  right: 22px;
+  top: 13px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #1f1c1a;
+}
+.lk-hs.is-dark .lk-hs-status {
+  color: #f2f2ec;
+}
+.lk-hs-sys {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.9;
+}
+.lk-hs-at {
+  position: absolute;
+}
+.lk-hs-row {
+  position: absolute;
+  left: 16px;
+  width: 358px;
+  height: 82px;
+  display: grid;
+  grid-template-columns: repeat(4, 80.5px);
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+}
+/* a cell the widget is standing on */
+.lk-hs-vac {
+  display: block;
+  width: 58px;
+  height: 58px;
+}
+.lk-hs-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(30, 27, 24, 0.72);
+  background: rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 8px 16px -12px rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.lk-hs.is-dark .lk-hs-icon {
+  color: rgba(244, 242, 236, 0.82);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 8px 16px -12px rgba(0, 0, 0, 0.6);
+}
+.lk-hs-icon svg {
+  width: 27px;
+  height: 27px;
+}
+.lk-hs-icon {
+  position: relative;
+}
+.lk-hs-icon.is-app {
+  padding: 0;
+  overflow: hidden;
+}
+.lk-hs-icon.is-app img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+.lk-hs-icon.is-folder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: stretch;
+  gap: 5px;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.lk-hs-icon.is-folder i {
+  border-radius: 4px;
+  background: var(--ft, currentColor);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+.lk-hs-icon.is-folder i:nth-child(1) {
+  --ft: #c9784a;
+}
+.lk-hs-icon.is-folder i:nth-child(2) {
+  --ft: #5f7f6e;
+}
+.lk-hs-icon.is-folder i:nth-child(3) {
+  --ft: #8a6f92;
+}
+.lk-hs-icon.is-folder i:nth-child(4) {
+  --ft: #c9a24a;
+}
+.lk-hs.is-dark .lk-hs-icon.is-folder {
+  background: rgba(255, 255, 255, 0.12);
+}
+/* a badge is the honest proof that the screen is busy: the card has to hold
+   its own next to four icon rows and a folder */
+.lk-hs-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #c8432f;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 17px;
+  text-align: center;
+  box-shadow: 0 0 0 1.5px rgba(20, 18, 16, 0.12);
+}
+.lk-hs-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 704px;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  z-index: 2;
+}
+.lk-hs-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+}
+.lk-hs-dots i.on {
+  background: rgba(255, 255, 255, 0.95);
+}
+.lk-hs.is-light .lk-hs-dots i {
+  background: rgba(31, 28, 26, 0.35);
+}
+.lk-hs.is-light .lk-hs-dots i.on {
+  background: rgba(31, 28, 26, 0.9);
+}
+.lk-hs-dock {
+  position: absolute;
+  left: 16px;
+  width: 358px;
+  top: 728px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+.lk-hs-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  width: 118px;
+  height: 4px;
+  margin-left: -59px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.75);
+  z-index: 2;
+}
+.lk-hs.is-light .lk-hs-pill {
+  background: rgba(31, 28, 26, 0.4);
+}
+
+/* ---------- the widget card ---------- */
+.lk .wgt {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: var(--font-sans);
+  background: rgb(var(--w-paper-a));
+  box-shadow:
+    0 14px 26px -18px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+
+  --w-paper-a: 242, 240, 232;
+  --w-text: #1b211f;
+  --w-muted: #85877f;
+  --w-line: #d2d0c5;
+  --w-track: #d9d8ce;
+  --w-accent: #d66b3f;
+  --w-rail-bg: #222c29;
+  --w-rail-hole: #f2f0e8;
+  --w-rail-gold: #b48b51;
+  --w-btn-bg: #1b211f;
+  --w-btn-text: #f2f0e8;
+  --w-ghost-fill: rgba(27, 33, 31, 0.06);
+  --w-ghost-line: rgba(27, 33, 31, 0.6);
+  --w-ghost-text: #1b211f;
+}
+.lk .wgt.is-dark {
+  --w-paper-a: 32, 35, 44;
+  --w-text: #f2eee7;
+  --w-muted: #b1adba;
+  --w-line: #444550;
+  --w-track: #444550;
+  --w-accent: #ff7198;
+  --w-rail-bg: #11141d;
+  --w-rail-hole: #e5dfd5;
+  --w-rail-gold: #ff7198;
+  --w-btn-bg: #f2eee7;
+  --w-btn-text: #20202a;
+  --w-ghost-fill: rgba(242, 238, 231, 0.08);
+  --w-ghost-line: rgba(242, 238, 231, 0.6);
+  --w-ghost-text: #f2eee7;
+}
+.lk .wgt-wide {
+  width: 358px;
+  height: 174px;
+  border-radius: 19px;
+}
+.lk .wgt-slim {
+  /* targetCellHeight 1 — one row of the launcher grid, 82 dp */
+  width: 358px;
+  height: 82px;
+  border-radius: 16px;
+}
+.lk .wgt-square {
+  /* targetCell 2 x 2 — two columns (80.5 * 2 + 12) and two rows (82 * 2 + 10) */
+  width: 173px;
+  height: 174px;
+  border-radius: 19px;
+}
+
+.lk .wgt-art {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+.lk .wgt-dots {
+  position: absolute;
+  inset: 0;
+  color: var(--w-text);
+  opacity: 0.055;
+  background-image: radial-gradient(circle at 50% 50%, currentColor 0.6px, transparent 0.7px);
+  background-size: 4px 4px;
+}
+.lk .wgt-scrim {
+  position: absolute;
+  pointer-events: none;
+}
+.lk .wgt-wide .wgt-scrim,
+.lk .wgt-slim .wgt-scrim {
+  inset: 0;
+}
+.lk .wgt-wide .wgt-scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--w-paper-a), 1) 0%,
+    rgba(var(--w-paper-a), 0.98) 42%,
+    rgba(var(--w-paper-a), 0.43) 68%,
+    rgba(var(--w-paper-a), 0.18) 100%
+  );
+}
+.lk .wgt-slim .wgt-scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--w-paper-a), 1) 0%,
+    rgba(var(--w-paper-a), 1) 46%,
+    rgba(var(--w-paper-a), 0.75) 64%,
+    rgba(var(--w-paper-a), 0.31) 86%,
+    rgba(var(--w-paper-a), 0.22) 100%
+  );
+}
+.lk .wgt-square .wgt-scrim {
+  left: 0;
+  right: 0;
+  top: 62%;
+  bottom: 0;
+  /* the app lifts the bottom stop for exactly this reason — LAST RECIPE has to
+     stay put on top of the illustration. A touch more of it here, because the
+     mock renders at ~0.82 of device size and 9 sp has less room to be wrong. */
+  background: linear-gradient(
+    180deg,
+    rgba(var(--w-paper-a), 1) 0%,
+    rgba(var(--w-paper-a), 0.41) 40%,
+    rgba(var(--w-paper-a), 0.87) 100%
+  );
+}
+.lk .wgt-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--w-rail-bg);
+}
+.lk .wgt-rail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--w-rail-gold);
+}
+.lk .wgt-rail i {
+  position: absolute;
+  display: block;
+  border-radius: 2px;
+  background: var(--w-rail-hole);
+}
+
+.lk .wgt-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lk .wgt-wide .wgt-body {
+  padding: 11px 42px 11px 20px;
+}
+.lk .wgt-slim .wgt-body {
+  padding: 7px 36px 7px 16px;
+}
+.lk .wgt-square .wgt-body {
+  padding: 13px 30px 13px 16px;
+}
+
+.lk .wgt-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10px;
+  flex: none;
+}
+.lk .wgt-logo {
+  font-family: var(--ui-display);
+  font-weight: 500;
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.44em;
+  text-indent: 0.02em;
+  color: var(--w-text);
+  white-space: nowrap;
+}
+.lk .wgt-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+.lk .wgt-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--w-muted);
+}
+.lk .wgt.is-live .wgt-dot {
+  background: var(--w-accent);
+}
+.lk .wgt-square .wgt-dot {
+  width: 5px;
+  height: 5px;
+}
+
+/* ---- idle / mood face ---- */
+.lk .wgt-idle {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-top: 6px;
+}
+.lk .wgt-quote {
+  margin: 0;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 1.16;
+  letter-spacing: -0.004em;
+  color: var(--w-text);
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  /* the app renders the quote as a bitmap and centres it in its box, sizing the
+     type to fit rather than clamping lines — so centre, do not top-align */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lk .wgt-last {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+  flex: none;
+}
+.lk .wgt-rule {
+  width: 23px;
+  height: 2px;
+  flex: none;
+  background: var(--w-accent);
+}
+.lk .wgt-last-k {
+  font-size: 10px;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+.lk .wgt-last-v {
+  font-size: 12px;
+  color: var(--w-text);
+  white-space: nowrap;
+}
+.lk .wgt-last-m {
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+
+/* ---- buttons ---- */
+.lk .wgt-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.lk .wgt-btn.is-primary {
+  flex: 1;
+  background: var(--w-btn-bg);
+  color: var(--w-btn-text);
+}
+.lk .wgt-btn.is-ghost {
+  width: 104px;
+  flex: none;
+  background: var(--w-ghost-fill);
+  box-shadow: inset 0 0 0 1px var(--w-ghost-line);
+  color: var(--w-ghost-text);
+}
+.lk .wgt-btn.is-block {
+  height: 38px;
+  margin-top: 8px;
+  flex: none;
+  letter-spacing: 0.02em;
+}
+.lk .wgt-glyph {
+  font-size: 10px;
+  opacity: 0.92;
+}
+
+/* ---- 4×2 running ---- */
+.lk .wgt-run {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-top: 2px;
+}
+.lk .wgt-run-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.lk .wgt-run-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.lk .wgt-kicker {
+  font-size: 10px;
+  line-height: 1.1;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+.lk .wgt-time {
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--w-text);
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+  white-space: nowrap;
+}
+.lk .wgt-run-side {
+  width: 96px;
+  flex: none;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lk .wgt-rcp {
+  margin-top: 3px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--w-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lk .wgt-steprow {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin: 2px 0 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  min-width: 0;
+}
+.lk .wgt-step {
+  color: var(--w-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .wgt-idx {
+  flex: 1;
+  color: var(--w-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .wgt-total {
+  color: var(--w-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lk .wgt-bar {
+  display: block;
+  height: 4px;
+  flex: none;
+  background: var(--w-track);
+}
+.lk .wgt-bar i {
+  display: block;
+  height: 100%;
+  background: var(--w-accent);
+}
+.lk .wgt-btns {
+  display: flex;
+  gap: 9px;
+  height: 38px;
+  margin-top: 8px;
+  flex: none;
+}
+
+/* ---- 4×1 ---- */
+.lk .wgt-slim-row {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.lk .wgt-slim-row .wgt-logo {
+  flex: none;
+}
+.lk .wgt-slim-row .wgt-time {
+  flex: none;
+  display: block;
+  margin-left: 12px;
+  font-size: 34px;
+  letter-spacing: -0.025em;
+}
+.lk .wgt-slim-step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  margin-left: 14px;
+}
+.lk .wgt-slim-step .wgt-step {
+  font-size: 11px;
+}
+.lk .wgt-slim-step .wgt-idx {
+  flex: none;
+  margin-top: 2px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+.lk .wgt-dial {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  margin-left: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  background: var(--w-btn-bg);
+  color: var(--w-btn-text);
+}
+.lk .wgt-ticks {
+  display: flex;
+  gap: 2px;
+  height: 2px;
+  margin-top: 5px;
+  flex: none;
+}
+.lk .wgt-ticks i {
+  flex: 1;
+  height: 2px;
+  background: var(--w-track);
+}
+.lk .wgt-ticks i.on {
+  background: var(--w-accent);
+}
+.lk .wgt-quote.is-slim {
+  flex: 1;
+  min-width: 0;
+  margin-left: 12px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+.lk .wgt-slim-last {
+  flex: none;
+  margin-left: 10px;
+  font-size: 10px;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+
+/* ---- 2×2 ---- */
+.lk .wgt-square .wgt-top {
+  height: 9px;
+}
+.lk .wgt-sq-run,
+.lk .wgt-sq-idle {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-top: 4px;
+}
+.lk .wgt-time.is-sq {
+  flex: 1;
+  min-height: 0;
+  font-size: 46px;
+}
+.lk .wgt-square .wgt-steprow {
+  margin: 2px 0 0;
+  font-size: 11px;
+}
+.lk .wgt-square .wgt-bar {
+  margin-top: 6px;
+}
+.lk .wgt-sq-reads {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+  font-size: 9px;
+  line-height: 1.2;
+  color: var(--w-muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.lk .wgt-sq-reads span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lk .wgt-sq-reads .is-cap {
+  letter-spacing: 0.06em;
+}
+.lk .wgt-quote.is-sq {
+  /* 110 dp of text column, three lines — this is where autoSize lands on the
+     device, not the 24sp ceiling */
+  flex: 1;
+  min-width: 0;
+  font-size: 18px;
+  line-height: 1.22;
+  overflow-wrap: break-word;
+}
+.lk .wgt-sq-line {
+  height: 1px;
+  flex: none;
+  margin-top: 10px;
+  background: var(--w-line);
+}
+
+/* CJK: the app renders the quote in Noto Sans SC/TC Light, not Jost, and
+   auto-shrinks to fit — these sizes are what autoSize lands on. */
+html[lang='zh-CN'] .lk .wgt-quote,
+html[lang='zh-TW'] .lk .wgt-quote {
+  font-size: 24px;
+  line-height: 1.42;
+  letter-spacing: 0;
+}
+html[lang='zh-CN'] .lk .wgt-quote.is-slim,
+html[lang='zh-TW'] .lk .wgt-quote.is-slim {
+  font-size: 16px;
+  line-height: 1.2;
+}
+html[lang='zh-CN'] .lk .wgt-quote.is-sq,
+html[lang='zh-TW'] .lk .wgt-quote.is-sq {
+  font-size: 16px;
+  line-height: 1.5;
+}
+html[lang='zh-CN'] .lk .wgt-logo,
+html[lang='zh-TW'] .lk .wgt-logo {
+  letter-spacing: 0.44em;
+}
+
+/* ---------- what the card is doing right now ---------- */
+/* the state, not the size: a timer is running or it is at rest, and that is
+   the same sentence in light and in dark */
+.lk-wcar-state {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+}
+.lk-wcar-statein {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 15px 6px;
+  border: 1px solid var(--lk-line);
+  border-radius: 999px;
+  font-family: var(--ui-display);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lk-muted);
+  animation: lkStateIn 0.45s ease both;
+}
+.lk-wcar-statein i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lk-line);
+  transition: background 0.3s ease;
+}
+.lk-wcar-state.is-live .lk-wcar-statein i {
+  background: #d66b3f;
+}
+html[lang='zh-CN'] .lk-wcar-statein,
+html[lang='zh-TW'] .lk-wcar-statein {
+  letter-spacing: 0.14em;
+  font-size: 11px;
+}
+@keyframes lkStateIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- the carousel foot ---------- */
+.lk-wcar-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--lk-line);
+  border-radius: 50%;
+  background: var(--lk-paper);
+  color: var(--lk-ink);
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+.lk-wcar-arrow:hover {
+  border-color: var(--lk-ink);
+  background: var(--lk-ink);
+  color: var(--lk-paper);
+}
+.lk-wcar-arrow:focus-visible {
+  outline: 2px solid var(--lk-brass-l);
+  outline-offset: 3px;
+}
+.lk-wcar-arrow.is-side.is-prev {
+  left: 0;
+}
+.lk-wcar-arrow.is-side.is-next {
+  right: 0;
+}
+.lk-wcar-chev {
+  transform: rotate(-90deg);
+}
+.lk-wcar-arrow.is-prev .lk-wcar-chev {
+  transform: rotate(90deg);
+}
+.lk-wcar-arrow.is-inline {
+  display: none;
+  position: static;
+  margin-top: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.lk-wcar-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(18px, 3vw, 40px);
+  margin-top: clamp(26px, 3vw, 40px);
+  padding-top: clamp(18px, 2.2vw, 26px);
+  border-top: 1px solid var(--lk-line);
+}
+.lk-wcar-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-width: 62ch;
+}
+.lk-wcar-count {
+  font-family: var(--ui-display);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-wcar-name {
+  margin: 0;
+  font-family: var(--ui-display);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+.lk-wcar-d {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--lk-muted);
+}
+.lk-wcar-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.lk-wcar-dots {
+  display: flex;
+  gap: 8px;
+}
+.lk-wcar-dots button {
+  width: 26px;
+  height: 2px;
+  padding: 0;
+  border: 0;
+  background: var(--lk-line);
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.lk-wcar-dots button.on {
+  background: var(--lk-ink);
+}
+.lk-wcar-dots button:focus-visible {
+  outline: 2px solid var(--lk-brass-l);
+  outline-offset: 4px;
+}
+
+/* ---------- closing ---------- */
+.lk-outro {
+  margin-top: clamp(54px, 6.5vw, 96px);
+  padding-top: clamp(30px, 3.6vw, 46px);
+  border-top: 1px solid var(--lk-line);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.lk-outro-t {
+  margin: 0;
+  font-family: var(--ui-display);
+  font-weight: 300;
+  font-size: clamp(25px, 3.2vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.lk-outro-d {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--lk-muted);
+  max-width: 56ch;
+}
+.lk-outro-s {
+  margin-top: 4px;
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .lk-wcar-track {
+    gap: 16px;
+  }
+  .lk-wcar-arrow.is-side {
+    display: none;
+  }
+  .lk-wcar-arrow.is-inline {
+    display: inline-flex;
+  }
+  .lk-wcar-foot {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .lk-wcar-nav {
+    justify-content: space-between;
+  }
+}

@@ -7,7 +7,7 @@ import Hero from './sections/Hero'
 import FlowSection from './sections/FlowSection'
 import TimerSection from './sections/TimerSection'
 import RemindersSection from './sections/RemindersSection'
-import NotificationSection from './sections/NotificationSection'
+import OutOfAppSection from './sections/OutOfAppSection'
 import RecipesSection from './sections/RecipesSection'
 import WorkflowSection from './sections/WorkflowSection'
 import FilmLogSection from './sections/FilmLogSection'
@@ -18,8 +18,9 @@ import LinkFooter from './sections/LinkFooter'
 
 /**
  * ROTA Link product page. One vertical narrative:
- * brand → how it starts → timer → reminders → notification → recipes →
- * workflow → film log → connection → material → download.
+ * brand → how it starts → timer → reminders → out of the app (widgets +
+ * notification) → recipes → workflow → film log → connection → material →
+ * download.
  */
 export default function LinkPage() {
   const { t, i18n } = useTranslation()
@@ -51,7 +52,7 @@ export default function LinkPage() {
         <FlowSection />
         <TimerSection />
         <RemindersSection />
-        <NotificationSection />
+        <OutOfAppSection />
         <RecipesSection />
         <WorkflowSection />
         <FilmLogSection />
