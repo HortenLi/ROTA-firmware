@@ -52,27 +52,30 @@ const RAIL: Record<Size, number> = { wide: 26, slim: 22, square: 18 }
  * ------------------------------------------------------------------ */
 
 const DAY = {
+  top: '#E9E2D1',
+  mid: '#E9D2B4',
+  low: '#C9A77D',
   sun: '#D66B3F',
-  ring: '#F2D6AA',
-  ridgeBack: '#385C54',
-  ridgeFront: '#172F2D',
+  ridgeBack: '#2E544C',
+  ridgeFront: '#254B47',
   dune: '#C75C3B',
   stripe: '#F2EDE0',
   sprocket: '#F2F0E8',
-  palm: '#111722',
+  palm: '#1B211F',
 }
 
 const NIGHT = {
-  skyTop: '#28233F',
-  skyMid: '#713D69',
-  skyLow: '#E16A70',
-  sun: '#FF946B',
-  stripe: '#FFD1A3',
-  city: '#171B2A',
+  sky0: '#493052',
+  sky1: '#272039',
+  sky2: '#171523',
+  sunTop: '#F05A85',
+  sunLow: '#FF8B55',
+  slice: '#272039',
+  city: '#10121D',
   window: '#F7B96E',
-  neonPink: '#FF6C9D',
-  neonTeal: '#6DE8E5',
-  palm: '#111722',
+  neonPink: '#F05A85',
+  neonTeal: '#55D6CF',
+  palm: '#10121D',
 }
 
 function ridgeD(pts: number[]): string {
@@ -81,55 +84,159 @@ function ridgeD(pts: number[]): string {
   return `${d} L420 330 L${pts[0]} 330 Z`
 }
 
-/** WidgetArt.palm: one curved trunk + six quadratic fronds, neon-outlined at night. */
-function palmPaths(x: number, baseY: number, topY: number) {
-  const span = baseY - topY
-  const trunk =
-    `M${x - 7} ${baseY}` +
-    ` C${x - 4} ${baseY - span * 0.5} ${x - 1} ${topY + span * 0.22} ${x - 2.5} ${topY}` +
-    ` L${x + 3} ${topY}` +
-    ` C${x + 5} ${topY + span * 0.22} ${x + 6} ${baseY - span * 0.5} ${x + 9} ${baseY} Z`
-  const fronds: [number, number, number][] = [
-    [-1, -0.55, 74],
-    [-1, 0.1, 64],
-    [-0.45, -1, 70],
-    [0.5, -0.95, 64],
-    [1, -0.35, 70],
-    [1, 0.25, 60],
-  ]
-  const paths = fronds.map(([dx, dy, len]) =>
-    `M${x} ${topY} Q${x + dx * len * 0.55} ${topY + dy * len * 0.85} ${x + dx * len} ${
-      topY + dy * len * 0.4 + 12
-    }`,
-  )
-  return { trunk, paths }
-}
+/**
+ * Palm — the one-brushstroke silhouette from the visual book.
+ *
+ * Six fronds, each drawn as "throw out, curl back": a quad curve out to the tip
+ * and a second one home, so the leaf is a crescent with a wide root and a point,
+ * not a sausage. The trunk is a single quad closed on itself (a sliver), which
+ * is why it needs a fat stroke to survive at widget size.
+ *
+ * The geometry lives in a 250 × 350 local space, exactly as the app has it, and
+ * is scaled into place — so the shape is the same drawing at every card size.
+ */
+const PALM_VH = 350
+const PALM_BX = 110
+
+const PALM_TRUNK = 'M110 350 Q120 185 130 85 Z'
+
+const PALM_FRONDS = [
+  'M130 85 Q50 15 5 45 Q68 32 130 85 Z',
+  'M130 85 Q110 20 78 0 Q132 25 130 85 Z',
+  'M130 85 Q165 5 230 18 Q168 42 130 85 Z',
+  'M130 85 Q220 70 250 125 Q180 94 130 85 Z',
+  'M130 85 Q180 140 205 190 Q155 130 130 85 Z',
+  'M130 85 Q75 130 30 195 Q65 125 130 85 Z',
+]
 
 function Palm({
-  x,
+  baseX,
   baseY,
-  topY,
+  height,
+  fill,
   neon,
 }: {
-  x: number
+  baseX: number
   baseY: number
-  topY: number
+  height: number
+  fill: string
   neon?: string
 }) {
-  const { trunk, paths } = palmPaths(x, baseY, topY)
+  const s = height / PALM_VH
+  return (
+    <g transform={`translate(${baseX - PALM_BX * s} ${baseY - PALM_VH * s}) scale(${s})`}>
+      {PALM_FRONDS.map((d) => (
+        <path key={d} d={d} fill={fill} />
+      ))}
+      <path d={PALM_TRUNK} fill={fill} stroke={fill} strokeWidth={7} strokeLinecap="round" />
+      {neon ? (
+        <>
+          {PALM_FRONDS.map((d) => (
+            <path
+              key={`o${d}`}
+              d={d}
+              fill="none"
+              stroke={neon}
+              strokeOpacity={0.08}
+              strokeWidth={18}
+              strokeLinejoin="round"
+            />
+          ))}
+          {PALM_FRONDS.map((d) => (
+            <path
+              key={`i${d}`}
+              d={d}
+              fill="none"
+              stroke={neon}
+              strokeOpacity={0.2}
+              strokeWidth={9}
+              strokeLinejoin="round"
+            />
+          ))}
+          {PALM_FRONDS.map((d) => (
+            <path
+              key={`c${d}`}
+              d={d}
+              fill="none"
+              stroke={neon}
+              strokeWidth={2.4}
+              strokeLinejoin="round"
+            />
+          ))}
+          <path d={PALM_TRUNK} fill="none" stroke={neon} strokeWidth={2.4} />
+        </>
+      ) : null}
+    </g>
+  )
+}
+
+/**
+ * The sun — solid disc, then banded by the sky it hangs in.
+ *
+ * The horizontal slices are the signature of this whole language: they turn a
+ * flat coin into a sun cut open by the atmosphere. Bars are 1.55 / 1.7 units
+ * thick on a 9 / 9.5 period, clipped to the disc.
+ */
+function SunDisc({
+  uid,
+  cx,
+  cy,
+  r,
+  top,
+  bottom,
+  slice,
+  period,
+  thick,
+  halo,
+}: {
+  uid: string
+  cx: number
+  cy: number
+  r: number
+  top: string
+  bottom?: string
+  slice: string
+  period: number
+  thick: number
+  halo?: string
+}) {
+  const grad = `${uid}-sun`
+  const clip = `${uid}-sunc`
+  const glow = `${uid}-halo`
+  const bars: number[] = []
+  for (let y = cy - r; y < cy + r; y += period) bars.push(y)
   return (
     <>
-      <path d={trunk} fill={NIGHT.palm} />
-      {paths.map((d) => (
-        <path key={d} d={d} fill="none" stroke={NIGHT.palm} strokeWidth={7} strokeLinecap="round" />
-      ))}
-      {neon && (
+      {halo ? (
         <>
-          {paths.map((d) => (
-            <path key={d} d={d} fill="none" stroke={neon} strokeWidth={2} strokeLinecap="round" />
-          ))}
+          <defs>
+            <radialGradient id={glow} cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stopColor={halo} stopOpacity={0.3} />
+              <stop offset="0.44" stopColor={halo} stopOpacity={0.16} />
+              <stop offset="0.76" stopColor={halo} stopOpacity={0.05} />
+              <stop offset="1" stopColor={halo} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle cx={cx} cy={cy} r={r * 1.32} fill={`url(#${glow})`} />
         </>
-      )}
+      ) : null}
+      {bottom ? (
+        <defs>
+          <linearGradient id={grad} x1="0" y1={cy - r} x2="0" y2={cy + r} gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor={top} />
+            <stop offset="1" stopColor={bottom} />
+          </linearGradient>
+        </defs>
+      ) : null}
+      <clipPath id={clip}>
+        <circle cx={cx} cy={cy} r={r} />
+      </clipPath>
+      <circle cx={cx} cy={cy} r={r} fill={bottom ? `url(#${grad})` : top} />
+      <g clipPath={`url(#${clip})`}>
+        {bars.map((y) => (
+          <rect key={y} x={cx - r} y={y} width={r * 2} height={thick} fill={slice} />
+        ))}
+      </g>
     </>
   )
 }
@@ -152,21 +259,29 @@ const CITY_WINDOWS = [
   267, 150, 370, 143, 380, 143,
 ]
 
+/**
+ * WidgetArt.sceneDay / sceneNight, coordinate for coordinate.
+ *
+ * Day is a California road movie: raking 145° light, a striped sun, two green
+ * ridges over a red dune, three subtitle rules, three sprockets, one palm.
+ * Night is Los Angeles: a radial purple sky, a pink-to-orange sun with a glow,
+ * a skyline full of lit windows, and two palms drawn in neon tubing.
+ */
 function Scene({ night, uid }: { night: boolean; uid: string }) {
   if (!night) {
     return (
       <>
-        <circle cx={258} cy={104} r={62} fill={DAY.sun} />
-        <circle
-          cx={258}
-          cy={104}
-          r={74}
-          fill="none"
-          stroke={DAY.ring}
-          strokeOpacity={0.78}
-          strokeWidth={1.3}
-          strokeDasharray="3 8"
-        />
+        <defs>
+          <linearGradient id={`${uid}-day`} x1="0" y1="0" x2={ART_W} y2={ART_H} gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor={DAY.top} />
+            <stop offset="0.48" stopColor={DAY.mid} />
+            <stop offset="1" stopColor={DAY.low} />
+          </linearGradient>
+        </defs>
+        <rect width={ART_W} height={ART_H} fill={`url(#${uid}-day)`} />
+
+        <SunDisc uid={uid} cx={258} cy={104} r={62} top={DAY.sun} slice={DAY.mid} period={9} thick={1.55} />
+
         <path
           d={ridgeD([0, 232, 66, 170, 112, 198, 188, 118, 244, 164, 296, 108, 352, 156, 420, 120])}
           fill={DAY.ridgeBack}
@@ -179,6 +294,7 @@ function Scene({ night, uid }: { night: boolean; uid: string }) {
           d={ridgeD([0, 300, 196, 250, 232, 268, 262, 236, 318, 268, 366, 246, 420, 276])}
           fill={DAY.dune}
         />
+
         {/* three "subtitle" rules — the film-mark, and they hold the empty left side */}
         <g stroke={DAY.stripe} strokeOpacity={0.59} strokeWidth={2.4} strokeLinecap="round">
           <path d="M22 214H122" />
@@ -198,7 +314,8 @@ function Scene({ night, uid }: { night: boolean; uid: string }) {
             fillOpacity={0.75}
           />
         ))}
-        <Palm x={92} baseY={300} topY={116} />
+
+        <Palm baseX={88} baseY={302} height={176} fill={DAY.palm} />
       </>
     )
   }
@@ -206,20 +323,27 @@ function Scene({ night, uid }: { night: boolean; uid: string }) {
   return (
     <>
       <defs>
-        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="290" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor={NIGHT.skyTop} />
-          <stop offset="0.52" stopColor={NIGHT.skyMid} />
-          <stop offset="1" stopColor={NIGHT.skyLow} />
-        </linearGradient>
+        <radialGradient id={`${uid}-night`} cx="0.5" cy="0.42" r="0.78" fx="0.5" fy="0.42">
+          <stop offset="0" stopColor={NIGHT.sky0} />
+          <stop offset="0.43" stopColor={NIGHT.sky1} />
+          <stop offset="1" stopColor={NIGHT.sky2} />
+        </radialGradient>
       </defs>
-      <rect width={ART_W} height={ART_H} fill={`url(#${uid}-sky)`} />
-      <circle cx={270} cy={118} r={66} fill={NIGHT.sun} />
-      <g stroke={NIGHT.stripe} strokeOpacity={0.59} strokeWidth={3}>
-        <path d="M206 130H334" />
-        <path d="M212 146H328" />
-        <path d="M220 162H320" />
-        <path d="M232 178H308" />
-      </g>
+      <rect width={ART_W} height={ART_H} fill={`url(#${uid}-night)`} />
+
+      <SunDisc
+        uid={uid}
+        cx={268}
+        cy={116}
+        r={64}
+        top={NIGHT.sunTop}
+        bottom={NIGHT.sunLow}
+        slice={NIGHT.slice}
+        period={9.5}
+        thick={1.7}
+        halo={NIGHT.neonPink}
+      />
+
       <path d={cityD()} fill={NIGHT.city} />
       {CITY_WINDOWS.reduce<JSX.Element[]>((acc, v, i) => {
         if (i % 2 === 0) {
@@ -229,14 +353,16 @@ function Scene({ night, uid }: { night: boolean; uid: string }) {
         }
         return acc
       }, [])}
-      <Palm x={100} baseY={300} topY={104} neon={NIGHT.neonPink} />
-      <Palm x={378} baseY={300} topY={158} neon={NIGHT.neonTeal} />
-      <rect y={254} width={ART_W} height={36} fill={NIGHT.city} fillOpacity={0.86} />
-      {/* glowLine: a few widening strokes under one crisp line */}
-      <g stroke={NIGHT.neonPink}>
-        <path d="M0 258H420" strokeWidth={14} strokeOpacity={0.34} />
-        <path d="M0 258H420" strokeWidth={10} strokeOpacity={0.26} />
-        <path d="M0 258H420" strokeWidth={6} strokeOpacity={0.17} />
+
+      <Palm baseX={84} baseY={300} height={166} fill={NIGHT.palm} neon={NIGHT.neonTeal} />
+      <Palm baseX={384} baseY={300} height={128} fill={NIGHT.palm} neon={NIGHT.neonPink} />
+
+      <rect y={254} width={ART_W} height={36} fill={NIGHT.city} fillOpacity={0.863} />
+      {/* glowLine: three widening passes under one crisp line */}
+      <g stroke={NIGHT.neonTeal} strokeLinecap="round">
+        <path d="M0 258H420" strokeWidth={14} strokeOpacity={0.3} />
+        <path d="M0 258H420" strokeWidth={10} strokeOpacity={0.24} />
+        <path d="M0 258H420" strokeWidth={6} strokeOpacity={0.16} />
         <path d="M0 258H420" strokeWidth={2} />
       </g>
     </>
@@ -308,7 +434,7 @@ function Card({
     : size === 'slim'
       ? 0.38
       : 0.24
-  const op = (night ? artOpacity * 0.88 : artOpacity).toFixed(3)
+  const op = (night ? artOpacity * 0.96 : artOpacity).toFixed(3)
 
   return (
     <div className={`wgt wgt-${size} is-${theme}${live ? ' is-live' : ''}`}>
@@ -362,6 +488,36 @@ function Card({
   )
 }
 
+/**
+ * One of the card's two faces.
+ *
+ * Both faces stay mounted and cross-dissolve, because the thing that changes
+ * is what the timer is doing, not which screen you are on — and a timer that
+ * snaps reads as a broken widget. The app redraws a bitmap on every tick, so
+ * the honest web equivalent is a slow dissolve, not a slide.
+ */
+function Face({ on, children }: { on: boolean; children: React.ReactNode }) {
+  return (
+    <div className="wgt-face" data-on={on} aria-hidden={!on}>
+      {children}
+    </div>
+  )
+}
+
+/** The shared first line: wordmark left, what the timer is doing right. */
+function Top({ live, small = false }: { live: boolean; small?: boolean }) {
+  const { t } = useTranslation()
+  return (
+    <div className="wgt-top">
+      <span className={`wgt-logo${small ? ' is-sm' : ''}`}>ROTA</span>
+      <span className="wgt-state">
+        <i className="wgt-dot" />
+        {live ? t('link.out.wRun') : t('link.out.wStandby')}
+      </span>
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------------ *
  * 4×2 — the timer desk (the only size with buttons)
  * ------------------------------------------------------------------ */
@@ -383,15 +539,8 @@ export function Widget4x2({
 
   return (
     <Card size="wide" theme={theme} night={theme === 'dark'} live={live} idle={!live}>
-      <div className="wgt-top">
-        <span className="wgt-logo">ROTA</span>
-        <span className="wgt-state">
-          <i className="wgt-dot" />
-          {live ? t('link.out.wRun') : t('link.out.wStandby')}
-        </span>
-      </div>
-
-      {live ? (
+      <Face on={live}>
+        <Top live />
         <div className="wgt-run">
           <div className="wgt-run-row">
             <div className="wgt-run-main">
@@ -422,7 +571,10 @@ export function Widget4x2({
             </span>
           </div>
         </div>
-      ) : (
+      </Face>
+
+      <Face on={!live}>
+        <Top live={false} />
         <div className="wgt-idle">
           <p className="wgt-quote">{t('link.out.q1')}</p>
           <div className="wgt-last">
@@ -438,7 +590,7 @@ export function Widget4x2({
             {t('link.out.wStart')}
           </span>
         </div>
-      )}
+      </Face>
     </Card>
   )
 }
@@ -464,33 +616,32 @@ export function Widget4x1({
 
   return (
     <Card size="slim" theme={theme} night={theme === 'dark'} live={live} idle={!live}>
-      <div className="wgt-slim-row">
-        <span className="wgt-logo">ROTA</span>
-        {live ? (
-          <>
-            <span className="wgt-time">{fmtClock(remaining)}</span>
-            <span className="wgt-slim-step">
-              <span className="wgt-step">{step.title}</span>
-              <span className="wgt-idx">
-                0{stage + 1} / 0{recipe.steps.length}
-              </span>
+      <Face on={live}>
+        <div className="wgt-slim-row">
+          <span className="wgt-logo">ROTA</span>
+          <span className="wgt-time">{fmtClock(remaining)}</span>
+          <span className="wgt-slim-step">
+            <span className="wgt-step">{step.title}</span>
+            <span className="wgt-idx">
+              0{stage + 1} / 0{recipe.steps.length}
             </span>
-            <span className="wgt-dial">Ⅱ</span>
-          </>
-        ) : (
-          <>
-            <span className="wgt-quote is-slim">{t('link.out.q2')}</span>
-            <span className="wgt-slim-last">{recipe.name}</span>
-          </>
-        )}
-      </div>
-      {live && (
+          </span>
+          <span className="wgt-dial">Ⅱ</span>
+        </div>
         <span className="wgt-ticks">
           {Array.from({ length: 12 }, (_, i) => (
             <i key={i} className={i < done ? 'on' : ''} />
           ))}
         </span>
-      )}
+      </Face>
+
+      <Face on={!live}>
+        <div className="wgt-slim-row">
+          <span className="wgt-logo">ROTA</span>
+          <span className="wgt-quote is-slim">{t('link.out.q2')}</span>
+          <span className="wgt-slim-last">{recipe.name}</span>
+        </div>
+      </Face>
     </Card>
   )
 }
@@ -516,15 +667,8 @@ export function Widget2x2({
 
   return (
     <Card size="square" theme={theme} night={theme === 'dark'} live={live} idle={!live}>
-      <div className="wgt-top">
-        <span className="wgt-logo is-sm">ROTA</span>
-        <span className="wgt-state">
-          <i className="wgt-dot" />
-          {live ? t('link.out.wRun') : t('link.out.wStandby')}
-        </span>
-      </div>
-
-      {live ? (
+      <Face on={live}>
+        <Top live small />
         <div className="wgt-sq-run">
           <span className="wgt-time is-sq">{fmtClock(remaining)}</span>
           <div className="wgt-steprow">
@@ -539,7 +683,10 @@ export function Widget2x2({
             <span>{pct}%</span>
           </div>
         </div>
-      ) : (
+      </Face>
+
+      <Face on={!live}>
+        <Top live={false} small />
         <div className="wgt-sq-idle">
           <p className="wgt-quote is-sq">{t('link.out.q3')}</p>
           <span className="wgt-sq-line" />
@@ -548,7 +695,7 @@ export function Widget2x2({
             <span>{recipe.name}</span>
           </div>
         </div>
-      )}
+      </Face>
     </Card>
   )
 }
@@ -732,6 +879,60 @@ const LAYOUT: Record<'wide' | 'slim' | 'square', (number | (Tile | null)[])[]> =
  * It keeps the pair honest — light shows the film photo, dark shows something
  * that belongs to the same world without being the same picture.
  */
+/**
+ * The light half of the pair: paper at dawn.
+ *
+ * Not a photograph — the same rule the dark side follows. It is the widget's
+ * own day scene pushed out to full screen: warm paper, one low sun, two brass
+ * hairlines for a horizon. Nothing in it competes with an icon or a card.
+ */
+function LightWall({ uid }: { uid: string }) {
+  const sky = `lsky-${uid}`
+  const glow = `lglow-${uid}`
+  const arc = `larc-${uid}`
+  return (
+    <svg className="lk-hs-wall is-drawn" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={sky} x1="0.1" y1="0" x2="0.8" y2="1">
+          <stop offset="0" stopColor="#eee4d0" />
+          <stop offset="0.38" stopColor="#e2d5ba" />
+          <stop offset="0.68" stopColor="#d4c19f" />
+          <stop offset="1" stopColor="#c0aa86" />
+        </linearGradient>
+        <radialGradient id={glow} cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#fffaf0" stopOpacity="0.92" />
+          <stop offset="0.42" stopColor="#f7e6c6" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#e7cda4" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={arc} x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0" stopColor="#b48b51" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#a8834a" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#b48b51" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      <rect width="390" height="844" fill={`url(#${sky})`} />
+      <ellipse cx="286" cy="392" rx="268" ry="238" fill={`url(#${glow})`} />
+      <circle cx="286" cy="392" r="112" fill="none" stroke={`url(#${arc})`} strokeWidth="1" opacity="0.5" />
+      <circle cx="286" cy="392" r="86" fill="#fffdf6" opacity="0.5" />
+      <path
+        d="M-40 660c84-46 168-46 252 0s168 46 252 0"
+        fill="none"
+        stroke="#a8834a"
+        strokeOpacity="0.14"
+        strokeWidth="1"
+      />
+      <path
+        d="M-40 700c84-46 168-46 252 0s168 46 252 0"
+        fill="none"
+        stroke="#a8834a"
+        strokeOpacity="0.09"
+        strokeWidth="1"
+      />
+    </svg>
+  )
+}
+
 function DarkWall({ uid }: { uid: string }) {
   const sky = `sky-${uid}`
   const glow = `glow-${uid}`
@@ -809,14 +1010,11 @@ export function HomeScreen({
 }) {
   const live = state === 'live'
   const slots = LAYOUT[arrange]
+  const uid = useId().replace(/[:]/g, '')
 
   return (
     <div className={`lk-hs is-${theme}`}>
-      {theme === 'light' ? (
-        <img className="lk-hs-wall" src={href('/link/filmlog/c2-3.webp')} alt="" decoding="async" />
-      ) : (
-        <DarkWall uid="hs" />
-      )}
+      {theme === 'light' ? <LightWall uid={uid} /> : <DarkWall uid={uid} />}
       <span className="lk-hs-veil" aria-hidden="true" />
       <span className="lk-hs-grain" aria-hidden="true" />
 

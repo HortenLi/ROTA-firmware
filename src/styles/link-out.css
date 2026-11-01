@@ -35,61 +35,384 @@
   max-width: 60ch;
 }
 
-/* ---------- the launcher mock ---------- */
-.lk-wcar {
-  position: relative;
+/* ---------- the chapter standfirst ---------- */
+.lk-out-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3.4vw, 52px);
+  margin-top: clamp(22px, 2.6vw, 30px);
+  padding-top: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--lk-line);
+  max-width: 112ch;
 }
-.lk-wcar-track {
+.lk-out-cols p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--lk-muted);
+}
+
+/* ---------- the two-panel poster ----------
+   One rule holds the whole widget chapter together: light left of the seam,
+   dark right of it. The band is full-bleed and split down the middle, each half
+   wearing the widget's own scene — sun, ridges, stripe, halftone, palm — pushed
+   out of focus. Blurred, they stop being symbols and become the atmosphere the
+   cards sit in, the way a real home screen softens behind the glass. */
+.lk-poster {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  isolation: isolate;
+}
+.lk-post {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #1b211f;
+}
+.lk-post.is-night {
+  color: #f4efe6;
+}
+
+/* --- the out-of-focus scene --- */
+.lk-post-art {
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  pointer-events: none;
+  /* enough to lose focus, not so much that the shapes stop being shapes */
+  filter: blur(15px) saturate(1.05);
+}
+.lk-post-art i,
+.lk-post-art span {
+  position: absolute;
+  display: block;
+}
+.lk-post-sun {
+  width: 46%;
+  aspect-ratio: 1;
+  left: 50%;
+  top: 14%;
+  translate: -50% 0;
+  border-radius: 50%;
+}
+/* the sun is printed, not rendered: the stripes are the scene's own paper */
+.lk-post-sun::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.lk-post-mtn {
+  width: 66%;
+  height: 30%;
+  right: -10%;
+  bottom: 8%;
+  clip-path: polygon(0 100%, 25% 20%, 48% 68%, 66% 0, 100% 100%);
+}
+.lk-post-tri {
+  width: 42%;
+  height: 32%;
+  left: -13%;
+  top: 30%;
+  rotate: 18deg;
+  clip-path: polygon(50% 0, 100% 100%, 0 75%);
+}
+.lk-post-stripe {
+  height: 92px;
+  width: 132%;
+  left: -16%;
+  bottom: 25%;
+  rotate: -18deg;
+}
+.lk-post-dots {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-image: radial-gradient(currentColor 1.4px, transparent 1.9px);
+  background-size: 9px 9px;
+  opacity: 0.34;
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 12%, transparent 70%);
+}
+.lk-post-dots.is-a {
+  right: -4%;
+  top: 4%;
+  width: 44%;
+}
+.lk-post-dots.is-b {
+  left: -8%;
+  bottom: 6%;
+  width: 56%;
+}
+.lk-post-palm {
+  width: 46%;
+  height: 46%;
+}
+.lk-post-palm.is-l {
+  left: -7%;
+  top: 22%;
+  rotate: -12deg;
+}
+.lk-post-palm.is-r {
+  right: -9%;
+  bottom: 2%;
+  rotate: 12deg;
+}
+.lk-post-palm svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.lk-post-palm svg path {
+  fill: currentColor;
+}
+
+/* --- daylight --- */
+.lk-post.is-day {
+  background: linear-gradient(145deg, #efe6d2 0%, #e9d2b4 46%, #c8a67c 100%);
+}
+.lk-post.is-day .lk-post-sun {
+  background: linear-gradient(200deg, #eaa46d 0%, #d66b3f 62%, #b2542f 100%);
+  box-shadow: 0 0 0 24px rgba(214, 107, 63, 0.1);
+}
+.lk-post.is-day .lk-post-sun::before {
+  background: repeating-linear-gradient(to bottom, transparent 0 20px, rgba(233, 210, 180, 0.95) 21px 27px);
+}
+.lk-post.is-day .lk-post-mtn {
+  background: #254b47;
+  opacity: 0.84;
+}
+.lk-post.is-day .lk-post-tri {
+  background: #b48b51;
+  opacity: 0.62;
+}
+.lk-post.is-day .lk-post-stripe {
+  background: repeating-linear-gradient(90deg, #d66b3f 0 30px, #e9a66b 30px 60px, #f2d7b3 60px 90px);
+  opacity: 0.36;
+}
+.lk-post.is-day .lk-post-dots,
+.lk-post.is-day .lk-post-palm {
+  color: #254b47;
+}
+.lk-post.is-day .lk-post-palm {
+  color: #1b211f;
+}
+
+/* --- afterdark --- */
+.lk-post.is-night {
+  background: radial-gradient(ellipse at 50% 40%, #493052 0%, #272039 44%, #171523 100%);
+}
+.lk-post.is-night .lk-post-sun {
+  background: linear-gradient(145deg, #f05a85 5%, #ff8b55 80%);
+  box-shadow:
+    0 0 40px rgba(240, 90, 133, 0.4),
+    0 0 140px rgba(240, 90, 133, 0.2);
+}
+.lk-post.is-night .lk-post-sun::before {
+  background: repeating-linear-gradient(to bottom, transparent 0 20px, rgba(39, 32, 57, 0.9) 21px 28px);
+}
+.lk-post.is-night .lk-post-mtn {
+  background: #55d6cf;
+  opacity: 0.58;
+}
+.lk-post.is-night .lk-post-tri {
+  background: #f05a85;
+  opacity: 0.68;
+}
+.lk-post.is-night .lk-post-stripe {
+  background: repeating-linear-gradient(90deg, #f05a85 0 30px, #ff8b55 30px 60px, #55d6cf 60px 90px);
+  opacity: 0.46;
+}
+.lk-post.is-night .lk-post-dots {
+  color: #f05a85;
+}
+.lk-post.is-night .lk-post-palm {
+  color: #10121d;
+}
+.lk-post-glow {
+  width: 90%;
+  aspect-ratio: 1;
+  left: 6%;
+  bottom: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(85, 214, 207, 0.4) 0%, rgba(85, 214, 207, 0) 68%);
+}
+
+/* --- paper texture, kept sharp on purpose --- */
+.lk-post-tex {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lk-post-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(30, 20, 20, 0.14) 4px);
+  mix-blend-mode: multiply;
+}
+.lk-post-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  background-image: radial-gradient(circle at 50% 50%, rgba(24, 20, 16, 0.6) 0.5px, transparent 0.6px);
+  background-size: 3px 3px;
+}
+.lk-post.is-night .lk-post-lines {
+  opacity: 0.1;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255, 245, 235, 0.1) 4px);
+  mix-blend-mode: normal;
+}
+
+/* --- the furniture --- */
+.lk-post-in {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(30px, 3.6vw, 48px) clamp(26px, 4.4vw, 68px) clamp(26px, 3.2vw, 42px);
+}
+.lk-post-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--ui-display);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+.lk-post-size {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+}
+.lk-post-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin-top: clamp(14px, 2vw, 26px);
+}
+.lk-post-view {
+  width: 100%;
+  overflow: hidden;
+  /* the phone's shadow has to breathe or the mask crops it */
+  padding: 8px 0 44px;
+  margin: -8px 0 -28px;
+}
+.lk-post-rail {
+  display: flex;
+  will-change: transform;
+  transition: transform 680ms cubic-bezier(0.32, 0.9, 0.24, 1);
+}
+.lk-post-slide {
+  flex: 0 0 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: clamp(22px, 4vw, 58px);
-  animation: lkCarIn 0.44s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.lk-post-slide > figure {
+  margin: 0;
+  width: min(100%, 336px);
+}
+.lk-home-frame {
+  padding: 7px;
+  border-radius: 27px;
+  background: #14150f;
+  box-shadow:
+    0 40px 70px -44px rgba(27, 27, 27, 0.6),
+    0 0 0 1px rgba(27, 27, 27, 0.1);
+}
+.lk-post.is-night .lk-home-frame {
+  box-shadow:
+    0 46px 70px -40px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(242, 238, 231, 0.16);
+}
+.lk-home-frame .lk-hs {
+  border-radius: 20px;
+}
+.lk-cap-k {
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-cap-d {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--lk-muted);
+}
+
+/* --- the arrows float on the band, one per theme --- */
+.lk-post-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 46px;
+  height: 46px;
+  margin-top: -23px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(27, 27, 27, 0.22);
+  border-radius: 50%;
+  background: rgba(248, 246, 240, 0.42);
+  color: #1b211f;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+.lk-post-arrow:hover {
+  background: rgba(27, 33, 31, 0.92);
+  border-color: rgba(27, 33, 31, 0.92);
+  color: #f2f0e8;
+}
+.lk-post-arrow:focus-visible {
+  outline: 2px solid var(--lk-brass-l);
+  outline-offset: 3px;
+}
+.lk-post-arrow.is-prev {
+  left: clamp(10px, 2vw, 34px);
+}
+.lk-post-arrow.is-next {
+  right: clamp(10px, 2vw, 34px);
+  border-color: rgba(242, 238, 231, 0.3);
+  background: rgba(20, 18, 28, 0.4);
+  color: #f2eee7;
+}
+.lk-post-arrow.is-next:hover {
+  background: rgba(242, 238, 231, 0.92);
+  border-color: rgba(242, 238, 231, 0.92);
+  color: #1b1b1b;
 }
 @keyframes lkCarIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
-.lk-homefig {
-  margin: 0;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 336px;
-}
-.lk-home-frame {
-  padding: 7px;
-  border-radius: 27px;
-  background: #16170f;
-  box-shadow:
-    0 40px 70px -44px rgba(27, 27, 27, 0.6),
-    0 0 0 1px rgba(27, 27, 27, 0.1);
-}
-.lk-home-frame .lk-hs {
-  border-radius: 20px;
-}
-.lk-homefig figcaption {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 18px;
-  font-family: var(--ui-display);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--lk-muted-d);
-}
-.lk-homefig figcaption::before {
-  content: '';
-  width: 18px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
+/* the caption under the band fades up as its slide arrives */
+.lk-wcar-lead > div {
+  animation: lkCarIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 .lk-cap-k {
   font-family: var(--ui-display);
@@ -138,10 +461,22 @@
 .lk-hs.is-dark .lk-hs-grain {
   opacity: 0.11;
 }
+/* the same grain, inverted: on paper the flecks have to be warm, not white */
+.lk-hs.is-light .lk-hs-grain {
+  opacity: 0.07;
+  background-image: radial-gradient(circle at 50% 50%, rgba(92, 72, 42, 0.55) 0.5px, transparent 0.6px);
+}
 .lk-hs-veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(26, 20, 24, 0.06) 0%, rgba(26, 20, 24, 0.04) 40%, rgba(26, 20, 24, 0.2) 100%);
+  /* the light wall is paper, not a photograph: lift the top so the clock reads
+     and lay a little shade under the dock so pale icons keep their edge */
+  background: linear-gradient(
+    180deg,
+    rgba(255, 253, 247, 0.36) 0%,
+    rgba(255, 253, 247, 0.06) 38%,
+    rgba(86, 66, 38, 0.12) 100%
+  );
 }
 .lk-hs.is-dark .lk-hs-veil {
   background: linear-gradient(180deg, rgba(10, 9, 14, 0.46) 0%, rgba(10, 9, 14, 0.42) 40%, rgba(10, 9, 14, 0.58) 100%);
@@ -188,6 +523,10 @@
   display: block;
   width: 58px;
   height: 58px;
+}
+.lk-hs.is-light .lk-hs-icon {
+  color: rgba(28, 25, 21, 0.8);
+  background: rgba(255, 255, 255, 0.54);
 }
 .lk-hs-icon {
   width: 58px;
@@ -389,14 +728,15 @@
   position: absolute;
   overflow: hidden;
   pointer-events: none;
+  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .lk .wgt-dots {
   position: absolute;
   inset: 0;
   color: var(--w-text);
-  opacity: 0.055;
-  background-image: radial-gradient(circle at 50% 50%, currentColor 0.6px, transparent 0.7px);
-  background-size: 4px 4px;
+  opacity: 0.1;
+  background-image: radial-gradient(circle at 50% 50%, currentColor 0.8px, transparent 0.9px);
+  background-size: 5px 5px;
 }
 .lk .wgt-scrim {
   position: absolute;
@@ -437,7 +777,7 @@
     180deg,
     rgba(var(--w-paper-a), 1) 0%,
     rgba(var(--w-paper-a), 0.41) 40%,
-    rgba(var(--w-paper-a), 0.87) 100%
+    rgba(var(--w-paper-a), 0.71) 100%
   );
 }
 .lk .wgt-rail {
@@ -465,16 +805,28 @@
 .lk .wgt-body {
   position: absolute;
   inset: 0;
+}
+/* Both faces are always mounted, stacked, and cross-dissolve: the timer changes
+   what it is doing, and a widget that snaps reads as a broken widget. */
+.lk .wgt-face {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.lk .wgt-wide .wgt-body {
+.lk .wgt-face[data-on='true'] {
+  opacity: 1;
+}
+.lk .wgt-wide .wgt-face {
   padding: 11px 42px 11px 20px;
 }
-.lk .wgt-slim .wgt-body {
+.lk .wgt-slim .wgt-face {
   padding: 7px 36px 7px 16px;
 }
-.lk .wgt-square .wgt-body {
+.lk .wgt-square .wgt-face {
   padding: 13px 30px 13px 16px;
 }
 
@@ -509,6 +861,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--w-muted);
+  transition: background 700ms ease;
 }
 .lk .wgt.is-live .wgt-dot {
   background: var(--w-accent);
@@ -544,6 +897,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+/* CJK breaks anywhere, so an eleven-and-two split leaves a one-character widow
+   hanging under the quote — balance the lines instead of shrinking the type */
+:lang(zh) .lk .wgt-quote,
+:lang(zh) .lk .wgt-quote.is-slim,
+:lang(zh) .lk .wgt-quote.is-sq {
+  text-wrap: balance;
 }
 .lk .wgt-last {
   display: flex;
@@ -886,8 +1246,11 @@ html[lang='zh-TW'] .lk .wgt-logo {
   align-items: center;
   gap: 9px;
   padding: 7px 15px 6px;
-  border: 1px solid var(--lk-line);
+  border: 1px solid rgba(27, 27, 27, 0.14);
   border-radius: 999px;
+  background: rgba(248, 246, 240, 0.82);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   font-family: var(--ui-display);
   font-size: 10.5px;
   font-weight: 500;
@@ -954,12 +1317,6 @@ html[lang='zh-TW'] .lk-wcar-statein {
   outline: 2px solid var(--lk-brass-l);
   outline-offset: 3px;
 }
-.lk-wcar-arrow.is-side.is-prev {
-  left: 0;
-}
-.lk-wcar-arrow.is-side.is-next {
-  right: 0;
-}
 .lk-wcar-chev {
   transform: rotate(-90deg);
 }
@@ -967,7 +1324,7 @@ html[lang='zh-TW'] .lk-wcar-statein {
   transform: rotate(90deg);
 }
 .lk-wcar-arrow.is-inline {
-  display: none;
+  display: inline-flex;
   position: static;
   margin-top: 0;
   width: 40px;
@@ -1069,16 +1426,153 @@ html[lang='zh-TW'] .lk-wcar-statein {
   color: var(--lk-muted-d);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .lk .wgt-face,
+  .lk .wgt-art,
+  .lk .wgt-dot {
+    transition: none;
+  }
+}
+
+/* ---------- the specimen sheet ----------
+   The rail above shows the widget in a life; the sheet shows it as an object.
+   Everything is at actual size, so the three sizes can be compared honestly —
+   a 4×1 really is half the height of a 4×2, and a 2×2 really is one column
+   narrower. Printed-plate furniture: an index, a hairline, a spec line. */
+.lk-sheet {
+  margin-top: clamp(48px, 5.8vw, 80px);
+}
+.lk-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--lk-ink);
+}
+.lk-sheet-d {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--lk-muted);
+}
+.lk-spec {
+  display: grid;
+  gap: clamp(18px, 2.2vw, 26px);
+  padding: clamp(24px, 3vw, 34px) 0 clamp(26px, 3.2vw, 38px);
+  border-bottom: 1px solid var(--lk-line);
+}
+.lk-spec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+.lk-spec-idx {
+  font-family: var(--ui-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--lk-muted-d);
+  font-variant-numeric: tabular-nums;
+}
+.lk-spec-name {
+  font-family: var(--ui-display);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lk-ink);
+}
+.lk-spec-dim {
+  margin-left: auto;
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--lk-muted-d);
+  font-variant-numeric: tabular-nums;
+}
+.lk-spec-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(16px, 2.4vw, 30px);
+}
+/* the light card ends where the dark one begins, and that line is the same
+   50% the band splits on — the sheet and the poster share one axis */
+.lk-spec.is-wide .lk-spec-item,
+.lk-spec.is-slim .lk-spec-item {
+  flex: 0 1 358px;
+}
+.lk-spec-item {
+  margin: 0;
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.lk-spec-frame {
+  border-radius: 19px;
+  box-shadow:
+    0 16px 28px -22px rgba(27, 27, 27, 0.55),
+    0 0 0 1px rgba(27, 27, 27, 0.1);
+}
+.lk-spec.is-slim .lk-spec-frame {
+  border-radius: 16px;
+}
+.lk-spec-item figcaption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: var(--ui-display);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lk-muted-d);
+}
+.lk-spec-item figcaption::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+.lk-spec-note {
+  margin: 0 auto;
+  max-width: 56ch;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.72;
+  color: var(--lk-muted);
+}
+.lk-sheet-note {
+  margin: clamp(22px, 2.6vw, 30px) auto 0;
+  text-align: center;
+  max-width: 76ch;
+  font-size: 12.5px;
+  line-height: 1.78;
+  color: var(--lk-muted-d);
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
-  .lk-wcar-track {
-    gap: 16px;
+  /* the band stacks: the seam turns horizontal and each theme gets a floor */
+  .lk-poster {
+    grid-template-columns: minmax(0, 1fr);
   }
-  .lk-wcar-arrow.is-side {
+  .lk-post-in {
+    padding: 26px 20px 22px;
+  }
+  .lk-post-slide > figure {
+    width: min(100%, 268px);
+  }
+  .lk-post-arrow {
     display: none;
   }
-  .lk-wcar-arrow.is-inline {
-    display: inline-flex;
+  .lk-out-cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .lk-spec-dim {
+    margin-left: 0;
+    width: 100%;
   }
   .lk-wcar-foot {
     grid-template-columns: minmax(0, 1fr);
