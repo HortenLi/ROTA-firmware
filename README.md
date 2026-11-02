@@ -40,7 +40,15 @@ git add public/releases && git commit -m "release(app): v0.16.32" && git push
 `notes.json` is optional and carries the update-dialog copy in three languages
 (`{"en": "...", "zh-CN": "...", "zh-TW": "..."}`). Older builds are not kept
 here — they belong under [Releases](https://github.com/HortenLi/ROTA-firmware/releases)
-as tagged assets.
+as tagged assets (`app-v*` tags; `Firmware.tsx` filters them out of the firmware list).
+
+Attaching the APK to the release is done on the runner, not locally — this machine's
+uplink cannot push 36 MB without resetting (see `.github/workflows/release-apk.yml`):
+
+```bash
+gh api -X POST repos/HortenLi/ROTA-firmware/actions/workflows/release-apk.yml/dispatches \
+  -f ref=main -f 'inputs[tag]=app-v0.16.32'
+```
 
 The app compares `versionCode` (never the version string) against its own
 `BuildConfig.VERSION_CODE`, downloads over HTTPS, verifies the `sha256` from the
