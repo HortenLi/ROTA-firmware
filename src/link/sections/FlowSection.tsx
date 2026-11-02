@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LandscapeRecipes, LandscapeTimer, RecipeHome, StatusBar } from '../AppUI'
-import { BUILTIN_RECIPES, C41 } from '../appData'
+import { BUILTIN_RECIPES } from '../appData'
 import { href } from '../../router'
-import { Stage, useProcessClock } from '../Stage'
+import { Stage } from '../Stage'
 
 function PhoneHome({ tap }: { tap: boolean }) {
   return (
@@ -23,34 +23,6 @@ function PhoneHome({ tap }: { tap: boolean }) {
         <div className="fl-hico"><i className="fl-hglyph is-bars" /></div>
       </div>
       <div className="fl-hdots" aria-hidden="true"><i className="on" /><i /></div>
-    </div>
-  )
-}
-
-const mmss = (sec: number) => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`
-
-/** A legible phone-width excerpt of the same live process, not a shrunken 844px UI. */
-function MobileProcess() {
-  const { t } = useTranslation()
-  const clock = useProcessClock(C41.steps, 219)
-  const current = C41.steps[clock.stage]
-  const next = C41.steps[Math.min(clock.stage + 1, C41.steps.length - 1)]
-  return (
-    <div className="lkx-mobile-process">
-      <div className="lkx-mobile-process-top">
-        <span>C-41</span>
-        <span>{t('link.app.stepOf', { a: clock.stage + 1, b: C41.steps.length })}</span>
-      </div>
-      <div className="lkx-mobile-process-step">{current.title}</div>
-      <div className="lkx-mobile-process-time">{mmss(clock.remaining)}</div>
-      <div className="lkx-mobile-process-track" aria-hidden="true">
-        <i style={{ transform: `scaleX(${clock.totalFraction})` }} />
-      </div>
-      <div className="lkx-mobile-process-next">
-        <span>{t('link.app.next')}</span>
-        <strong>{next.title} · {mmss(next.sec)}</strong>
-      </div>
-      <p>{t('link.timer.holdNote')}</p>
     </div>
   )
 }
@@ -140,7 +112,7 @@ export default function FlowSection() {
           <p className="lk-lede">{t('link.flow.body')}</p>
         </div>
 
-        <figure className="lk-flow-demo lkx-desktop-flow">
+        <figure className="lk-flow-demo lkx-flow-sequence">
           <div className="lk-screen lk-flow-live" data-phase={phase} data-stage={stage} data-fade={phase === 10} ref={live}>
             <div className="fl-stage">
               <div className="fl-phone" aria-hidden={stage === 'land'}>
@@ -171,8 +143,6 @@ export default function FlowSection() {
             <span className="lk-figcap-note">{t('link.flow.stageNote')}</span>
           </figcaption>
         </figure>
-
-        <MobileProcess />
 
         <ol className="lk-flow-steps lkx-flow-steps" data-reveal>
           {steps.map((s) => (

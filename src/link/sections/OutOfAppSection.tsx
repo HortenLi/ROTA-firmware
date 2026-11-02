@@ -36,34 +36,26 @@ function PosterArt({ night }: { night: boolean }) {
   )
 }
 
-function Panel({ theme, i, state, dragX, dragging }: {
+function Panel({ theme, i, state }: {
   theme: WidgetTheme
   i: number
   state: WidgetState
-  dragX: number
-  dragging: boolean
 }) {
   const { t } = useTranslation()
   const day = theme === 'light'
+  const slide = SLIDES[i]
   return (
     <div className={`lk-post is-${day ? 'day' : 'night'}`}>
       <PosterArt night={!day} />
       <div className="lk-post-in">
         <div className="lk-post-top">
           <span>{t(day ? 'link.out.pDay' : 'link.out.pNight')}</span>
-          <span className="lk-post-size">{SLIDES[i].size}</span>
+          <span className="lk-post-size">{slide.size}</span>
         </div>
         <div className="lk-post-stage">
           <div className="lk-post-view">
-            <div className="lk-post-rail" style={{
-              transform: `translate3d(calc(${-i * 100}% + ${dragX}px), 0, 0)`,
-              transition: dragging ? 'none' : undefined,
-            }}>
-              {SLIDES.map((s, k) => (
-                <div className="lk-post-slide" key={s.arrange} aria-hidden={k !== i}>
-                  <figure><div className="lk-home-frame"><Stage width={390} height={844}><HomeScreen theme={theme} arrange={s.arrange} state={state} /></Stage></div></figure>
-                </div>
-              ))}
+            <div className="lk-post-slide" key={slide.arrange}>
+              <figure><div className="lk-home-frame"><Stage width={390} height={844}><HomeScreen theme={theme} arrange={slide.arrange} state={state} /></Stage></div></figure>
             </div>
           </div>
         </div>
@@ -126,9 +118,15 @@ export default function OutOfAppSection() {
           ))}
         </div>
 
-        <div className={`lk-poster${car.dragging ? ' is-dragging' : ''}`} data-theme={theme} data-reveal ref={car.host} {...car.hostProps}>
-          <Panel theme="light" i={i} state={state} dragX={car.dragX} dragging={car.dragging} />
-          <Panel theme="dark" i={i} state={state} dragX={car.dragX} dragging={car.dragging} />
+        <div className="lkx-size-switch" role="group" aria-label={t('link.out.sheetK')}>
+          {SLIDES.map((s, k) => (
+            <button key={s.arrange} type="button" className={k === i ? 'on' : ''} aria-pressed={k === i} onClick={() => jump(k)}>{s.size}</button>
+          ))}
+        </div>
+
+        <div className="lk-poster" data-theme={theme} data-reveal>
+          <Panel theme="light" i={i} state={state} />
+          <Panel theme="dark" i={i} state={state} />
           <button type="button" className="lk-post-arrow is-prev" onClick={() => go(-1)} aria-label={t('link.out.prevA')}><ChevronIcon size={18} className="lk-wcar-chev" /></button>
           <button type="button" className="lk-post-arrow is-next" onClick={() => go(1)} aria-label={t('link.out.nextA')}><ChevronIcon size={18} className="lk-wcar-chev" /></button>
         </div>
