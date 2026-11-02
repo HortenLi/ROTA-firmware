@@ -1,0 +1,42 @@
+name: Attach app build to release
+
+# 为什么不让本地直接传：这台机器上行只有 ~50 KB/s，36 MB 的 APK 走 git push 要
+# 7–10 分钟（还会 RPC 断），走 GitHub 上传接口三次全部 10054/写超时。runner 在
+# GitHub 内网里跑，同样的文件几秒钟就挂上去了。
+#
+# 手动触发（Actions 页面），或：
+#   gh api -X POST repos/HortenLi/ROTA-firmware/actions/workflows/release-apk.yml/dispatches \
+#     -f ref=main -f 'inputs[tag]=app-v0.16.32'
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag, e.g. app-v0.16.32'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  attach:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload the APK in public/releases to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(public/releases/*.apk)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::public/releases has no APK"
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            echo "attaching $f → $TAG"
+            gh release upload "$TAG" "$f" --clobber
+          done
+          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name) \(.size) B \(.state)"'
