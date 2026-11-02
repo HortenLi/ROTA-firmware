@@ -1,15 +1,15 @@
 {
   "name": "ROTA Link",
   "packageId": "com.rota.link",
-  "versionName": "0.16.32",
-  "versionCode": 71,
-  "apk": "https://hortenli.github.io/ROTA-firmware/releases/ROTA-Link-v0.16.32.apk",
-  "sizeBytes": 36842616,
-  "sha256": "5d54a9c6fc48ae7b5124c07459a3eecbb78c3380be82d7d8be075bdd46f881d6",
+  "versionName": "0.16.33",
+  "versionCode": 72,
+  "apk": "https://hortenli.github.io/ROTA-firmware/releases/ROTA-Link-v0.16.33.apk",
+  "sizeBytes": 36774532,
+  "sha256": "c35bea998fe8d14c6f9f51c18f52cb82fd0c7cd1cdd23034424c8de1d0a0d91c",
   "publishedAt": "2026-11-02",
   "notes": {
-    "en": "In-app update checks: ROTA Link now looks at the release manifest when it starts, and asks before installing anything. A CHECK FOR UPDATES button in Settings runs the same check on demand.",
-    "zh-CN": "应用内检查更新：启动时自动检查一次，发现新版本才弹窗询问；设置页新增「检查更新」按钮，可随时手动检查。下载完成后交给系统安装器，配方、计时与胶片记录都会保留。",
-    "zh-TW": "應用程式內檢查更新：啟動時自動檢查一次，發現新版本才彈窗詢問；設定頁新增「檢查更新」按鈕，可隨時手動檢查。下載完成後交給系統安裝程式，配方、計時與菲林紀錄都會保留。"
+    "en": "Verification build for the in-app update path: launch the app on 0.16.32 and it should offer this version, download it, and hand it to the system installer. Nothing else changed.",
+    "zh-CN": "验证版：这一版专门用来跑通应用内更新的完整链路。0.16.32 启动后应当提示有新版本，确认后下载并交给系统安装器，装完版本号变成 0.16.33。功能上没有其他改动。",
+    "zh-TW": "驗證版：這一版專門用來跑通應用程式內更新的完整鏈路。0.16.32 啟動後應當提示有新版本，確認後下載並交給系統安裝程式，裝完版本號變成 0.16.33。功能上沒有其他改動。"
   }
 }
