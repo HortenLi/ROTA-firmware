@@ -1,0 +1,15 @@
+{
+  "name": "ROTA Link",
+  "packageId": "com.rota.link",
+  "versionName": "0.16.32",
+  "versionCode": 71,
+  "apk": "https://hortenli.github.io/ROTA-firmware/releases/ROTA-Link-v0.16.32.apk",
+  "sizeBytes": 36842616,
+  "sha256": "5d54a9c6fc48ae7b5124c07459a3eecbb78c3380be82d7d8be075bdd46f881d6",
+  "publishedAt": "2026-11-02",
+  "notes": {
+    "en": "In-app update checks: ROTA Link now looks at the release manifest when it starts, and asks before installing anything. A CHECK FOR UPDATES button in Settings runs the same check on demand.",
+    "zh-CN": "应用内检查更新：启动时自动检查一次，发现新版本才弹窗询问；设置页新增「检查更新」按钮，可随时手动检查。下载完成后交给系统安装器，配方、计时与胶片记录都会保留。",
+    "zh-TW": "應用程式內檢查更新：啟動時自動檢查一次，發現新版本才彈窗詢問；設定頁新增「檢查更新」按鈕，可隨時手動檢查。下載完成後交給系統安裝程式，配方、計時與菲林紀錄都會保留。"
+  }
+}

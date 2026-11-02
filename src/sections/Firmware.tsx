@@ -93,7 +93,10 @@ export default function Firmware() {
         headers: { Accept: 'application/vnd.github+json' },
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = (await res.json()) as Release[]
+      // 同一个仓库里还挂着 Android 应用发布（tag 形如 app-v0.16.32）。固件列表只认固件，
+      // 否则 R1 页会把一个 APK 当成"最新固件"展示 —— 那是两件完全不同的东西。
+      const all = (await res.json()) as Release[]
+      const data = all.filter((r) => !r.tag_name.startsWith('app-'))
       setState(data.length === 0 ? { kind: 'empty' } : { kind: 'ready', releases: data })
     } catch {
       setState({ kind: 'error' })
