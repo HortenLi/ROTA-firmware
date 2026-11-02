@@ -281,7 +281,9 @@ html[lang='zh-TW'] .lk {
   pointer-events: none;
 }
 .ph-body {
-  border-radius: 38px;
+  /* concentric with the body: 46 − 10 = 36, so the ring keeps the same 10px
+     at the corners as it does along the edges. 38 made the corners 2px thin. */
+  border-radius: 36px;
   overflow: hidden;
   background: #f2f2ec;
 }
@@ -378,11 +380,13 @@ html[lang='zh-TW'] .lk {
   left: 50%;
   top: 50%;
   width: 200px;
-  /* 390:844 plus the 3px frame — the screen fills the glass exactly */
-  height: 426px;
+  /* 390:844 plus the frame — the screen fills the glass exactly. The bezel is
+     the hero's 10px scaled to 0.57 (this is the same device, drawn small):
+     6px, and a 26px corner instead of 46. */
+  height: 419px;
   transform: translate(-50%, -50%);
-  border: 3px solid #33332d;
-  border-radius: 20px;
+  border: 6px solid #33332d;
+  border-radius: 26px;
   background: #141410;
   box-shadow:
     0 40px 70px -34px rgba(0, 0, 0, 0.95),
@@ -739,9 +743,9 @@ html[lang='zh-TW'] .lk {
   }
   .lk .fl-phone {
     width: 130px;
-    height: 277px;
-    border-width: 2px;
-    border-radius: 14px;
+    height: 272px;
+    border-width: 4px;
+    border-radius: 17px;
   }
   .lk-flow-steps {
     grid-template-columns: minmax(0, 1fr);
@@ -3892,9 +3896,51 @@ html[lang='zh-TW'] .lk .plate {
 }
 .lk-film-figure {
   margin: 0;
+  /* a left/right drag pages the deck; up/down still scrolls the page */
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lk-film-figure.is-dragging {
+  cursor: grabbing;
 }
 .lk-film-frame {
   position: relative;
+}
+/* the deck's caption is the last thing that changes height between cards —
+   reserve three lines so the section below it holds still while it turns */
+.lk-film-figure figcaption .lk-detail-v {
+  min-height: calc(1.6em * 3);
+}
+
+/* Three cards share one grid cell. The cell is therefore as tall as the
+   tallest card at every width, so an autoplaying deck never reflows the page —
+   the cards turn, the document does not move. The direction comes from
+   --flm-dir: the incoming card waits on the side the deck is heading towards,
+   the outgoing one leaves the other way. */
+.lk-film-stack {
+  display: grid;
+  /* one column, pinned to the figure's width — `auto` would size the cell to
+     the 1080px design canvas and the card would never scale down */
+  grid-template-columns: minmax(0, 1fr);
+}
+.lk-film-pane {
+  grid-area: 1 / 1;
+  align-self: start;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--flm-dir, 1) * 30px));
+  transition:
+    opacity 0.5s ease,
+    transform 0.62s cubic-bezier(0.32, 0.9, 0.24, 1);
+}
+.lk-film-pane[data-state='prev'] {
+  transform: translateX(calc(var(--flm-dir, 1) * -30px));
+}
+.lk-film-pane[data-state='on'] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
 }
 .lk-film-print {
   box-shadow: 0 44px 80px -52px rgba(27, 27, 27, 0.9);
@@ -3996,6 +4042,11 @@ html[lang='zh-TW'] .lk .plate {
   text-align: right;
   color: var(--lk-muted);
   letter-spacing: 0.12em;
+  /* one line, always: a wrapped stock name would change the bar's height and
+     the deck below it would bob once every ten seconds */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .lk-film-figure figcaption {
   display: flex;

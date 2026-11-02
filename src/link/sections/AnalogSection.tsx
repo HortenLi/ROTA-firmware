@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 export default function AnalogSection() {
   const { t } = useTranslation()
   return (
-    <section className="lk-analog">
+    <section className="lk-analog lkx-analog">
       <div className="lk-analog-media" aria-hidden="true" />
       <div className="lk-analog-grain" aria-hidden="true" />
       <div className="lk-wrap lk-analog-inner" data-reveal>

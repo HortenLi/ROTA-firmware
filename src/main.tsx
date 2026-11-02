@@ -7,6 +7,7 @@ import './styles/brand.css'
 import './styles/person.css'
 import './styles/link.css'
 import './styles/link-out.css'
+import './styles/link-refresh.css'
 // Self-hosted Latin fonts (latin subset only, small woff2). CJK relies on
 // system font stacks — see global.css.
 import '@fontsource/jost/latin-300.css'

@@ -21,9 +21,9 @@ export default function DownloadSection() {
   const downloadable = APP.channel === 'public' && APP.downloadUrl
 
   return (
-    <section className="lk-sec lk-download" id="download">
+    <section className="lk-sec lk-download lkx-section lkx-download" id="download">
       <div className="lk-wrap">
-        <div className="lk-head" data-reveal>
+        <div className="lk-head lkx-head" data-reveal>
           <span className="lk-kicker">{t('link.download.eyebrow')}</span>
           <h2 className="lk-h2">{t('link.download.title')}</h2>
           <p className="lk-lede">{t('link.download.body')}</p>

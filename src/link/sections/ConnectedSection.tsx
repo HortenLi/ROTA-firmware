@@ -1,24 +1,26 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConnectCard } from '../AppUI'
 import { Stage } from '../Stage'
 
-/**
- * Section 05 — connected. A literal split screen: the same timer on both sides,
- * only the link state differs. The right-hand readings are blank on purpose —
- * the device-link protocol does not report them yet, and the app says so.
- */
 export default function ConnectedSection() {
   const { t } = useTranslation()
+  const [mode, setMode] = useState<'solo' | 'linked'>('solo')
   return (
-    <section className="lk-connect" id="connected">
-      <div className="lk-wrap lk-head lk-head-connect" data-reveal>
+    <section className="lk-connect lkx-connect" id="connected">
+      <div className="lk-wrap lk-head lk-head-connect lkx-head" data-reveal>
         <span className="lk-kicker">{t('link.connected.eyebrow')}</span>
         <h2 className="lk-h2">{t('link.connected.title')}</h2>
         <p className="lk-lede">{t('link.connected.body')}</p>
       </div>
 
-      <div className="lk-split">
-        <div className="lk-half lk-half-light" data-reveal>
+      <div className="lk-wrap lkx-connect-switch" role="group" aria-label={t('link.connected.eyebrow')}>
+        <button type="button" className={mode === 'solo' ? 'on' : ''} aria-pressed={mode === 'solo'} onClick={() => setMode('solo')}>{t('link.connected.leftKicker')}</button>
+        <button type="button" className={mode === 'linked' ? 'on' : ''} aria-pressed={mode === 'linked'} onClick={() => setMode('linked')}>{t('link.connected.rightKicker')}</button>
+      </div>
+
+      <div className="lk-split" data-mode={mode}>
+        <div className="lk-half lk-half-light">
           <span className="lk-kicker">{t('link.connected.leftKicker')}</span>
           <div className="lk-half-grid">
             <div>
@@ -30,15 +32,11 @@ export default function ConnectedSection() {
                 <li>{t('link.connected.leftB3')}</li>
               </ul>
             </div>
-            <div className="lk-half-card">
-              <Stage width={390}>
-                <ConnectCard linked={false} />
-              </Stage>
-            </div>
+            <div className="lk-half-card"><Stage width={390}><ConnectCard linked={false} /></Stage></div>
           </div>
         </div>
 
-        <div className="lk-half lk-half-ink" data-reveal>
+        <div className="lk-half lk-half-ink">
           <span className="lk-kicker lk-kicker-brass">{t('link.connected.rightKicker')}</span>
           <div className="lk-half-grid">
             <div>
@@ -47,17 +45,10 @@ export default function ConnectedSection() {
               <ul className="lk-list">
                 <li>{t('link.connected.rightB1')}</li>
                 <li>{t('link.connected.rightB2')}</li>
-                <li className="pending">
-                  {t('link.connected.rightB3')}
-                  <span className="lk-chip">{t('link.app.pending')}</span>
-                </li>
+                <li className="pending">{t('link.connected.rightB3')}<span className="lk-chip">{t('link.app.pending')}</span></li>
               </ul>
             </div>
-            <div className="lk-half-card">
-              <Stage width={390}>
-                <ConnectCard linked />
-              </Stage>
-            </div>
+            <div className="lk-half-card"><Stage width={390}><ConnectCard linked /></Stage></div>
           </div>
         </div>
       </div>

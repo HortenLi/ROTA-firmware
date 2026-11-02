@@ -65,6 +65,13 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   isolation: isolate;
+  /* a left/right drag pages the band; up/down still scrolls the page */
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lk-poster.is-dragging {
+  cursor: grabbing;
 }
 .lk-post {
   position: relative;
@@ -324,21 +331,25 @@
   margin: 0;
   width: min(100%, 336px);
 }
+/* the same body as the hero phone (.ph): 9px of glass plus a 1px ring, 46px
+   outer / 38px screen. Every mockup on the page is one device at different
+   sizes, so the bezel is a constant here, not a percentage — the hero and this
+   band render 348px and 340px wide and used to disagree by 2px of glass and
+   19px of corner */
 .lk-home-frame {
-  padding: 7px;
-  border-radius: 27px;
-  background: #14150f;
-  box-shadow:
-    0 40px 70px -44px rgba(27, 27, 27, 0.6),
-    0 0 0 1px rgba(27, 27, 27, 0.1);
+  padding: 9px;
+  border-radius: 46px;
+  border: 1px solid #34342f;
+  background: #0d0d0c;
+  box-shadow: 0 40px 70px -44px rgba(27, 27, 27, 0.6);
 }
 .lk-post.is-night .lk-home-frame {
-  box-shadow:
-    0 46px 70px -40px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(242, 238, 231, 0.16);
+  border-color: rgba(242, 238, 231, 0.16);
+  box-shadow: 0 46px 70px -40px rgba(0, 0, 0, 0.9);
 }
 .lk-home-frame .lk-hs {
-  border-radius: 20px;
+  /* 46 − 10 — concentric, so the bezel is one width all the way round */
+  border-radius: 36px;
 }
 .lk-cap-k {
   font-family: var(--ui-display);

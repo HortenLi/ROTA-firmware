@@ -37,11 +37,11 @@ const SUN_CY = 110
 
 type Size = 'wide' | 'slim' | 'square'
 
-/** 358 × 174 / 358 × 74 / 174 × 174 — a 4-column launcher, two rows tall. */
+/** 358 × 174 / 358 × 82 / 173 × 174 — the launcher's real grid sizes. */
 const DIM: Record<Size, [number, number]> = {
   wide: [358, 174],
-  slim: [358, 74],
-  square: [174, 174],
+  slim: [358, 82],
+  square: [173, 174],
 }
 
 /** WidgetSize.railDp — the film strip, hard-wired in all three layouts. */
