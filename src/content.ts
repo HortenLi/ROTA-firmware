@@ -11,17 +11,19 @@ export const LINK_PATH = '/link'
 /**
  * ROTA Link app facts — copied from the app project, not invented.
  * Source: RotaLink/app/build.gradle.kts (versionName / versionCode / minSdk)
- *         and the signed build ROTA-Link-v0.16.18.apk (size, build date).
- * When the app version changes, update only this block.
+ *         and public/releases/latest.json — the signed build the in-app updater
+ *         actually points at (size, sha256, publish date). The repo can be a few
+ *         commits ahead of the published binary; the number here describes the
+ *         artefact, not the working tree.
  */
 export const APP = {
   name: 'ROTA Link',
   packageId: 'com.rota.link',
-  version: '0.16.18',
-  build: 58,
+  version: '0.16.33',
+  build: 72,
   minAndroid: '8.0',
-  apkBytes: 36_645_963,
-  builtOn: '2026-10-31',
+  apkBytes: 36_774_532,
+  builtOn: '2026-11-02',
   /**
    * 'preview' = signed test builds handed out directly, not on any store.
    * While this is 'preview' the Download section shows status instead of a

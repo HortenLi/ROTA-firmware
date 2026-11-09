@@ -128,6 +128,30 @@ export const BeakerNavIcon = (p: P) => (
   </Svg>
 )
 
+/**
+ * The single door to the machine — `DeviceLinkIcon` in `ui/link/LinkSheet.kt`.
+ * 32-unit grid: a 2-stroke body, a lighter screen, a home rule, and the brass
+ * dot at the chin. The brass is not decoration; it is the only coloured pixel
+ * in the entire top bar, which is why the hollow box reads as "connect" rather
+ * than "settings".
+ */
+export const DeviceLinkIcon = ({ size = 20, className }: P) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <rect x="6" y="3.5" width="20" height="25" rx="2" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M11 22h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <rect x="9.5" y="7" width="13" height="11" rx="0.5" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="16" cy="25" r="1.1" fill="#8d7959" />
+  </svg>
+)
+
 export const DeviceNavIcon = (p: P) => (
   <Svg size={22} {...p}>
     <path

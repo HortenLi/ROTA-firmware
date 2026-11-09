@@ -6,6 +6,7 @@ import {
   BatteryGlyph,
   ChevronIcon,
   CollapseIcon,
+  DeviceLinkIcon,
   DeviceNavIcon,
   ExpandIcon,
   FilmLogNavIcon,
@@ -54,8 +55,40 @@ export function StatusBar({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   )
 }
 
-/** RotaApp header (v0.13.1): brand ─ title stack ─ 40dp button, one 40dp row. */
-export function AppHeader({ title, sub }: { title: string; sub: string }) {
+/**
+ * RotaApp header (v0.13.1): brand ─ title stack ─ 40 dp button, one 40 dp row.
+ *
+ * `linkEntry` is the app's one and only door to the machine (`showLinkEntry` in
+ * MainActivity): a hollow 40 dp device box that opens the connect sheet, which
+ * degrades to a 6 dp dot + CONNECTED once the link is up and live. It only
+ * exists on RECIPES and TIMER — nowhere else — and it is the *only* device
+ * affordance a phone with no machine ever shows.
+ */
+/**
+ * `showLinkEntry`, on its own. Two faces: a hollow 40 dp box with the device
+ * glyph and a brass chin, which opens the connect sheet; and — once the link
+ * is up and live — a 6 dp sage dot and the word CONNECTED, which no longer
+ * takes a box because it is a state, not a button. Tapping it opens DEVICE.
+ */
+export function LinkEntryMark({ state }: { state: 'icon' | 'linked' }) {
+  const { t } = useTranslation()
+  return state === 'icon' ? (
+    <div className="ui-head-btn ui-head-link">
+      <DeviceLinkIcon />
+    </div>
+  ) : (
+    <div className="ui-head-live">
+      <i />
+      <span>{t('link.app.connected')}</span>
+    </div>
+  )
+}
+
+export function AppHeader({ title, sub, linkEntry = 'icon' }: {
+  title: string
+  sub: string
+  linkEntry?: 'icon' | 'linked' | 'none'
+}) {
   return (
     <div className="ui-head">
       <div className="ui-brand">
@@ -66,6 +99,7 @@ export function AppHeader({ title, sub }: { title: string; sub: string }) {
         <span className="ui-head-title">{title}</span>
         <span className="ui-head-sub">{sub}</span>
       </div>
+      {linkEntry !== 'none' && <LinkEntryMark state={linkEntry} />}
       <div className="ui-head-btn">
         <MenuIcon size={19} />
       </div>
@@ -215,7 +249,13 @@ function ProcessOverview({ recipe, stage }: { recipe: AppRecipe; stage: number }
   )
 }
 
-function TabBar({ active = 'TIMER' }: { active?: string }) {
+/**
+ * `MainActivity.TABS` is declared with four entries, but DEVICE is wrapped in
+ * an AnimatedVisibility bound to `hasDevice`: with no machine the cell simply
+ * is not there and the other three share the width by weight. So `hasDevice`
+ * is not a cosmetic toggle — it is the honest shape of the bar.
+ */
+export function TabBar({ active = 'TIMER', hasDevice = true }: { active?: string; hasDevice?: boolean }) {
   const { t } = useTranslation()
   const icons = {
     RECIPES: BeakerNavIcon,
@@ -223,9 +263,10 @@ function TabBar({ active = 'TIMER' }: { active?: string }) {
     FILM_LOG: FilmLogNavIcon,
     DEVICE: DeviceNavIcon,
   }
+  const tabs = hasDevice ? TABS : TABS.filter((x) => x !== 'DEVICE')
   return (
     <div className="ui-tabbar">
-      {TABS.map((tab) => {
+      {tabs.map((tab) => {
         const Icon = icons[tab]
         const on = tab === active
         return (
@@ -249,7 +290,11 @@ export function TimerHome({ linked, offset = 219 }: { linked: boolean; offset?: 
   return (
     <div className="ui ui-home">
       <StatusBar />
-      <AppHeader title={t('link.app.tabTIMER')} sub={t('link.app.timerSub')} />
+      <AppHeader
+        title={t('link.app.tabTIMER')}
+        sub={t('link.app.timerSub')}
+        linkEntry={linked ? 'linked' : 'icon'}
+      />
       <div className="ui-body">
         <div className="ui-identity">
           <div>
@@ -276,7 +321,7 @@ export function TimerHome({ linked, offset = 219 }: { linked: boolean; offset?: 
         <Controls />
         <ProcessOverview recipe={C41} stage={clock.stage} />
       </div>
-      <TabBar />
+      <TabBar hasDevice={linked} />
     </div>
   )
 }
@@ -668,16 +713,20 @@ export function RecipeListPanel({ inUseSlot = 2 }: { inUseSlot?: number }) {
  * status bar, the persistent header, the scrolling recipe sheet, the tab bar.
  * The sheet alone is a plate; inside this shell it reads as the phone.
  */
-export function RecipeHome({ inUseSlot = 2 }: { inUseSlot?: number }) {
+export function RecipeHome({ inUseSlot = 2, linked = false }: { inUseSlot?: number; linked?: boolean }) {
   const { t } = useTranslation()
   return (
     <div className="ui ui-home ui-rechome">
       <StatusBar />
-      <AppHeader title={t('link.app.tabRECIPES')} sub={t('link.app.recipesSub')} />
+      <AppHeader
+        title={t('link.app.tabRECIPES')}
+        sub={t('link.app.recipesSub')}
+        linkEntry={linked ? 'linked' : 'icon'}
+      />
       <div className="ui-rechome-body">
         <RecipeListPanel inUseSlot={inUseSlot} />
       </div>
-      <TabBar active="RECIPES" />
+      <TabBar active="RECIPES" hasDevice={linked} />
     </div>
   )
 }
@@ -792,6 +841,29 @@ export function ConnectCard({ linked }: { linked: boolean }) {
         linked={linked}
         phaseLabel={t('link.app.running')}
       />
+    </div>
+  )
+}
+
+/**
+ * The one question the app ever asks: `AskBody` in `ui/link/LinkSheet.kt`,
+ * shown once on first launch and never again automatically. Everything here —
+ * the 26 dp icon, the 15/19 title, the 12/18 body, the two exits — is the real
+ * layout, because the whole point of the chapter is that "no machine" is a
+ * first-class answer, not a dismissal.
+ */
+export function ConnectAsk() {
+  const { t } = useTranslation()
+  return (
+    <div className="cc-ask">
+      <div className="cc-ask-top">
+        <DeviceLinkIcon size={26} />
+        <span className="cc-ask-title">{t('link.connected.askTitle')}</span>
+      </div>
+      <p className="cc-ask-body">{t('link.connected.askBody')}</p>
+      <div className="cc-ask-primary">{t('link.connected.askConnect')}</div>
+      <div className="cc-ask-later">{t('link.connected.askLater')}</div>
+      <p className="cc-ask-note">{t('link.connected.askNote')}</p>
     </div>
   )
 }

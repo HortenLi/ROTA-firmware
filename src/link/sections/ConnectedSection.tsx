@@ -1,8 +1,17 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ConnectCard } from '../AppUI'
+import { ConnectAsk, ConnectCard, LinkEntryMark, TabBar } from '../AppUI'
 import { Stage } from '../Stage'
 
+/**
+ * Chapter 05 — the machine is an accessory, not a requirement.
+ *
+ * Three beats, in the order the app itself tells the story: the one question it
+ * ever asks (and the answer "not now" that it remembers), what actually leaves
+ * the interface when you give that answer, and the same timer running in both
+ * states. Nothing here is a mock-up of a feature we are promising — every state
+ * below is a branch that exists in `MainActivity.kt` today.
+ */
 export default function ConnectedSection() {
   const { t } = useTranslation()
   const [mode, setMode] = useState<'solo' | 'linked'>('solo')
@@ -12,6 +21,56 @@ export default function ConnectedSection() {
         <span className="lk-kicker">{t('link.connected.eyebrow')}</span>
         <h2 className="lk-h2">{t('link.connected.title')}</h2>
         <p className="lk-lede">{t('link.connected.body')}</p>
+      </div>
+
+      <div className="lk-wrap lkx-device">
+        <div className="lkx-device-col" data-reveal>
+          <span className="lkx-col-cap"><i>A</i>{t('link.connected.askKicker')}</span>
+          <div className="lkx-ask-sheet">
+            <Stage width={390}><ConnectAsk /></Stage>
+          </div>
+          <p className="lkx-col-note">{t('link.connected.askCap')}</p>
+
+          <div className="lkx-entry">
+            <span className="lkx-navdiff-label">{t('link.connected.entryLabel')}</span>
+            <div className="lkx-entry-row">
+              <figure>
+                <LinkEntryMark state="icon" />
+                <figcaption>{t('link.connected.entrySolo')}</figcaption>
+              </figure>
+              <figure>
+                <LinkEntryMark state="linked" />
+                <figcaption>{t('link.connected.entryLive')}</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div className="lkx-device-col" data-reveal>
+          <span className="lkx-col-cap"><i>B</i>{t('link.connected.leaveKicker')}</span>
+
+          <div className="lkx-navdiff">
+            <div className="lkx-navdiff-row" data-state="solo">
+              <span className="lkx-navdiff-label">{t('link.connected.navSolo')}</span>
+              <div className="lkx-navdiff-bar">
+                <Stage width={390} height={70}><TabBar active="TIMER" hasDevice={false} /></Stage>
+              </div>
+            </div>
+            <div className="lkx-navdiff-row" data-state="linked">
+              <span className="lkx-navdiff-label">{t('link.connected.navLinked')}</span>
+              <div className="lkx-navdiff-bar">
+                <Stage width={390} height={70}><TabBar active="TIMER" hasDevice /></Stage>
+              </div>
+            </div>
+          </div>
+
+          <ul className="lkx-leave">
+            <li>{t('link.connected.leaveB1')}</li>
+            <li>{t('link.connected.leaveB2')}</li>
+            <li>{t('link.connected.leaveB3')}</li>
+          </ul>
+          <p className="lkx-col-note">{t('link.connected.navNote')}</p>
+        </div>
       </div>
 
       <div className="lk-wrap lkx-connect-switch" role="group" aria-label={t('link.connected.eyebrow')}>
