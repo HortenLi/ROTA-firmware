@@ -14,6 +14,9 @@
   --lk-warm: #e8e0ce;
   --lk-brass: #8d7959;
   --lk-brass-l: #b69a58;
+  /* brass for text only: 6.02:1 on paper, 5.61:1 on warm — #8d7959 is
+     3.94:1 and stays reserved for rules, ticks and swatches. */
+  --lk-brass-ink: #6b5d46;
   --lk-muted: #63655e;
   --lk-muted-d: #8f9089;
   --lk-line: #d9d7cf;
@@ -45,7 +48,7 @@ html[lang='zh-TW'] .lk {
   align-items: center;
   gap: 12px;
   font-family: var(--ui-display);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -116,6 +119,8 @@ html[lang='zh-TW'] .lk {
   text-transform: uppercase;
   color: var(--lk-muted-d);
 }
+/* Same caption on paper: #8f9089 is 3.03:1 there, #63655e is 5.55:1. */
+.lk-sec .lk-figcap { color: var(--lk-muted); }
 .lk-figcap-rule {
   width: 22px;
   height: 1px;
@@ -128,7 +133,7 @@ html[lang='zh-TW'] .lk {
   margin-left: auto;
   padding-left: 18px;
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 11px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--lk-muted);
@@ -151,7 +156,7 @@ html[lang='zh-TW'] .lk {
   border-radius: 2px;
   border: 1px solid transparent;
   font-family: var(--ui-display);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -188,14 +193,14 @@ html[lang='zh-TW'] .lk {
   border: 1px solid currentColor;
   border-radius: 20px;
   font-family: var(--ui-display);
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--lk-brass-l);
   white-space: nowrap;
 }
 .lk-chip-dark {
-  color: #7e7f77;
+  color: #8f9089;
   margin: 0;
   flex: none;
 }
@@ -235,7 +240,7 @@ html[lang='zh-TW'] .lk {
 }
 .lk-hero-lede {
   margin-top: 18px;
-  font-size: 15.5px;
+  font-size: 16px;
   line-height: 1.7;
   color: #9b9c93;
   max-width: 40ch;
@@ -307,16 +312,16 @@ html[lang='zh-TW'] .lk {
 .lk-spec-k {
   display: block;
   font-family: var(--ui-display);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #7e7f77;
+  color: #8f9089;
 }
 .lk-spec-v {
   display: block;
   margin-top: 9px;
   font-family: var(--ui-display);
-  font-size: 14.5px;
+  font-size: 14px;
   color: #eeece4;
 }
 
@@ -664,7 +669,7 @@ html[lang='zh-TW'] .lk {
   font-family: var(--ui-display);
   font-size: 11px;
   letter-spacing: 0.22em;
-  color: var(--lk-brass);
+  color: var(--lk-brass-ink);
 }
 .lk-flow-k {
   display: block;
@@ -672,7 +677,7 @@ html[lang='zh-TW'] .lk {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 .lk-flow-t {
   margin: 9px 0 10px;
@@ -711,7 +716,7 @@ html[lang='zh-TW'] .lk {
 }
 .lk-flow-pd {
   margin-top: 12px;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.72;
   color: var(--lk-muted);
   max-width: 54ch;
@@ -813,7 +818,7 @@ html[lang='zh-TW'] .lk {
   color: var(--lk-ink);
 }
 .lk-detail-v {
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--lk-muted);
   max-width: 42ch;
@@ -843,7 +848,7 @@ html[lang='zh-TW'] .lk {
   margin-bottom: 10px;
 }
 .lk-fact dd {
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.65;
   color: var(--lk-muted);
 }
@@ -884,7 +889,7 @@ html[lang='zh-TW'] .lk {
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(27, 27, 27, 0.28);
   font-family: var(--ui-display);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--lk-muted);
@@ -920,7 +925,7 @@ html[lang='zh-TW'] .lk {
 .lk-proc-title i {
   font-family: var(--font-sans);
   font-style: normal;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   color: var(--lk-brass);
 }
@@ -1000,10 +1005,10 @@ html[lang='zh-TW'] .lk {
   margin-bottom: 7px;
   font-family: var(--font-sans);
   font-style: normal;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #7e7f77;
+  color: var(--lk-muted);
 }
 .lk-rail {
   display: grid;
@@ -1047,7 +1052,7 @@ html[lang='zh-TW'] .lk {
 .lk-step-no {
   font-family: var(--ui-display);
   font-size: 11px;
-  color: #7e7f77;
+  color: var(--lk-muted);
   font-variant-numeric: tabular-nums;
 }
 .lk-step-name {
@@ -1067,10 +1072,10 @@ html[lang='zh-TW'] .lk {
 }
 .lk-step-status {
   font-family: var(--font-sans);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #7e7f77;
+  color: var(--lk-muted);
 }
 .lk-step.done .lk-step-name {
   color: rgba(248, 248, 245, 0.5);
@@ -1144,7 +1149,7 @@ html[lang='zh-TW'] .lk {
 .lk-list li {
   position: relative;
   padding: 11px 0 11px 20px;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--lk-muted);
   border-top: 1px solid var(--lk-line);
@@ -1228,7 +1233,7 @@ html[lang='zh-TW'] .lk {
 }
 .lk-analog-body {
   margin-top: 26px;
-  font-size: 16.5px;
+  font-size: 16px;
   line-height: 1.8;
   color: #cbc7bb;
   max-width: 50ch;
@@ -1275,7 +1280,7 @@ html[lang='zh-TW'] .lk {
 }
 .lk-dl-facts dt {
   font-family: var(--font-sans);
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--lk-muted);
@@ -1324,7 +1329,7 @@ html[lang='zh-TW'] .lk {
 }
 .lk-dl-plat i {
   font-style: normal;
-  color: var(--lk-brass);
+  color: var(--lk-brass-ink);
 }
 .lk-dl-status {
   margin-top: 24px;
@@ -1332,7 +1337,7 @@ html[lang='zh-TW'] .lk {
   border-top: 1px solid var(--lk-line);
 }
 .lk-dl-status strong {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 600;
 }
 .lk-dl-status p {
@@ -1356,7 +1361,7 @@ html[lang='zh-TW'] .lk {
   text-transform: uppercase;
 }
 .lk-dl-links a {
-  padding-bottom: 3px;
+  padding: 3px 0;
   border-bottom: 1px solid var(--lk-line);
   transition: border-color 0.18s ease;
 }
@@ -1407,6 +1412,8 @@ html[lang='zh-TW'] .lk {
   font-size: 13px;
 }
 .lk-foot-nav a {
+  display: inline-block;
+  padding: 4px 0;
   transition: color 0.15s ease;
 }
 .lk-foot-nav a:hover {
@@ -3134,7 +3141,7 @@ html[lang='zh-TW'] .lk .plate {
   }
   .lk-proc-desc {
     grid-area: meta;
-    font-size: 12.5px;
+    font-size: 13px;
   }
   .lk-proc-head,
   .lk-proc {
@@ -3315,7 +3322,7 @@ html[lang='zh-TW'] .lk .plate {
   border: 1px solid currentColor;
   border-radius: 20px;
   font-family: var(--ui-display);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
@@ -3377,7 +3384,7 @@ html[lang='zh-TW'] .lk .plate {
   justify-content: space-between;
   margin-top: 9px;
   font-family: var(--ui-display);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1.1px;
   text-transform: uppercase;
   color: #b8b8ad;
@@ -4070,7 +4077,7 @@ html[lang='zh-TW'] .lk .plate {
 }
 .lk-film-fields dt {
   font-family: var(--ui-display);
-  font-size: 12.5px;
+  font-size: 12px;
   letter-spacing: 0.02em;
 }
 .lk-film-fields dd {
@@ -4084,7 +4091,7 @@ html[lang='zh-TW'] .lk .plate {
 }
 .lk-film-facts h4 {
   font-family: var(--ui-display);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   margin-bottom: 6px;
 }

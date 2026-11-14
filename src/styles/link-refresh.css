@@ -160,16 +160,24 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.lkx-film-item-top > span:first-child { color: var(--lk-brass); }
+.lkx-film-item-top > span:first-child { color: var(--lk-brass-ink); }
 .lkx-film-item .lk-film-print { max-width: none; box-shadow: 0 32px 60px -42px rgba(27, 27, 27, 0.72); }
 .lkx-film-item figcaption { display: grid; gap: 7px; margin-top: 18px; }
-.lkx-film-item figcaption .lk-detail-v { min-height: 3.2em; font-size: 12px; line-height: 1.6; }
+.lkx-film-item figcaption .lk-detail-v { min-height: 3.2em; line-height: 1.6; }
 .lkx-film-notes { margin-top: clamp(56px, 7vw, 96px); }
 .lkx-film-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); border-top: 1px solid var(--lk-line); }
-.lkx-film-facts > div { position: relative; padding: 30px 0 24px 36px; border-bottom: 1px solid var(--lk-line); }
-.lkx-film-facts span { position: absolute; left: 0; top: 33px; font-size: 10px; color: var(--lk-brass); letter-spacing: 0.14em; }
-.lkx-film-facts h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; }
-.lkx-film-facts p { margin: 0; }
+/* Shared metrics for every numbered fact list — see .lkx-print-facts below.
+   Same padding, same rail, same 16 / 13 pair; only the grid differs. */
+.lkx-film-facts > div,
+.lkx-print-facts > div { position: relative; padding: 26px 0 22px 36px; border-bottom: 1px solid var(--lk-line); }
+.lkx-film-facts > div { padding-top: 30px; }
+.lkx-film-facts span,
+.lkx-print-facts span { position: absolute; left: 0; top: 29px; font-size: 10px; color: var(--lk-brass-ink); letter-spacing: 0.14em; }
+.lkx-film-facts > div:first-child { padding-top: 26px; }
+.lkx-film-facts h3,
+.lkx-print-facts h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; }
+.lkx-film-facts p,
+.lkx-print-facts p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--lk-muted); text-wrap: pretty; }
 .lkx-dl-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -183,7 +191,7 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--lk-brass);
+  color: var(--lk-brass-ink);
 }
 .lkx-details .lk-film-fields { margin: 0; padding: 0 0 24px; }
 .lkx-details .lk-film-fields > div { padding: 12px 0; border-top: 1px solid var(--lk-line); }
@@ -203,9 +211,9 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
 .lkx-tmpl-no {
   padding-top: 6px;
   font-family: var(--ui-display);
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 0.14em;
-  color: var(--lk-brass);
+  color: var(--lk-brass-ink);
 }
 .lkx-tmpl-name {
   display: flex;
@@ -223,8 +231,8 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
   padding: 3px 8px;
   border: 1px solid var(--lk-line);
   border-radius: 2px;
-  font-size: 9px;
-  letter-spacing: 0.16em;
+  font-size: 10px;
+  letter-spacing: 0.14em;
   color: var(--lk-muted);
 }
 .lkx-tmpl-copy p {
@@ -243,25 +251,29 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
   gap: clamp(34px, 5vw, 72px);
   align-items: start;
 }
-.lkx-print-sheets { display: flex; align-items: flex-end; gap: clamp(14px, 2vw, 26px); }
+/* Equal columns, not 57 / 41: the whole point is that this is one template
+   shown on two papers, so both sheets must render at one scale. Bottom-aligned
+   so the two captions sit on the same line despite the 4:5 being taller. */
+.lkx-print-sheets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: clamp(14px, 2vw, 26px); }
 .lkx-print-sheet { min-width: 0; margin: 0; }
-.lkx-print-sheet:nth-child(1) { flex: 1 1 57%; max-width: 57%; }
-.lkx-print-sheet:nth-child(2) { flex: 1 1 41%; max-width: 41%; }
+/* The sheet is 1080 px wide at export; scaled down, its 0.016 W camera line is
+   texture, not text. The figcaption carries that line at a size that reads. */
 .lkx-print-sheet figcaption {
-  margin-top: 14px;
+  display: grid;
+  gap: 4px;
+  margin-top: 15px;
   font-family: var(--ui-display);
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--lk-muted);
+  color: var(--lk-ink);
 }
+.lkx-print-sheet figcaption .lkx-print-cam { letter-spacing: 0.04em; color: var(--lk-muted); }
 .lkx-print-stage { box-shadow: 0 30px 58px -42px rgba(27, 27, 27, 0.78); }
 .lkx-print-facts > div { position: relative; padding: 20px 0 20px 34px; border-bottom: 1px solid var(--lk-line); }
 .lkx-print-facts > div:first-child { padding-top: 0; }
-.lkx-print-facts span { position: absolute; left: 0; top: 23px; font-size: 10px; letter-spacing: 0.14em; color: var(--lk-brass); }
 .lkx-print-facts > div:first-child span { top: 3px; }
-.lkx-print-facts h3 { margin: 0 0 7px; font-size: 15px; font-weight: 500; }
-.lkx-print-facts p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--lk-muted); text-wrap: pretty; }
 .lkx-papers { margin-top: clamp(38px, 4.6vw, 62px); }
 .lkx-papers-strip { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(3px, 0.5vw, 6px); }
 .lkx-papers-strip i {
@@ -273,8 +285,8 @@ html[lang^='zh'] .lk .lk-hero-lede { max-width: 31em; }
 .lkx-papers-cap {
   display: block;
   margin-top: 11px;
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--lk-muted);
 }
@@ -357,7 +369,7 @@ html[lang^='zh'] .lk .lkx-print-facts p { line-break: strict; }
   text-transform: uppercase;
   color: var(--lk-ink);
 }
-.lkx-col-cap i { font-style: normal; color: var(--lk-brass); }
+.lkx-col-cap i { font-style: normal; color: var(--lk-brass-ink); }
 .lkx-ask-sheet {
   max-width: 390px;
   border: 1px solid var(--lk-line);
@@ -369,15 +381,16 @@ html[lang^='zh'] .lk .lkx-print-facts p { line-break: strict; }
 .lkx-col-note {
   max-width: 46ch;
   margin: 18px 0 0;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.72;
   color: var(--lk-muted);
   text-wrap: pretty;
 }
-.lkx-navdiff { display: grid; gap: 16px; }.lkx-navdiff-row { display: grid; gap: 8px; min-width: 0; }
+.lkx-navdiff { display: grid; gap: 16px; }
+.lkx-navdiff-row { display: grid; gap: 8px; min-width: 0; max-width: 390px; }
 .lkx-navdiff-label {
   font-family: var(--ui-display);
-  font-size: 9.5px;
+  font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--lk-muted);
@@ -389,16 +402,35 @@ html[lang^='zh'] .lk .lkx-print-facts p { line-break: strict; }
   overflow: hidden;
   background: #f8f8f2;
 }
-.lkx-navdiff .ui-tab { position: relative; }
-.lkx-navdiff-row[data-state='linked'] .ui-tab:last-child::before {
+/* The bar itself is not annotated. In the app a 2 px brass rule under the icon
+   means "this is the current tab", so a brass rule over DEVICE would say the
+   opposite of the point. The marker hangs below the bar instead, one column
+   wide, aligned to the cell that is absent. */
+.lkx-navdiff-mark {
+  position: relative;
+  display: block;
+  width: 25%;
+  margin-left: auto;
+  padding-top: 14px;
+  text-align: center;
+  font-family: var(--ui-display);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lk-brass-ink);
+}
+.lkx-navdiff-mark::before {
   content: '';
   position: absolute;
-  left: 9px;
-  right: 9px;
-  top: -1px;
-  height: 2px;
-  background: var(--lk-brass);
+  left: 0;
+  right: 0;
+  top: 1px;
+  height: 7px;
+  border: 1px solid var(--lk-brass);
+  border-top: 0;
 }
+.lkx-navdiff-mark em { display: block; margin-top: 2px; font-style: normal; color: var(--lk-muted); }
 .lkx-leave { list-style: none; margin: 26px 0 0; padding: 0; }
 .lkx-leave li {
   position: relative;
@@ -428,6 +460,9 @@ html[lang^='zh'] .lk .lkx-print-facts p { line-break: strict; }
   color: var(--lk-muted);
 }
 .lkx-entry-row .ui-head-live { height: 40px; min-width: 40px; }
+/* The shared 9 px is the app's own dp inside the 390 dp header; on the page
+   this mark stands alone, so it gets the label floor. */
+.lkx-entry-row .ui-head-live span { font-size: 10px; letter-spacing: 0.08em; }
 
 /* The ask sheet, rebuilt at the app's own 390 dp — `AskBody` in LinkSheet.kt. */
 .lk .cc-ask {
@@ -480,7 +515,7 @@ html[lang^='zh'] .lk .lkx-print-facts p { line-break: strict; }
   text-transform: uppercase;
   color: var(--lk-muted);
 }
-.lk .cc-ask-note { margin: 4px 0 0; font-size: 10px; line-height: 14px; color: var(--lk-muted-d); text-wrap: pretty; }
+.lk .cc-ask-note { margin: 4px 0 0; font-size: 10px; line-height: 14px; color: var(--lk-muted); text-wrap: pretty; }
 
 /* Top-bar device entry: hollow box, or the 6 dp dot once the link is live. */
 .lk .ui-head-link { color: var(--lk-ink); }
@@ -519,7 +554,7 @@ html[lang^='zh'] .lk .lkx-leave li { line-break: strict; }
   .lkx-film-facts { gap: 20px; }
   .lkx-print { grid-template-columns: minmax(0, 1fr); gap: 42px; }
   .lkx-device { grid-template-columns: minmax(0, 1fr); gap: 50px; }
-  .lkx-ask-sheet, .lkx-navdiff-bar { max-width: 420px; }
+  .lkx-ask-sheet, .lkx-navdiff-bar, .lkx-navdiff-row { max-width: 420px; }
 }
 
 @media (max-width: 700px) {
@@ -533,7 +568,7 @@ html[lang^='zh'] .lk .lkx-leave li { line-break: strict; }
   .lk-hero-spec { padding: 17px 10px 22px; }
   .lk-hero-spec:first-child { padding-left: 0; }
   .lk-hero-spec .lk-spec-v { font-size: 12px; line-height: 1.45; }
-  .lk-hero-spec .lk-spec-k { font-size: 8px; letter-spacing: 0.13em; }
+  .lkx-hero-spec .lk-spec-k { font-size: 10px; letter-spacing: 0.11em; }
   .lkx-details-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 
   .lkx-flow-sequence .lk-screen { max-width: 100%; }
@@ -576,11 +611,13 @@ html[lang^='zh'] .lk .lkx-leave li { line-break: strict; }
   .lkx-objects .lk-poster[data-theme='dark'] .lk-post.is-day { display: none; }
   .lkx-objects .lk-post-slide > figure { width: min(100%, 292px); }
   .lkx-objects .lk-post-in { min-height: 650px; padding: 26px 20px 22px; }
-  .lkx-object-foot .lk-wcar-name { font-size: 19px; }
+  .lkx-object-foot .lk-wcar-name { font-size: 18px; }
 
   .lkx-levels { grid-template-columns: minmax(0, 1fr); gap: 34px; }
   .lkx-levels .lk-level { position: relative; }
-  .lkx-levels .lk-level::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--lk-brass); opacity: 0.45; }
+  /* One hairline column rule, not a 2 px brass bar: on this page decoration is
+     a 1 px line, and brass is reserved for measurements and entry points. */
+  .lkx-levels .lk-level::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--lk-line); }
   .lkx-levels .lk-level-plate, .lkx-levels .lk-level figcaption { margin-left: 12px; }
   .lkx-notif { margin-top: 76px; }
   .lkx-notif .lk-shade-cards { grid-template-columns: minmax(0, 1fr); }
@@ -593,23 +630,30 @@ html[lang^='zh'] .lk .lkx-leave li { line-break: strict; }
   .lkx-film-item figcaption .lk-detail-v { min-height: 0; }
   .lkx-film-notes { margin-top: 64px; }
   .lkx-film-facts { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .lkx-film-facts > div { padding-left: 34px; }
-  .lkx-film-facts span { top: 33px; }
 
   .lkx-tmpl-head { grid-template-columns: 26px minmax(0, 1fr); padding-bottom: 18px; margin-bottom: 24px; }
-  .lkx-tmpl-no { padding-top: 3px; font-size: 9.5px; }
+  .lkx-tmpl-no { padding-top: 3px; font-size: 10px; }
   .lkx-tmpl-name { gap: 8px 10px; font-size: 16px; }
   .lkx-tmpl-copy p { margin-top: 10px; font-size: 13px; line-height: 1.68; }
   .lkx-tmpl + .lkx-tmpl { margin-top: 62px; }
-  .lkx-print-sheets { gap: 11px; }
-  .lkx-print-sheet figcaption { margin-top: 10px; font-size: 8.5px; letter-spacing: 0.1em; }
+  /* Two sheets side by side in 350 px would scale the caption to 7.5 px, so on
+     a phone they stack and each takes the full column: scale 0.324, caption
+     13 px. Same card, same geometry, a composition that survives the width. */
+  .lkx-print-sheets { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .lkx-print-sheet { width: min(100%, 350px); margin: 0 auto; }
+  .lkx-print-sheet figcaption { margin-top: 12px; font-size: 11px; letter-spacing: 0.1em; }
   .lkx-print-facts > div { padding-left: 30px; }
-  .lkx-print-facts h3 { font-size: 14px; }
+  .lkx-film-facts > div,
+  .lkx-print-facts > div { padding-left: 30px; }
+  .lkx-film-facts span,
+  .lkx-print-facts span { top: 29px; }
+  .lkx-film-facts > div:first-child span,
+  .lkx-print-facts > div:first-child span { top: 3px; }
   .lkx-papers-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .lkx-papers-strip i { height: 30px; }
 
   .lkx-device { gap: 42px; margin-bottom: 56px; }
-  .lkx-ask-sheet, .lkx-navdiff-bar { max-width: 100%; }
+  .lkx-ask-sheet, .lkx-navdiff-bar, .lkx-navdiff-row { max-width: 100%; }
   .lkx-col-note { font-size: 12px; }
   .lkx-leave li { font-size: 12.5px; }
 

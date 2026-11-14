@@ -47,7 +47,7 @@
 }
 .lk-out-cols p {
   margin: 0;
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 1.75;
   color: var(--lk-muted);
 }
@@ -291,7 +291,7 @@
   justify-content: space-between;
   gap: 16px;
   font-family: var(--ui-display);
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -356,7 +356,7 @@
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 .lk-cap-d {
   font-size: 13px;
@@ -430,7 +430,7 @@
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 .lk-cap-d {
   font-size: 13px;
@@ -1263,7 +1263,7 @@ html[lang='zh-TW'] .lk .wgt-logo {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-family: var(--ui-display);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.2em;
@@ -1359,21 +1359,21 @@ html[lang='zh-TW'] .lk-wcar-statein {
 }
 .lk-wcar-count {
   font-family: var(--ui-display);
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 .lk-wcar-name {
   margin: 0;
   font-family: var(--ui-display);
   font-weight: 400;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 0.01em;
 }
 .lk-wcar-d {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.7;
   color: var(--lk-muted);
 }
@@ -1382,20 +1382,36 @@ html[lang='zh-TW'] .lk-wcar-statein {
   align-items: center;
   gap: 14px;
 }
+/* The dot stays a 26 x 2 rule; the target around it is 26 x 24 so it can
+   actually be hit (WCAG 2.2 AA, 24 CSS px). Negative margins keep the row
+   optically where it was. */
 .lk-wcar-dots {
   display: flex;
+  align-items: center;
   gap: 8px;
+  margin: -11px 0;
 }
 .lk-wcar-dots button {
+  position: relative;
   width: 26px;
-  height: 2px;
+  height: 24px;
   padding: 0;
   border: 0;
-  background: var(--lk-line);
+  background: transparent;
   cursor: pointer;
+}
+.lk-wcar-dots button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--lk-line);
   transition: background 0.25s ease;
 }
-.lk-wcar-dots button.on {
+.lk-wcar-dots button.on::before {
   background: var(--lk-ink);
 }
 .lk-wcar-dots button:focus-visible {
@@ -1423,7 +1439,7 @@ html[lang='zh-TW'] .lk-wcar-statein {
 }
 .lk-outro-d {
   margin: 0;
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 1.7;
   color: var(--lk-muted);
   max-width: 56ch;
@@ -1434,7 +1450,7 @@ html[lang='zh-TW'] .lk-wcar-statein {
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1483,7 +1499,7 @@ html[lang='zh-TW'] .lk-wcar-statein {
   font-family: var(--ui-display);
   font-size: 10px;
   letter-spacing: 0.18em;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
   font-variant-numeric: tabular-nums;
 }
 .lk-spec-name {
@@ -1495,9 +1511,9 @@ html[lang='zh-TW'] .lk-wcar-statein {
 }
 .lk-spec-dim {
   margin-left: auto;
-  font-size: 11.5px;
+  font-size: 11px;
   letter-spacing: 0.03em;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
   font-variant-numeric: tabular-nums;
 }
 .lk-spec-pair {
@@ -1533,10 +1549,10 @@ html[lang='zh-TW'] .lk-wcar-statein {
   gap: 8px;
   margin-top: 12px;
   font-family: var(--ui-display);
-  font-size: 9.5px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 .lk-spec-item figcaption::before {
   content: '';
@@ -1557,9 +1573,9 @@ html[lang='zh-TW'] .lk-wcar-statein {
   margin: clamp(22px, 2.6vw, 30px) auto 0;
   text-align: center;
   max-width: 76ch;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.78;
-  color: var(--lk-muted-d);
+  color: var(--lk-muted);
 }
 
 /* ---------- responsive ---------- */

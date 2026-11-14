@@ -78,7 +78,13 @@ export default function FilmLogSection() {
                   <Stage width={1080} height={1080 * (sheet.ratio === 11 ? 1 : 1.25)} className="lkx-print-stage">
                     <PrintCard data={sheet} />
                   </Stage>
-                  <figcaption>{t(`link.film.${sheet.ratio === 11 ? 'p11' : 'p45'}`)}</figcaption>
+                  {/* The sheet is drawn at 1080 px and scaled to ~350–360 px, which
+                      puts its own camera line at 2–6 px. That line is texture on
+                      the card; here it is set at a size that can be read. */}
+                  <figcaption>
+                    <span>{t(`link.film.${sheet.ratio === 11 ? 'p11' : 'p45'}`)}</span>
+                    <span className="lkx-print-cam">{t(`link.film.${sheet.source}c`)}</span>
+                  </figcaption>
                 </figure>
               ))}
             </div>

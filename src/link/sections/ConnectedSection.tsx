@@ -61,6 +61,13 @@ export default function ConnectedSection() {
               <div className="lkx-navdiff-bar">
                 <Stage width={390} height={70}><TabBar active="TIMER" hasDevice /></Stage>
               </div>
+              {/* The bar keeps the app's own brass rule meaning "current tab", so the
+                  comment hangs below it: a bracket one cell wide over the cell that
+                  is absent, not a second brass line inside the bar. */}
+              <span className="lkx-navdiff-mark" aria-hidden="true">
+                {t('link.app.tabDEVICE')}
+                <em>{t('link.connected.cellAbsent')}</em>
+              </span>
             </div>
           </div>
 
